@@ -1,0 +1,87 @@
+Krombox\MainBundle\Entity\Service:
+    type: entity    
+    table: service    
+    id:
+        id:
+            type: integer
+            generator: { strategy: IDENTITY }    
+    fields:
+        name:
+            type: string
+            nullable: false
+        slug:
+            type: string
+            nullable: false    
+#        birthdayDiscount:
+#            type: integer
+#            nullable: true
+#        serviceComission:
+#            type: integer
+#            nullable: true    
+#        isWifi:
+#            type: boolean
+#            nullable: false
+#        isHookah:
+#            type: boolean
+#            nullable: false            
+#        isLiveMusic:
+#            type: boolean
+#            nullable: false            
+#        isOpenAir:
+#            type: boolean
+#            nullable: false
+#        isParking:
+#            type: boolean
+#            nullable: false
+#        isSmokingLounge:
+#            type: boolean
+#            nullable: false
+#        isBilliards:
+#            type: boolean
+#            nullable: false
+#        isFaceControl:
+#            type: boolean
+#            nullable: false
+#        isBanquet:
+#            type: boolean
+#            nullable: false
+#        isDanceFloor:
+#            type: boolean
+#            nullable: false
+#        isStriptease:
+#            type: boolean
+#            nullable: false
+#        isMeetingHole:
+#            type: boolean
+#            nullable: false
+#        isDiscountSystem:
+#            type: boolean
+#            nullable: false
+#        isDelivery:
+#            type: boolean
+#            nullable: false
+#        isChildrenMenu:
+#            type: boolean
+#            nullable: false
+#        isSportBroadcast:
+#            type: boolean
+#            nullable: false
+#        isTerminalPayment:
+#            type: boolean
+#            nullable: false
+#        isGameConsole:
+#            type: boolean
+#            nullable: false
+#        isBoardGame:
+#            type: boolean
+#            nullable: false
+    manyToMany:        
+        places:
+            targetEntity: Krombox\MainBundle\Entity\Place
+            mappedBy: categories
+        services:
+            targetEntity: Krombox\MainBundle\Entity\Service
+            mappedBy: services
+            
+    lifecycleCallbacks: {}
+        #

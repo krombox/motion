@@ -1,0 +1,516 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:jms="urn:jms:translation" version="1.2">
+  <file date="2015-10-20T21:00:52Z" source-language="en" target-language="ru" datatype="plaintext" original="not.available">
+    <header>
+      <tool tool-id="JMSTranslationBundle" tool-name="JMSTranslationBundle" tool-version="1.1.0-DEV"/>
+      <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
+    </header>
+    <body>
+      <trans-unit id="0b70336f83fde3bfc8f3aab4865c27ac2cd78f15" resname=" from ">
+        <source> from </source>
+        <target>от</target>
+        <jms:reference-file line="335">Resources/views/macro.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="7202d95d9d1fbd1523136fdc3ec80f693101c22f" resname=" hall.name ">
+        <source> hall.name </source>
+        <target>Название</target>
+        <jms:reference-file line="109">views/Place/details.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="cd181d33a7f86779faa6977b32e63d71e76d88fc" resname=" hall.number.of.seats ">
+        <source> hall.number.of.seats </source>
+        <target>Количество мест</target>
+        <jms:reference-file line="110">views/Place/details.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="74961dc6be6483e2bff955043c4bcf0e1e3e4f80" resname=" halls.list ">
+        <source> halls.list </source>
+        <target>Список залов</target>
+        <jms:reference-file line="105">views/Place/details.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="a4df760c77e3fbaf6455768f70d82052059a9c6d" resname=" location ">
+        <source> location </source>
+        <target>Местопроведения</target>
+        <jms:reference-file line="30">views/Event/list.html.twig</jms:reference-file>
+        <jms:reference-file line="51">views/Event/details.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="f94265109be0da6e69475df6c31f9a0bf666ad4f" resname=" my.events ">
+        <source> my.events </source>
+        <target>События</target>
+        <jms:reference-file line="82">views/Layout/header.html.twig</jms:reference-file>
+        <jms:reference-file line="5">User/Partial/profile_menu.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="f2e57f5f39592540c6678085860994ec21c559d6" resname=" my.places ">
+        <source> my.places </source>
+        <target>Заведения</target>
+        <jms:reference-file line="81">views/Layout/header.html.twig</jms:reference-file>
+        <jms:reference-file line="4">User/Partial/profile_menu.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="b30897710f01760b5e18bedf67e1bff77b73b16a" resname=" my.profile ">
+        <source> my.profile </source>
+        <target>профиль</target>
+        <jms:reference-file line="3">User/Partial/profile_menu.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="27172608ea1886dd585aa63995c802ad4acbd524" resname=" price ">
+        <source> price </source>
+        <target>цена</target>
+        <jms:reference-file line="333">Resources/views/macro.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="ad55b147e30ee8c76dad455e3b0bde2e98ced927" resname=" tags ">
+        <source> tags </source>
+        <target>Теги</target>
+        <jms:reference-file line="53">views/Event/details.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="3a59c4ee70a9bd28671f1d01d0d6d049795cef38" resname=" to ">
+        <source> to </source>
+        <target>до</target>
+        <jms:reference-file line="335">Resources/views/macro.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="0277959611310976682872bcb5d6423aa581a202" resname="24h">
+        <source>24h</source>
+        <target>Круглосуточно</target>
+        <jms:reference-file line="23">views/User/places.html.twig</jms:reference-file>
+        <jms:reference-file line="76">Place/partial/placesList.html.twig</jms:reference-file>
+        <jms:reference-file line="28">views/Place/details.html.twig</jms:reference-file>
+        <jms:reference-file line="28">Form/Type/ServicesType.php</jms:reference-file>
+        <jms:reference-file line="29">Type/Search/PlaceSearchType.php</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="9b9d4c21f85c52fdd2bb1862dd2839963a60acd0" resname="Choose a file to upload">
+        <source>Choose a file to upload</source>
+        <target>Выберите файл</target>
+        <jms:reference-file line="29">Form/Extension/ImageTypeExtension.php</jms:reference-file>
+        <jms:reference-file line="46">Form/Type/LogoType.php</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="c662180230cad14787d4ab7e77aa08681ce783fa" resname="address">
+        <source>address</source>
+        <target>Адрес</target>
+        <jms:reference-file line="24">views/User/places.html.twig</jms:reference-file>
+        <jms:reference-file line="77">Place/partial/placesList.html.twig</jms:reference-file>
+        <jms:reference-file line="29">views/Place/details.html.twig</jms:reference-file>
+        <jms:reference-file line="37">Form/Type/PlaceProfileType.php</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="2040c3b9e448a3073a2482d415d44dcb030ab803" resname="banquet">
+        <source>banquet</source>
+        <target>Банкеты/Корпоративы</target>
+        <jms:reference-file line="41">views/Place/details.html.twig</jms:reference-file>
+        <jms:reference-file line="60">Form/Type/ServicesType.php</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="af7cf8ef0c67c5a8b9f48abe18d7a97911b2f4c5" resname="billiards">
+        <source>billiards</source>
+        <target>Бильярд</target>
+        <jms:reference-file line="39">views/Place/details.html.twig</jms:reference-file>
+        <jms:reference-file line="52">Form/Type/ServicesType.php</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="164095d3b1bb83f38d85ddaf9b1be2b05a338aae" resname="birtday.discount">
+        <source>birtday.discount</source>
+        <target>Скидка имениннику</target>
+        <jms:reference-file line="91">views/Place/details.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="c59607c3267b742a70d5a630616fb18ef1200fad" resname="birthday.discount">
+        <source>birthday.discount</source>
+        <target>Скидка имениннику(%)</target>
+        <jms:reference-file line="20">Form/Type/ServicesType.php</jms:reference-file>
+        <jms:reference-file line="45">Type/Search/PlaceSearchType.php</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="ce5cd36dd4334a22f9bc48e236146490d711d369" resname="board.game">
+        <source>board.game</source>
+        <target>Настольные игры</target>
+        <jms:reference-file line="51">views/Place/details.html.twig</jms:reference-file>
+        <jms:reference-file line="104">Form/Type/ServicesType.php</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="05476a5b8664b87d078f986b71e674a9d2c8d39c" resname="business hours - step 2">
+        <source>business hours - step 2</source>
+        <target>business hours - step 2</target>
+        <jms:reference-file line="25">Form/Flow/NewPlaceFlow.php</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="f7c48088debe07574e32c797ad8e4b4f9d9f48f6" resname="business_hours">
+        <source>business_hours</source>
+        <target>Часы работы</target>
+        <jms:reference-file line="27">views/User/places.html.twig</jms:reference-file>
+        <jms:reference-file line="80">Place/partial/placesList.html.twig</jms:reference-file>
+        <jms:reference-file line="23">Form/Type/PlaceBusinessHoursType.php</jms:reference-file>
+        <jms:reference-file line="112">Form/Type/PlaceType.php</jms:reference-file>
+        <jms:reference-file line="80">MainBundle/Admin/PlaceAdmin.php</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="0ec39827a6b0808205c8cb30a873a45b462a1e43" resname="business_hours_exception">
+        <source>business_hours_exception</source>
+        <target>Рабочие часы(исключения)</target>
+        <jms:reference-file line="123">Form/Type/PlaceType.php</jms:reference-file>
+        <jms:reference-file line="89">MainBundle/Admin/PlaceAdmin.php</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="50b9e78177f37e3c747f67abcc8af36a44f218f5" resname="categories">
+        <source>categories</source>
+        <target>Категории</target>
+        <jms:reference-file line="23">views/User/places.html.twig</jms:reference-file>
+        <jms:reference-file line="76">Place/partial/placesList.html.twig</jms:reference-file>
+        <jms:reference-file line="28">views/Place/details.html.twig</jms:reference-file>
+        <jms:reference-file line="52">Form/Type/EventType.php</jms:reference-file>
+        <jms:reference-file line="102">Form/Type/PlaceType.php</jms:reference-file>
+        <jms:reference-file line="31">Form/Type/PlaceProfileType.php</jms:reference-file>
+        <jms:reference-file line="64">MainBundle/Admin/EventAdmin.php</jms:reference-file>
+        <jms:reference-file line="59">MainBundle/Admin/PlaceAdmin.php</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="7550b672e162c224c309bdea5d48ca975081a904" resname="change">
+        <source>change</source>
+        <target state="new">change</target>
+        <jms:reference-file line="39">views/Place/membership.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="4f1e2374cffaa4d78c3a9e334374bae837adc78b" resname="children.menu">
+        <source>children.menu</source>
+        <target>Детское меню</target>
+        <jms:reference-file line="47">views/Place/details.html.twig</jms:reference-file>
+        <jms:reference-file line="88">Form/Type/ServicesType.php</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="9b7c68a918b17eb053809b198d7c9abfc142f30a" resname="create">
+        <source>create</source>
+        <target>Добавить</target>
+        <jms:reference-file line="58">views/Layout/header.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="f729db1c593729bb6142cff1303261954aa40759" resname="create.new.event">
+        <source>create.new.event</source>
+        <target>собитие</target>
+        <jms:reference-file line="61">views/Layout/header.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="5877827c14ef054c21ea4f6d57d44fcf44af1255" resname="create.new.place">
+        <source>create.new.place</source>
+        <target>заведение</target>
+        <jms:reference-file line="60">views/Layout/header.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="092902a07199f08a16cc01b4b3d27b7de310ffc8" resname="current.membership">
+        <source>current.membership</source>
+        <target state="new">current.membership</target>
+        <jms:reference-file line="20">views/Place/membership.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="87fcde372e0e9a4a77305f7707fea72df00b9df4" resname="dance.floor">
+        <source>dance.floor</source>
+        <target>Танцпол</target>
+        <jms:reference-file line="42">views/Place/details.html.twig</jms:reference-file>
+        <jms:reference-file line="64">Form/Type/ServicesType.php</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="cc98c717d7e677c42ca49a9e09d62d0aa4212b34" resname="days.count">
+        <source>days.count</source>
+        <target state="new">days.count</target>
+        <jms:reference-file line="22">Form/Type/OrderMembershipType.php</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="391cb1e07c5f1f4e3000e0fd125802c7a9b1dc96" resname="delivery">
+        <source>delivery</source>
+        <target>Доставка на дом</target>
+        <jms:reference-file line="45">views/Place/details.html.twig</jms:reference-file>
+        <jms:reference-file line="84">Form/Type/ServicesType.php</jms:reference-file>
+        <jms:reference-file line="37">Type/Search/PlaceSearchType.php</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="cb329146a0dd0d566b0628744d67936558741ffa" resname="description">
+        <source>description</source>
+        <target>Описание</target>
+        <jms:reference-file line="24">Form/Type/EventType.php</jms:reference-file>
+        <jms:reference-file line="27">Form/Type/PlaceType.php</jms:reference-file>
+        <jms:reference-file line="24">Form/Type/PlaceProfileType.php</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="33f388a25e095e9a6b399bf65734840218492689" resname="discount.system">
+        <source>discount.system</source>
+        <target>Система скидок</target>
+        <jms:reference-file line="49">views/Place/details.html.twig</jms:reference-file>
+        <jms:reference-file line="80">Form/Type/ServicesType.php</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="82d50d9042decb175894924272dd3b5a14cd3716" resname="events">
+        <source>events</source>
+        <target>События</target>
+        <jms:reference-file line="56">views/Layout/header.html.twig</jms:reference-file>
+        <jms:reference-file line="71">MainBundle/Admin/PlaceAdmin.php</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="de93ba2d15f3dbf65f76e6fd21e1e4b002459dd8" resname="extend">
+        <source>extend</source>
+        <target state="new">extend</target>
+        <jms:reference-file line="37">views/Place/membership.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="acbb2f16d96751c42b1f4a1a8a6f314a7c4e0281" resname="face.control">
+        <source>face.control</source>
+        <target>Фейс-контроль</target>
+        <jms:reference-file line="40">views/Place/details.html.twig</jms:reference-file>
+        <jms:reference-file line="56">Form/Type/ServicesType.php</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="32d7bf3fda52306da1caf4e9e026a1eaedd1ec09" resname="fb.group">
+        <source>fb.group</source>
+        <target state="new">fb.group</target>
+        <jms:reference-file line="78">views/Place/details.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="7c3260260e20290fb67f9ac1bb4cb37e9eb522ac" resname="fb_group">
+        <source>fb_group</source>
+        <target>facebook группа</target>
+        <jms:reference-file line="25">Form/Type/ContactsType.php</jms:reference-file>
+        <jms:reference-file line="91">Form/Type/PlaceType.php</jms:reference-file>
+        <jms:reference-file line="26">Form/Type/PlaceServicesType.php</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="42674f0e1d5b33ad8f2efacb5c6fb836b2df2f6e" resname="football.broadcast">
+        <source>football.broadcast</source>
+        <target>Спортивные трансляции</target>
+        <jms:reference-file line="46">views/Place/details.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="0b1e95cfd9775191a7224d0a218ae79187e80c1d" resname="from">
+        <source>from</source>
+        <target>от</target>
+        <jms:reference-file line="103">Resources/views/macro.html.twig</jms:reference-file>
+        <jms:reference-file line="155">Resources/views/macro.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="84affa38ff27eac5d453d917c7d2e585b7f40832" resname="game.console">
+        <source>game.console</source>
+        <target>Игровые консоли</target>
+        <jms:reference-file line="50">views/Place/details.html.twig</jms:reference-file>
+        <jms:reference-file line="100">Form/Type/ServicesType.php</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="6ba9ffd23f415d6d57f68c8b98821d45cc38718c" resname="hall.name">
+        <source>hall.name</source>
+        <target>Названик</target>
+        <jms:reference-file line="18">Form/Type/HallType.php</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="47ef1f7c05d902392cc063c995fd48a62216ab58" resname="halls">
+        <source>halls</source>
+        <target>Залы</target>
+        <jms:reference-file line="23">Form/Type/PlaceHallType.php</jms:reference-file>
+        <jms:reference-file line="60">Form/Type/PlaceType.php</jms:reference-file>
+        <jms:reference-file line="218">MainBundle/Admin/PlaceAdmin.php</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="69e3ce2725fbdc0c547863511c0b5ee590886b7d" resname="halls - step 4">
+        <source>halls - step 4</source>
+        <target state="new">halls - step 4</target>
+        <jms:reference-file line="36">Form/Flow/NewPlaceFlow.php</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="2139fc33b171616b38299b175d9eabf50e45d734" resname="hookah">
+        <source>hookah</source>
+        <target>Кальян</target>
+        <jms:reference-file line="33">views/Place/details.html.twig</jms:reference-file>
+        <jms:reference-file line="32">Form/Type/ServicesType.php</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="146f1eb3254c21561746afbe79a98b3e7b6ce2f3" resname="isWorkingNow">
+        <source>isWorkingNow</source>
+        <target>Работает сейчас</target>
+        <jms:reference-file line="41">Type/Search/PlaceSearchType.php</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="000c785f0729c90111116b3b8855ab774232dfdf" resname="kitchen.type">
+        <source>kitchen.type</source>
+        <target>кухня</target>
+        <jms:reference-file line="22">Form/Type/KitchenType.php</jms:reference-file>
+        <jms:reference-file line="25">Form/Type/MenuType.php</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="57e2419ace1881753a2f34dd1bcc881d155a2907" resname="kitchens">
+        <source>kitchens</source>
+        <target>Кухни</target>
+        <jms:reference-file line="84">views/Place/details.html.twig</jms:reference-file>
+        <jms:reference-file line="73">Form/Type/PlaceType.php</jms:reference-file>
+        <jms:reference-file line="60">Type/Filter/PlaceFilterType.php</jms:reference-file>
+        <jms:reference-file line="118">MainBundle/Admin/PlaceAdmin.php</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="42b3e667c09864833dc4005d8ac708e80f18fadc" resname="live.music">
+        <source>live.music</source>
+        <target>Живая музыка</target>
+        <jms:reference-file line="34">views/Place/details.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="448251ff1ed2507e4d5a2e771ebc4aece9ffef81" resname="liveMusic">
+        <source>liveMusic</source>
+        <target>Живая музыка</target>
+        <jms:reference-file line="36">Form/Type/ServicesType.php</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="33e4f0dbde3e30972fe8efc1a04ff6d3115f9b98" resname="meeting.hole">
+        <source>meeting.hole</source>
+        <target>Конференц зал</target>
+        <jms:reference-file line="44">views/Place/details.html.twig</jms:reference-file>
+        <jms:reference-file line="72">Form/Type/ServicesType.php</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="252a25667dc7c65fe0e9bf62d474bbab9bab4068" resname="menu">
+        <source>menu</source>
+        <target>Меню</target>
+        <jms:reference-file line="82">Form/Type/PlaceType.php</jms:reference-file>
+        <jms:reference-file line="51">Type/Filter/PlaceFilterType.php</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="6ae999552a0d2dca14d62e2bc8b764d377b1dd6c" resname="name">
+        <source>name</source>
+        <target>Название</target>
+        <jms:reference-file line="23">Form/Type/EventType.php</jms:reference-file>
+        <jms:reference-file line="26">Form/Type/PlaceType.php</jms:reference-file>
+        <jms:reference-file line="23">Form/Type/PlaceProfileType.php</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="53b0a1b2fadf4e040cdc2155a7340de24aca93cb" resname="number">
+        <source>number</source>
+        <target>Номер</target>
+        <jms:reference-file line="24">Form/Type/PhoneType.php</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="64ef066baf7b9a9af77326578706f830cc779ccf" resname="number.of.seats">
+        <source>number.of.seats</source>
+        <target>Количество посадочных мест</target>
+        <jms:reference-file line="19">Form/Type/HallType.php</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="5fdab161a3c59bca57a17b134586a0e7fd2e93e3" resname="number.type">
+        <source>number.type</source>
+        <target>Тип номера</target>
+        <jms:reference-file line="25">Form/Type/PhoneType.php</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="c078f4b0cbc6763a108ef2e05dc7a7c05be435d1" resname="open.air">
+        <source>open.air</source>
+        <target>Летняя площадка</target>
+        <jms:reference-file line="35">views/Place/details.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="ff34578292762ebf9098e9510ef4e4971bd38216" resname="openAir">
+        <source>openAir</source>
+        <target>Летняя площадка</target>
+        <jms:reference-file line="40">Form/Type/ServicesType.php</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="3c9e20a0517243cfe5dbe05db19758103b5ae545" resname="parking">
+        <source>parking</source>
+        <target>Парковка</target>
+        <jms:reference-file line="36">views/Place/details.html.twig</jms:reference-file>
+        <jms:reference-file line="44">Form/Type/ServicesType.php</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="8e5b861e3259b8b49a317368539e52366d3aa98d" resname="per.day">
+        <source>per.day</source>
+        <target state="new">per.day</target>
+        <jms:reference-file line="23">views/Place/membership.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="4963fec4e59da5b833109e50d6e29cb8df19e5cb" resname="phones">
+        <source>phones</source>
+        <target>Телефоны</target>
+        <jms:reference-file line="58">views/Place/details.html.twig</jms:reference-file>
+        <jms:reference-file line="36">Form/Type/ContactsType.php</jms:reference-file>
+        <jms:reference-file line="49">Form/Type/PlaceType.php</jms:reference-file>
+        <jms:reference-file line="37">Form/Type/PlaceServicesType.php</jms:reference-file>
+        <jms:reference-file line="102">MainBundle/Admin/PlaceAdmin.php</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="3a83eb6cabc6ea751782b3d71958a72f68ee64d0" resname="place.linked.with">
+        <source>place.linked.with</source>
+        <target>связанно с</target>
+        <jms:reference-file line="56">MainBundle/Admin/EventAdmin.php</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="324d2c4f8c42abc418bde82c7fea830b4d70309c" resname="places">
+        <source>places</source>
+        <target>Заведения</target>
+        <jms:reference-file line="55">views/Layout/header.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="915b68cf6df28080037e7c65b2646bdd7565b2e9" resname="places.linked">
+        <source>places.linked</source>
+        <target>связанно с</target>
+        <jms:reference-file line="136">Form/Type/PlaceType.php</jms:reference-file>
+        <jms:reference-file line="43">Form/Type/PlaceProfileType.php</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="41f2402db19b5cc1ff327af8b5e3bc98c8a0b3f3" resname="places.linked.with">
+        <source>places.linked.with</source>
+        <target>связанно с</target>
+        <jms:reference-file line="209">MainBundle/Admin/PlaceAdmin.php</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="9a3133532159c27f4b1c1114ca111ce6857efd43" resname="price.high">
+        <source>price.high</source>
+        <target>макс. цена</target>
+        <jms:reference-file line="41">Form/Type/EventType.php</jms:reference-file>
+        <jms:reference-file line="41">MainBundle/Admin/EventAdmin.php</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="7522fa118318757f7a5803f322fc0d1a5f38b9f5" resname="price.low">
+        <source>price.low</source>
+        <target>мин. цена</target>
+        <jms:reference-file line="40">Form/Type/EventType.php</jms:reference-file>
+        <jms:reference-file line="40">MainBundle/Admin/EventAdmin.php</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="113c7054f3afd82868459ee0742a284a67b8015b" resname="product.removeimage">
+        <source>Remover</source>
+        <target>удалить</target>
+        <jms:reference-file line="43">views/Form/fields.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="4901a1d313b736078ffd6362e7f6131363d2b19e" resname="profile - step 1">
+        <source>profile - step 1</source>
+        <target state="new">profile - step 1</target>
+        <jms:reference-file line="21">Form/Flow/NewPlaceFlow.php</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="d64d68a8c9ca47fa2df009f468e30655d74663d8" resname="relaxations">
+        <source>relaxations</source>
+        <target>Развлечения</target>
+        <jms:reference-file line="42">Place/partial/placesList.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="db99845855b2ecbfecca9a095062b96c3e27703f" resname="remove">
+        <source>remove</source>
+        <target>удалить</target>
+        <jms:reference-file line="24">views/User/events.html.twig</jms:reference-file>
+        <jms:reference-file line="53">views/User/places.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="13a4a11319d31c1b323d5774f44240a9ffc984d0" resname="save">
+        <source>save</source>
+        <target>Сохранить</target>
+        <jms:reference-file line="142">Form/Type/PlaceType.php</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="c13ddee9c7df77f916ee1b49ad56a096cbf6aeb0" resname="service.comission">
+        <source>service.comission</source>
+        <target>проценты за обслуживание</target>
+        <jms:reference-file line="94">views/Place/details.html.twig</jms:reference-file>
+        <jms:reference-file line="24">Form/Type/ServicesType.php</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="3e7aaa79601ad9b577f333a67d082c3752b7e357" resname="services">
+        <source>services</source>
+        <target>Услуги</target>
+        <jms:reference-file line="31">Place/partial/placesList.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="fda437d7afb4b018d7d01c884681448eb5460450" resname="services &amp;&amp; contacts - step 3">
+        <source><![CDATA[services && contacts - step 3]]></source>
+        <target state="new"><![CDATA[services && contacts - step 3]]></target>
+        <jms:reference-file line="29">Form/Flow/NewPlaceFlow.php</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="d3398e7bcc39189681147309b1642bdcd7901c0d" resname="smoking.lounge">
+        <source>smoking.lounge</source>
+        <target>Курящий зал</target>
+        <jms:reference-file line="38">views/Place/details.html.twig</jms:reference-file>
+        <jms:reference-file line="48">Form/Type/ServicesType.php</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="7a0df62158e476306f9453e470466971edb74692" resname="sport.broadcast">
+        <source>sport.broadcast</source>
+        <target>Спортивные трансляции</target>
+        <jms:reference-file line="92">Form/Type/ServicesType.php</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="d68efffdb87d76694837f307e9566d72623ccf16" resname="striptease">
+        <source>striptease</source>
+        <target>Стриптиз</target>
+        <jms:reference-file line="43">views/Place/details.html.twig</jms:reference-file>
+        <jms:reference-file line="68">Form/Type/ServicesType.php</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="7a586c52c5087abc32eae305a83ac0b778c3d1a9" resname="terminal.payment">
+        <source>terminal.payment</source>
+        <target>Безналичный рассчет</target>
+        <jms:reference-file line="48">views/Place/details.html.twig</jms:reference-file>
+        <jms:reference-file line="96">Form/Type/ServicesType.php</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="4374aaee247fb237ce6c97d5c8d64bbe474d16de" resname="to">
+        <source>to</source>
+        <target>до</target>
+        <jms:reference-file line="118">Resources/views/macro.html.twig</jms:reference-file>
+        <jms:reference-file line="174">Resources/views/macro.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="d2502def146ec56667efc9e870f29719a0e76b60" resname="uah">
+        <source>uah</source>
+        <target state="new">uah</target>
+        <jms:reference-file line="22">views/Place/membership.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="51f320aaae9523ed9b98d6f64748ea7e82c17584" resname="vk.group">
+        <source>vk.group</source>
+        <target>Группа ВК</target>
+        <jms:reference-file line="72">views/Place/details.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="752f1fede9d45afbc92e01d2facd9fd85d6e8661" resname="vk_group">
+        <source>vk_group</source>
+        <target>вконтакте группа</target>
+        <jms:reference-file line="29">Form/Type/ContactsType.php</jms:reference-file>
+        <jms:reference-file line="95">Form/Type/PlaceType.php</jms:reference-file>
+        <jms:reference-file line="30">Form/Type/PlaceServicesType.php</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="3ab3e0b020a6d41f3d259ddd3ed8ff273843839b" resname="website">
+        <source>website</source>
+        <target>Сайт</target>
+        <jms:reference-file line="66">views/Place/details.html.twig</jms:reference-file>
+        <jms:reference-file line="21">Form/Type/ContactsType.php</jms:reference-file>
+        <jms:reference-file line="87">Form/Type/PlaceType.php</jms:reference-file>
+        <jms:reference-file line="22">Form/Type/PlaceServicesType.php</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="86a28d88f00704e5a28b3acfb664f3e58830b206" resname="wifi">
+        <source>wifi</source>
+        <target>WiFi</target>
+        <jms:reference-file line="25">views/User/places.html.twig</jms:reference-file>
+        <jms:reference-file line="78">Place/partial/placesList.html.twig</jms:reference-file>
+        <jms:reference-file line="32">views/Place/details.html.twig</jms:reference-file>
+        <jms:reference-file line="76">Form/Type/ServicesType.php</jms:reference-file>
+        <jms:reference-file line="33">Type/Search/PlaceSearchType.php</jms:reference-file>
+        <jms:reference-file line="76">Type/Filter/ServicesFilterType.php</jms:reference-file>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

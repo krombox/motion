@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+  <head>
+    <meta charset="utf-8" />    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0" /> -->    
+    
+    <link rel="image_src" href="http://sanyahelp.in.ua/img/social-main.jpg" />
+    {#<!-- <link href="less/style.less"  rel="stylesheet/less"/> -->   #}
+    
+    {% block stylesheets %}
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <link href="https://raw.githubusercontent.com/marcoceppi/bootstrap-glyphicons/master/css/bootstrap.icon-large.min.css" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    {% endblock %}
+    
+    {% stylesheets '@FOSCommentBundle/Resources/assets/css/comments.css' %}
+        <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
+    {% endstylesheets %}
+    
+    {% block javascripts_head %}
+        <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+        <script src="{{ asset('bower/moment/moment.js') }}"></script>        
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+        <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+        <script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>
+    {% endblock %}
+     
+  </head>
+  <body>      
+    
+<body>
+    <header>
+        {#<ul>
+            <li><a href="#">create.new.place</a></li>
+        </ul>#}
+        <nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="{{ path('places_list') }}">Home</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        {#<li class="active"><a href="{{ path('place_create') }}">{% trans %}create.new.place{% endtrans %}<span class="sr-only">(current)</span></a></li>
+        <li><a href="{{ path('event_create') }}">{% trans %}create.new.event{% endtrans %}<span class="sr-only">(current)</span></a></li>#}
+        <li><a href="{{ path('places_list') }}">{% trans %}places{% endtrans %}<span class="sr-only">(current)</span></a></li>
+        <li><a href="{{ path('events_list') }}">{% trans %}events{% endtrans %}<span class="sr-only">(current)</span></a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{% trans %}create{% endtrans %} <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="{{ path('place_new') }}">{% trans %}create.new.place{% endtrans %}</a></li>
+            <li><a href="{{ path('event_create') }}">{% trans %}create.new.event{% endtrans %}</a></li>            
+          </ul>
+        </li>
+      </ul>
+      <form class="navbar-form navbar-left" role="search">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Search">
+        </div>
+        <button type="submit" class="btn btn-default">Submit</button>
+      </form>
+        
+      <ul class="nav navbar-nav navbar-right">
+          {% if app.user %}
+          <li class="first last dropdown">
+                <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                    <img class="img-circle navbar-avatar" src="http://lorempixel.com/24/24/">{{ app.user }}
+                    <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                    <li class=""><a href="{#{{ path('user_profile') }}#}/profile">profile</a></li>
+                    <li class=""><a href="{{ path('user_places') }}">{% trans %} my.places {% endtrans %}</a></li>
+                    <li><a href="{{ path('user_events') }}">{% trans %} my.events {% endtrans %}</a></li>
+                    <li class=""><a href="/logout">logout</a></li>
+                </ul>
+           </li>
+           {% else %}
+               <li><a href="/login">login<span class="sr-only">(current)</span></a></li>
+               <li><a href="/register">register<span class="sr-only">(current)</span></a></li>
+           {% endif %}
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+    </header>
+    {#<div class="wrapper row">		        
+        <div class="contain-to-grid">
+                <nav class="top-bar" data-topbar role="navigation">
+                        <ul class="title-area">
+                                <li class="name">
+                                        <h1><a href="{{ path('krombox_main_homepage') }}">Главная</a></h1>
+                                </li>
+                                <li class="toggle-topbar menu-icon">
+                                   <a href="#"><span>Меню</span></a>
+                                </li>
+                        </ul>
+                        <section class="top-bar-section">
+                                <ul class="right">
+                                        <li class="divider"></li>
+                                        <li {% if(active_page == 'documents') %} class="active"{% endif %}><a href="{{ path('krombox_main_documents') }}">Документы</a></li>
+                                        <li class="divider"></li>
+                                        <li {% if(active_page == 'history') %} class="active"{% endif %}><a href="{{ path('krombox_main_history') }}">История</a></li>
+                                        <li class="divider"></li>
+                                        <li {% if(active_page == 'gallery') %} class="active"{% endif %}><a href="{{ path('krombox_main_gallery') }}">Фотогалерея</a></li>
+                                        <li class="divider"></li>
+                                        <li {% if(active_page == 'blog') %} class="active"{% endif %}><a href="{{ path('krombox_main_blog') }}">Блог</a></li>
+                                </ul>
+                        </section>
+                </nav>
+        </div>     #}                                               

@@ -1,0 +1,3 @@
+Krombox\MainBundle\Entity\Event:
+    constraints:
+        - Callback: [validate]

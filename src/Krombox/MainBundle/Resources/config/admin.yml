@@ -1,0 +1,66 @@
+services:
+    sonata.admin.place:
+        class: Krombox\MainBundle\Admin\PlaceAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Main", label: "Place" }
+        arguments:
+            - ~
+            - Krombox\MainBundle\Entity\Place
+            - SonataAdminBundle:CRUD
+        calls:
+            - [ setTranslationDomain, [KromboxMainBundle]]
+            
+#    sonata.admin.category:
+#        class: Krombox\MainBundle\Admin\CategoryAdmin
+#        tags:
+#            - { name: sonata.admin, manager_type: orm, group: "Main", label: "Category" }
+#        arguments:
+#            - ~
+#            - Krombox\MainBundle\Entity\Category
+#            - SonataAdminBundle:CRUD
+#        calls:
+#            - [ setTranslationDomain, [KromboxMainBundle]]
+            
+    sonata.admin.kitchen:
+        class: Krombox\MainBundle\Admin\KitchenAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Main", label: "Kitchen" }
+        arguments:
+            - ~
+            - Krombox\MainBundle\Entity\Kitchen
+            - SonataAdminBundle:CRUD
+        calls:
+            - [ setTranslationDomain, [KromboxMainBundle]]
+            
+    sonata.admin.menu:
+        class: Krombox\MainBundle\Admin\MenuAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Main", label: "Menu" }
+        arguments:
+            - ~
+            - Krombox\MainBundle\Entity\Menu
+            - SonataAdminBundle:CRUD
+        calls:
+            - [ setTranslationDomain, [KromboxMainBundle]]        
+            
+    sonata.admin.event:
+        class: Krombox\MainBundle\Admin\EventAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Main", label: "Event" }
+        arguments:
+            - ~
+            - Krombox\MainBundle\Entity\Event
+            - SonataAdminBundle:CRUD
+        calls:
+            - [ setTranslationDomain, [KromboxMainBundle]]        
+            
+    sonata.admin.user:
+        class: Krombox\MainBundle\Admin\UserAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Main", label: "User" }
+        arguments:
+            - ~
+            - Krombox\UserBundle\Entity\User
+            - SonataAdminBundle:CRUD
+        calls:
+            - [ setTranslationDomain, [KromboxUserBundle]]        

@@ -1,0 +1,50 @@
+#places:    
+#    path:     /{category}
+#    defaults: { _controller: KromboxMainBundle:Place:places, category:null }
+    
+#places:    
+#    path:     /qq/
+#    defaults: { _controller: KromboxMainBundle:Place:testFilter }
+        
+#place_details:    
+#    path:     /place/{slug}
+#    defaults: { _controller: KromboxMainBundle:Place:details }
+    
+#places_list:    
+#    path:     places/{category}
+#    defaults: { _controller: KromboxMainBundle:Place:list, category: null }
+    
+places_list_category:    
+    path:     places/category/list
+    defaults: { _controller: KromboxMainBundle:Category:categoriesList, category: null }
+    options:
+        expose: true
+    
+#filter_values_by_categories:    
+#    path:     /filter-values/{id}
+#    defaults: { _controller: KromboxMainBundle:Place:getPlaceValuesByCategories }
+#    options:
+#        expose: true    
+    
+#place_like_up:    
+#    path:     vote/place/{hash}/up
+#    defaults: { _controller: KromboxMainBundle:Place:PlaceLikeUp }
+#    
+#place_like_down:    
+#    path:     vote/place/{hash}/down
+#    defaults: { _controller: KromboxMainBundle:Place:PlaceLikeDown }
+#    
+#place_like_unset:    
+#    path:     vote/place/{hash}/unset
+#    defaults: { _controller: KromboxMainBundle:Place:PlaceLikeUnset }
+
+#place_image_save:
+#    path:     image/place/save
+#    defaults: { _controller: KromboxMainBundle:Place:PlaceImageSave }
+#place_details:    
+#    path:     /
+#    defaults: { _controller: KromboxMainBundle:Place:search }
+    
+#category_places:    
+#    path:     /{slug}
+#    defaults: { _controller: KromboxMainBundle:Place:placesByCategory }

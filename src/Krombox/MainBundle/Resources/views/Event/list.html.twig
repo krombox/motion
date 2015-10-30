@@ -1,0 +1,38 @@
+{% extends 'KromboxMainBundle:Layout:layout.html.twig' %}
+
+{% block main_content %}
+ <div class="col-lg-3">   
+    {{ render(controller('KromboxMainBundle:Category:categoriesList', {'type': 'event'})) }} 
+    {#{% if placeSearchForm is defined %}
+        {{ form_start(placeSearchForm) }}
+        {{ form_rest(placeSearchForm) }}
+        {{ form_end(placeSearchForm) }}        
+    {% endif %}#}
+    some filters here if needed
+ </div>    
+
+    {#{{ google_map(map) }}#}
+<div class="col-lg-9">    
+    {% if events is defined %}
+        {% for entity in events %}
+    <div class="item col-lg-4">
+        <img src="{{ generateImageUrl(entity.fileName, 'event_image') | imagine_filter('place_image_thumb') }}" alt="" />
+        <div class="place">
+            <h2><a href="{{ path('event_details', { 'slug': entity.slug })}}">{{ entity.getName }}</a></h2>
+            <p>{{ entity.description }}</p>
+            <p>{{ entity.startDate | date('Y-m-d') }} | {{ entity.startTime | date('H:i') }}</p>
+            {% if entity.endDate is not empty %}
+                <p>{{ entity.endDate | date('Y-m-d') }} | {{ entity.endTime | date('H:i') }}</p>
+            {% endif %}
+            
+            {{ macro.event_price(entity) }}
+        </div>
+        <p><span>{% trans %} location {% endtrans %}: </span>{% if entity.address is not empty %}{{ entity.address.city }}{% else %}<a href="{{ path('place_details', {'slug':entity.place.slug}) }}">{{ entity.place.name }}</a></p>{% endif %}
+    
+    </div>    
+    {% endfor %}
+    {% endif %}
+</div>    
+    
+    
+{% endblock %}

@@ -1,0 +1,15 @@
+place_logo_api:
+    prefix: /v1
+    name_prefix:  api_1.
+    type:     rest
+    resource: Krombox\MainBundle\Controller\Api\LogoController
+    options:
+        expose: true
+    
+event_api:
+    prefix: /v1
+    name_prefix:  api_1.
+    type:     rest
+    resource: Krombox\MainBundle\Controller\Api\EventController
+    options:
+        expose: true

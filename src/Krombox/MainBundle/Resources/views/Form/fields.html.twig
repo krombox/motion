@@ -1,0 +1,195 @@
+<script src="//code.jquery.com/jquery-1.11.2.min.js"></script>       
+
+{% block my_tag_widget %}                        
+    <p>                
+        <input  id="mySingleField" type="hidden" value="{{ form.vars.value }}"  name="{{ form.vars.full_name }}"> <!-- only disabled for demonstration purposes -->
+    </p>
+    <ul id="tags" class="tagit"></ul>
+
+<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/flick/jquery-ui.css">
+<link href="http://aehlke.github.io/tag-it/css/jquery.tagit.css" rel="stylesheet" type="text/css">
+<link href="http://aehlke.github.io/tag-it/css/tagit.ui-zendesk.css" rel="stylesheet" type="text/css">	
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.js" type="text/javascript" charset="utf-8"></script>
+<script src="{{ asset('js/tagit/tag-it.js') }}" type="text/javascript" charset="utf-8"></script>
+<script>   
+    $(document).ready(function() {       
+        $("#tags").tagit({
+            //fieldName: "krombox_mainbundle_event[tags]",
+            //placeholderText: "my_super_tag, amazing, great",
+            singleField: true,
+            singleFieldNode: $('#mySingleField'),
+            tagLimit: 10,            
+            removeConfirmation: true,            
+            autocomplete: {
+               source: Routing.generate('tags_feed'),               
+               minLength: 2
+            }
+        });
+    });
+</script>
+{% endblock %}
+{# NOT USED #}
+{% block image_file_widget %}    
+    {% spaceless %}
+        {% set subject =  form.parent.vars.value %}
+
+        {% if subject %}
+            {% set img = vich_uploader_asset(subject, name) %}
+            {% set pic = 'https://copy.com/thumbs_public/nIdkDSHtsduPhb3E/place_images/' ~ subject.fileName ~ '?size=1024' %}                   
+            {% if img %}
+                <img class="{{ imgclass }}" src="{{ pic }}"/>
+                {% set required = false %}
+            {% endif %}
+            <a href="#" class="imgremove btn btn-danger btn-block"><i class="fa fa-trash-o"></i> {{ 'product.removeimage' | trans | desc('Remover') }}</a>
+        {% endif %}
+
+        {{ block('form_widget') }}
+    {% endspaceless %}
+{% endblock %}
+
+{% block imagess_dropzone_widget %}
+    {% set element_id = form.vars.id %}
+    <div class="test" id="{{ form.vars.id }}">test div id {{ element_id }}</div>
+{% endblock %}    
+
+{% block images_dropzone_widget %}       
+    <div class="dropzone-wrapper">                    
+        {% set element_id = form.vars.id %}
+        {% set ids = [] %}
+        {% for item in form.vars.value  %}
+            {% set ids = ids | merge([item.id]) %}
+        {% endfor %}                        
+            
+        <div id="{{ element_id }}" class="dropzone dropzone-widget">
+            {% for item in  form.vars.value %}                            
+                <div class="dz-preview dz-processing dz-image-preview dz-success dz-complete">  
+                    <div class="dz-image">
+                        <img data-dz-thumbnail="" alt="" src="data:image/png;base64,{{ generateImageUrl(item.fileName, 'place_hall_image') | imagine_filter('place_image_preview_thumb') | base64encodefile }}"/>        </g>      </g>    </svg>  
+                    </div>
+                    <a data-dz-remove="" data-id="{{ item.id }}" href="javascript:undefined;" class="dz-remove">Remove file</a>
+                </div>
+            {% endfor %}
+            
+            <input id="{{ element_id }}-input" type="text" class="{% if form.vars.attr.class is not defined %}dropzone_input{% else %}{{form.vars.attr.class}}{% endif %}" required="{{ form.vars.required }}" name="{{ form.vars.full_name }}" value="{{ ids | join(',') }}">
+        </div>  
+    </div>
+
+{% endblock %}
+
+{% block clock_picker_widget %}        
+    <div class="input-group clockpicker">
+        <input type="text" id="input-a" {% if form.vars.required %}required{% endif %} class="form-control" value="{{ form.vars.value }}" name="{{ form.vars.full_name }}">
+        <span class="input-group-addon">
+            <span class="glyphicon glyphicon-time"></span>
+        </span>
+    </div>
+        {#<div class="input-group clockpicker">
+    <input type="text" class="form-control" value="09:30">
+    <span class="input-group-addon">
+        <span class="glyphicon glyphicon-time"></span>
+    </span>
+</div>#}            
+        
+    {#{% block stylesheets %}
+        <link href="{{ asset('bower/clockpicker/dist/bootstrap-clockpicker.min.css') }}" rel="stylesheet" type="text/css" />
+    {% endblock %}
+
+    {% block javascripts %}
+
+        <script src="{{ asset('bower/clockpicker/dist/bootstrap-clockpicker.min.js') }}"></script>
+        <script>
+            $(document).ready(function(){
+                var elem = $('.clockpicker');
+                elem.clockpicker({
+                    autoclose: true,
+                    'default': 'now'
+                });
+            });
+        </script>
+    {% endblock %}#}
+{% endblock %}
+
+{% block business_hours_widget %}    
+        <div class="{{ form.vars.attr.class }}">
+            <div class="days-holder">
+                <div class="col-lg-2">
+                    {{ form_widget(form.dayMonday, { 'required': form.dayMonday.vars.required }) }}
+                </div>
+                <div class="col-lg-2">
+                    {{ form_widget(form.dayTuesday, { 'required': form.dayTuesday.vars.required }) }}
+                </div>
+                <div class="col-lg-2">
+                    {{ form_widget(form.dayWednesday, { 'required': form.dayWednesday.vars.required }) }}
+                </div>
+                <div class="col-lg-2">
+                    {{ form_widget(form.dayThursday, { 'required': form.dayThursday.vars.required }) }}
+                </div>
+                <div class="col-lg-2">
+                    {{ form_widget(form.dayFriday, { 'required': form.dayFriday.vars.required }) }}
+                </div>
+                <div class="col-lg-1">
+                    {{ form_widget(form.daySaturday, { 'required': form.daySaturday.vars.required }) }}
+                </div>
+                <div class="col-lg-1">
+                    {{ form_widget(form.daySunday, { 'required': form.daySunday.vars.required }) }}
+                </div>                                   
+            </div>
+            <div class="time-holder">    
+                <div class="col-lg-6">
+                    {{ form_widget(form.startsAt) }}
+                </div>
+                <div class="col-lg-6">
+                    {{ form_widget(form.endsAt) }}
+                </div>        
+            </div>
+        </div>
+{% endblock %}
+
+{% block address_widget %}
+    <div class="gmaps">
+        {% for child in form %}    
+            {{ form_row(child) }}
+        {% endfor %}
+        <div class="map-canvas"></div>
+    </div>
+        
+    {% if  form.vars.value.lat is defined and form.vars.value.lat is not empty and form.vars.value.lng is defined and form.vars.value.lng is not empty %}
+        <script>
+            gmapsWidget.lat = '{{ form.vars.value.lat }}';
+            gmapsWidget.lng = '{{ form.vars.value.lng }}';
+        </script>
+    {% endif %}                  
+{% endblock %}
+
+{% block eav_widget %}
+    {{ dump(form.vars.value) }}
+    {% for filterType, filterOptions in form.vars.value %}
+        <label>{{ filterType }}</label>
+        {% for filterValue in filterOptions %}
+            <div class="checkbox">
+            <label class="">
+                <input type="checkbox" id="krombox_mainbundle_place_services_1" name="krombox_mainbundle_place[placeFilterKindValue][][placeFilterValue]" value="{{ filterValue }}" checked="checked">
+                {{ filterValue }}
+            </label>
+        </div>
+        {% endfor %}
+        
+    {% endfor %}
+    {#{{ form_widget(form) }}#}
+{% endblock %}
+
+
+{% block entity_filter_widget %}
+    {#{{ dump(form) }}#}
+    {% set label = '' %}
+    {% for child in form.children %}        
+        {% if child.vars.filter_kind != label %}
+            <label>{{ child.vars.filter_kind }}</label>
+            {% set label = child.vars.filter_kind %}
+        {% endif %}
+        {{ form_widget(child) }}
+        {#{{ dump(child.vars) }}#}
+    {% endfor %}
+{% endblock %}
+
+    

@@ -1,0 +1,156 @@
+fos_elastica:
+    clients:
+        default: { host: localhost, port: 9200 }
+    indexes:
+        app:
+            types:
+                place:
+                    mappings:
+                        name: ~
+                        description: ~
+                        status: ~
+                        birthdayDiscount: ~
+#                        categories:
+#                            type: "object"
+#                            properties:
+#                                #id: ~
+#                                slug: ~
+                        services:
+                            type: "object"
+                            properties:                                
+                                slug: ~
+                        menu: 
+                            type: "object"
+                            properties:                                
+                                slug: ~        
+                        membershipSubscriptions:
+                            type: "object"
+                            properties:                                
+                                m_status:
+                                    property_path: status
+                                membership:
+                                    type: "object"
+                                    properties:
+                                        score: ~
+                                        name: ~
+#                        ratings:
+#                            type: "object"
+#                            properties:
+#                                rate: ~        
+#                        is24h: ~
+                        #isWifi: ~
+#                        isDelivery: ~
+                        rating: ~
+                        ratingCount: ~
+#                        membershipSubscriptions:
+#                            type: "object"
+#                            properties:
+                                #id: ~
+                                #type: ~
+                                #score: ~
+                                #statusSubscription: ~
+                    _parent:
+                        type: "user"
+                        property: "user"
+                        identifier: "username"
+                    persistence:
+                        # the driver can be orm, mongodb or propel
+                        # listener and finder are not supported by
+                        # propel and should be removed
+                        driver: orm
+                        model: Krombox\MainBundle\Entity\Place
+                        provider: ~
+                        listener: ~
+                            #immediate: ~
+                        finder: ~
+                        repository: Krombox\MainBundle\Repository\Search\PlaceRepository
+#                rating:
+#                    mappings:
+#                        rate: ~
+#                    persistence:                        
+#                        driver: orm
+#                        model: Krombox\MainBundle\Entity\Rating
+#                        provider: ~
+#                        listener: ~                           
+#                        finder: ~
+                membershipSubscription:
+                    mappings:
+                        status: ~
+                        membership:
+                                    type: "object"
+                                    properties:
+                                        score: ~
+                                        name: ~
+                    _parent:
+                        type: "place"
+                        property: "place"
+                        identifier: "id"    
+                    persistence:                        
+                        driver: orm
+                        model: Krombox\MainBundle\Entity\MembershipSubscription
+                        provider: ~
+                        listener: ~                           
+                        finder: ~        
+                        #repository: Krombox\MainBundle\Repository\Search\PlaceRepository    
+                event:
+                    mappings:
+                        name: ~
+                        description: ~
+                        status: ~                        
+                        categories:
+                            type: "object"
+                            properties:
+                                slug: ~                                                        
+                    _parent:
+                        type: "user"
+                        property: "user"
+                        identifier: "username"
+                    persistence:
+                        # the driver can be orm, mongodb or propel
+                        # listener and finder are not supported by
+                        # propel and should be removed
+                        driver: orm
+                        model: Krombox\MainBundle\Entity\Event
+                        provider: ~
+                        listener: ~
+                            #immediate: ~
+                        finder: ~
+                        repository: Krombox\MainBundle\Repository\Search\EventRepository        
+                category:
+                    mappings:
+                        id: ~
+                        name: ~
+                        description: ~
+                        slug: ~
+                    persistence:
+                        # the driver can be orm, mongodb or propel
+                        # listener and finder are not supported by
+                        # propel and should be removed
+                        driver: orm
+                        model: Krombox\MainBundle\Entity\Category
+                        provider: ~
+                        listener: ~                           
+                        finder: ~
+                        repository: Krombox\MainBundle\Repository\Search\PlaceRepository
+                tag:
+                    mappings:                        
+                        name: ~                        
+                    persistence:                        
+                        driver: orm
+                        model: Krombox\MainBundle\Entity\MyTag
+                        provider: ~
+                        listener:                            
+                        finder: ~
+                        repository: Krombox\MainBundle\Repository\Search\MyTagRepository
+                user:
+                    mappings:                        
+                        username: ~                        
+                    persistence:
+                        # the driver can be orm, mongodb or propel
+                        # listener and finder are not supported by
+                        # propel and should be removed
+                        driver: orm
+                        model: Krombox\UserBundle\Entity\User
+                        provider: ~
+                        listener:                            
+                        finder: ~                        

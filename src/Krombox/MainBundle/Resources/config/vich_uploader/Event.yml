@@ -1,0 +1,4 @@
+Krombox\MainBundle\Entity\Event: 
+    image: 
+        mapping:           event_image
+        filename_property: file_name

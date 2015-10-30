@@ -1,0 +1,32 @@
+user_places:    
+    path:     /places
+    defaults: { _controller: KromboxMainBundle:User:places }
+
+#place_create:    
+#    path:     /place/create
+#    defaults: { _controller: KromboxMainBundle:Place:createPlace }
+    
+#place_edit:    
+#    path:     /place/{slug}/edit
+#    defaults: { _controller: KromboxMainBundle:Place:editPlace }
+    
+user_event_edit:    
+    path:     /event/{slug}/edit
+    defaults: { _controller: KromboxMainBundle:Event:edit }    
+    
+user_events:    
+    path:     /events
+    defaults: { _controller: KromboxMainBundle:User:events }
+    
+event_create:    
+    path:     /event/create
+    defaults: { _controller: KromboxMainBundle:Event:create }
+    
+event_edit:    
+    path:     /event/{slug}/edit
+    defaults: { _controller: KromboxMainBundle:Event:edit }
+    
+    
+user_profile:
+    path: /profile
+    defaults: { _controller: KromboxMainBundle:User:profile }

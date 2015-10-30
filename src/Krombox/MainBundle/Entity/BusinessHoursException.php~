@@ -1,0 +1,139 @@
+<?php
+
+namespace Krombox\MainBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * BusinessHoursException
+ */
+class BusinessHoursException
+{
+    /**
+     * @var integer
+     */
+    private $id;
+
+    /**
+     * @var \DateTime
+     */
+    private $day;
+
+    /**
+     * @var \DateTime
+     */
+    private $fromTime;
+
+    /**
+     * @var \DateTime
+     */
+    private $toTime;
+
+    /**
+     * @var \Krombox\MainBundle\Entity\Place
+     */
+    private $place;
+
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set day
+     *
+     * @param \DateTime $day
+     * @return BusinessHoursException
+     */
+    public function setDay($day)
+    {
+        $this->day = $day;
+
+        return $this;
+    }
+
+    /**
+     * Get day
+     *
+     * @return \DateTime 
+     */
+    public function getDay()
+    {
+        return $this->day;
+    }
+
+    /**
+     * Set fromTime
+     *
+     * @param \DateTime $fromTime
+     * @return BusinessHoursException
+     */
+    public function setFromTime($fromTime)
+    {
+        $this->fromTime = $fromTime;
+
+        return $this;
+    }
+
+    /**
+     * Get fromTime
+     *
+     * @return \DateTime 
+     */
+    public function getFromTime()
+    {
+        return $this->fromTime;
+    }
+
+    /**
+     * Set toTime
+     *
+     * @param \DateTime $toTime
+     * @return BusinessHoursException
+     */
+    public function setToTime($toTime)
+    {
+        $this->toTime = $toTime;
+
+        return $this;
+    }
+
+    /**
+     * Get toTime
+     *
+     * @return \DateTime 
+     */
+    public function getToTime()
+    {
+        return $this->toTime;
+    }
+
+    /**
+     * Set place
+     *
+     * @param \Krombox\MainBundle\Entity\Place $place
+     * @return BusinessHoursException
+     */
+    public function setPlace(\Krombox\MainBundle\Entity\Place $place = null)
+    {
+        $this->place = $place;
+
+        return $this;
+    }
+
+    /**
+     * Get place
+     *
+     * @return \Krombox\MainBundle\Entity\Place 
+     */
+    public function getPlace()
+    {
+        return $this->place;
+    }
+}

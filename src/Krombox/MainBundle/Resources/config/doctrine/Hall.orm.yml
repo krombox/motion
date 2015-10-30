@@ -1,0 +1,39 @@
+Krombox\MainBundle\Entity\Hall:
+    type: entity    
+    table: hall
+    #repositoryClass: Krombox\MainBundle\Repository\PlaceRepository
+    id:
+        id:
+            type: integer
+            generator: { strategy: IDENTITY }    
+    fields:        
+        name:
+            type: string
+            nullable: false
+        numberOfSeats:
+            type: integer
+            nullable: false
+            
+    oneToMany:
+        placeHallImages:
+            targetEntity: Krombox\MainBundle\Entity\PlaceHallImage
+            mappedBy: hall
+            cascade: ["persist", "merge"]
+            orphanRemoval: true        
+     
+    manyToOne:        
+        place:
+            targetEntity: Krombox\MainBundle\Entity\Place
+            inversedBy: halls
+            joinColumn:
+                name: place_id
+                referencedColumnName: id
+                onDelete: cascade
+                onUpdate: cascade        
+#    oneToMany:
+#        places:
+#            targetEntity: Krombox\MainBundle\Entity\PlaceHall
+#            mappedBy: hall
+#            cascade: [persist]
+    lifecycleCallbacks: {}
+        #

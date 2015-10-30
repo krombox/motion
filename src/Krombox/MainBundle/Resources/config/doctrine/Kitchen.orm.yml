@@ -1,0 +1,19 @@
+Krombox\MainBundle\Entity\Kitchen:
+    type: entity    
+    table: kitchen
+    #repositoryClass: Krombox\MainBundle\Repository\PlaceRepository
+    id:
+        id:
+            type: integer
+            generator: { strategy: IDENTITY }    
+    fields:        
+        name:
+            type: string
+            nullable: false
+            
+#    manyToMany:        
+#        places:
+#            targetEntity: Krombox\MainBundle\Entity\Place
+#            mappedBy: kitchens
+    lifecycleCallbacks: {}
+        #

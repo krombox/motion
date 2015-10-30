@@ -1,0 +1,9 @@
+{% extends 'KromboxMainBundle:Layout:layout.html.twig' %}
+
+{% block main_content %} 
+    <h2> Invoice for "{{ place.name }}" place </h2>
+    {{ form_start(form) }}
+    {{ form_rest(form) }}
+    <input class="btn btn-info" type="submit" value="Save">
+    {{ form_end(form) }}
+{% endblock %}    

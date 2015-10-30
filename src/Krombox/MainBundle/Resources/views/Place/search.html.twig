@@ -1,0 +1,8 @@
+{{ form_start(placeSearchForm) }}
+{{ form_rest(placeSearchForm) }}
+{{ form_end(placeSearchForm) }}
+
+{% for place in places %}
+    <h3>{{ place.name }}</h3>
+    {#<p>{{ place.status }}</p>#}
+{% endfor %}

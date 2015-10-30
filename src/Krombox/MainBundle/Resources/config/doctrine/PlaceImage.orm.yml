@@ -1,0 +1,29 @@
+Krombox\MainBundle\Entity\PlaceImage:
+    type:   entity
+    table:  p_place_image
+
+    fields:
+        id:
+            type:       integer
+            id:         true
+            generator:  { strategy: AUTO }
+
+#        place_id:
+#            type:     integer
+
+#        title:
+#            type:       string
+#            length:     255
+
+        file_name:      string
+        updatedAt:
+            type: datetime
+
+#    oneToOne:
+#        place:
+#            targetEntity:             Krombox\MainBundle\Entity\Place
+#            inversedBy:               logo
+#            joinColumn:
+#                name:                 place_id
+#                referencedColumnName: id
+#                onDelete:             cascade

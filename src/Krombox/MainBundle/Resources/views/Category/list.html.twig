@@ -1,0 +1,15 @@
+{% if categories is not empty %}
+    <div class="panel panel-info">
+<ul class="list-inline">
+    {% for entity in categories %}
+        {% set Route = type ~ 's_list' %}
+        <li>            
+            {#<img src="{{ generateImageUrl(entity.fileName, 'category_image') }}">#}                        
+            <a href="{{ path(Route, {'category' : entity.slug}) }}">{{ entity.slug }}
+                <img src="{{ vich_uploader_asset(entity, 'image') }}"  />
+            </a>            
+        </li>
+    {% endfor %}
+</ul>
+    </div>
+{% endif %}

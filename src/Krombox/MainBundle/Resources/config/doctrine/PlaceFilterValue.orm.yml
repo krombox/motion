@@ -1,0 +1,34 @@
+Krombox\MainBundle\Entity\PlaceFilterValue:
+    type: entity    
+    table: p_filter_value
+    #repositoryClass: Krombox\MainBundle\Repository\RatingRepository
+    id:
+        id:
+            type: integer
+            generator: { strategy: IDENTITY }    
+    fields:    
+        name:
+            type: string
+            nullable: false
+        slug:
+            type: string
+            nullable: false    
+            
+#    oneToMany:
+#        placeFiltersVariants:
+#            targetEntity: Krombox\MainBundle\Entity\PlaceFilterVariant
+#            mappedBy: placeFilter
+#            cascade: ["persist", "merge"]
+#            orphanRemoval: true    
+            
+    manyToOne:
+        placeFilterKind:
+            targetEntity: Krombox\MainBundle\Entity\PlaceFilterKind
+            inversedBy: placeFilterValues
+            joinColumn:
+                name: filter_kind_id
+                referencedColumnName: id
+                onDelete: cascade
+                onUpdate: cascade
+    lifecycleCallbacks: {}
+        #

@@ -1,0 +1,16 @@
+{#
+{% block address_widget %}
+    <div class="gmaps">
+        {% for child in form %}    
+            {{ form_row(child) }}
+        {% endfor %}
+        <div class="map-canvas"></div>
+    </div>
+        
+    {% if  form.vars.value.lat is defined and form.vars.value.lat is not empty and form.vars.value.lng is defined and form.vars.value.lng is not empty %}
+        <script>
+            gmapsWidget.lat = '{{ form.vars.value.lat }}';
+            gmapsWidget.lng = '{{ form.vars.value.lng }}';
+        </script>
+    {% endif %}                  
+{% endblock %}#}

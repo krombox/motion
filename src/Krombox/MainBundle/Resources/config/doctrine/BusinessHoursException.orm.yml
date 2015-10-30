@@ -1,0 +1,29 @@
+Krombox\MainBundle\Entity\BusinessHoursException:
+    type: entity    
+    table: business_hours_exception
+    #repositoryClass: DDI\MainBundle\Repository\NewsRepository    
+    id:
+        id:
+            type: integer
+            generator: { strategy: IDENTITY }    
+    fields:
+        day:
+            type: date        
+        startsAt:
+            type: time
+            nullable: true
+        endsAt:
+            type: time
+            nullable: true        
+        
+    manyToOne:
+        place:
+            targetEntity: Krombox\MainBundle\Entity\Place
+            inversedBy: businessHoursException
+            joinColumn:
+                name: place_id
+                referencedColumnName: id
+                onDelete: cascade
+                onUpdate: cascade
+                
+    lifecycleCallbacks: {  }

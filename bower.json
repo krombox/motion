@@ -1,0 +1,32 @@
+{
+  "name": "motion",
+  "version": "0.0.0",
+  "authors": [
+    "Roman Kapustian <ikrombox@gmail.com>"
+  ],
+  "description": "places in ua",
+  "keywords": [
+    "places",
+    "events",
+    "reviews"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "fullcalendar": "~2.3.1",
+    "clockpicker": "~0.0.7",
+    "dropzone": "~4.0.1",
+    "underscore": "~1.8.3",
+    "cropper": "~0.11.1",
+    "echo": "~0.0.1",
+    "bower": "*",
+    "install": "~1.0.4",
+    "echojs": "~1.7.3"
+  }
+}

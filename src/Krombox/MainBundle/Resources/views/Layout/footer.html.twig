@@ -1,0 +1,28 @@
+
+
+<footer>
+    <div class="footer-wrapper columns">
+        <hr>
+        <div id="year">2014</div>
+        <div class="development"><a href="https://vk.com/id12927806" target="_blank">Разработка сайта</a></div>
+    </div>
+</footer>
+</div>
+
+{#<script>
+    $(document).foundation('orbit', {
+        slide_number: false,
+        bullets: false,
+        timer: false
+    });
+    
+    $(document).foundation();
+</script>#}
+
+<script>
+     jQuery(document).ready(function(){
+        var year = new Date().getFullYear();
+        var element = document.getElementById('year');
+        element.innerHTML=year;
+     });         
+ </script>

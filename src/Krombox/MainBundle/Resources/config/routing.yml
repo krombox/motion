@@ -1,0 +1,17 @@
+
+save_place:
+    path:     /place/new
+    defaults: { _controller: KromboxMainBundle:Default:newPlace }
+    
+category_list:
+    path:     /category/list
+    defaults: { _controller: KromboxMainBundle:Category:categoriesList }  
+        
+    
+#USER#
+#krombox_user_personal:
+#    resource: "@KromboxUserBundle/Controller/UserController"    
+#    prefix:   /my
+    
+  
+      

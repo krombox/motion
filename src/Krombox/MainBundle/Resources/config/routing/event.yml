@@ -1,0 +1,33 @@
+events_list:    
+    path:     events/{category}
+    defaults: { _controller: KromboxMainBundle:Event:list, category: null }
+
+event_details:    
+    path:     /event/{slug}
+    defaults: { _controller: KromboxMainBundle:Event:details }
+    
+events_feed:    
+    path:     feed/events/{place_hash}
+    defaults: { _controller: KromboxMainBundle:Event:getEventsFeed, place_hash : null }
+    options:
+        expose: true
+    
+#places_list:    
+#    path:     places/{category}
+#    defaults: { _controller: KromboxMainBundle:Place:list, category: null }
+#    
+#places_list_category:    
+#    path:     places/category/list
+#    defaults: { _controller: KromboxMainBundle:Category:categoriesList, category: null }
+#    
+#place_like_up:    
+#    path:     vote/place/{hash}/up
+#    defaults: { _controller: KromboxMainBundle:Place:PlaceLikeUp }
+#    
+#place_like_down:    
+#    path:     vote/place/{hash}/down
+#    defaults: { _controller: KromboxMainBundle:Place:PlaceLikeDown }
+#    
+#place_like_unset:    
+#    path:     vote/place/{hash}/unset
+#    defaults: { _controller: KromboxMainBundle:Place:PlaceLikeUnset }   

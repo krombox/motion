@@ -1,0 +1,27 @@
+Krombox\MainBundle\Entity\Phone:
+    type: entity    
+    table: phone
+    #repositoryClass: Krombox\MainBundle\Repository\PlaceRepository
+    id:
+        id:
+            type: integer
+            generator: { strategy: IDENTITY }    
+    fields:
+        number:
+            type: string
+            nullable: false
+        type:
+            type: PhoneType
+            nullable: false
+            
+    manyToOne:        
+        place:
+            targetEntity: Krombox\MainBundle\Entity\Place
+            inversedBy: phones
+            joinColumn:
+                name: place_id
+                referencedColumnName: id
+                onDelete: cascade
+                onUpdate: cascade        
+    lifecycleCallbacks: {}
+        #

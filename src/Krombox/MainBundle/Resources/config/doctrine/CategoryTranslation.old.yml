@@ -1,0 +1,13 @@
+Krombox\MainBundle\Entity\CategoryTranslation:
+    type: entity    
+    table: category_translation
+    #repositoryClass: DDI\MainBundle\Repository\NewsRepository    
+            
+    fields:        
+        name:
+            type: string
+            nullable: false
+        description:
+            type: text
+            nullable: false
+    lifecycleCallbacks: {  }

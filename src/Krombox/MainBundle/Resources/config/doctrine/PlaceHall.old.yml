@@ -1,0 +1,30 @@
+Krombox\MainBundle\Entity\PlaceHall:
+    type: entity    
+    table: place_hall
+    #repositoryClass: Krombox\MainBundle\Repository\PlaceRepository
+    id:
+        id:
+            type: integer
+            generator: { strategy: IDENTITY }    
+    fields:        
+        numberOfSeats:
+            type: integer
+            nullable: false
+            
+    manyToOne:
+        place:
+            targetEntity: Krombox\MainBundle\Entity\Place
+            cascade: [persist]
+            inversedBy: halls
+            joinColumn:
+                name: place_id
+                referencedColumnName: id
+        hall:
+            targetEntity: Krombox\MainBundle\Entity\Hall
+            cascade: [persist]
+            inversedBy: places
+            joinColumn:
+                name: hall_id
+                referencedColumnName: id
+    lifecycleCallbacks: {}
+        #

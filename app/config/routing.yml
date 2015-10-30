@@ -1,0 +1,99 @@
+
+    
+#krombox_user:
+#    resource: "@KromboxUserBundle/Resources/config/routing.yml"
+#    prefix:   /
+#
+#krombox_main:
+#    resource: "@KromboxMainBundle/Resources/config/routing.yml"
+#    prefix:   /
+
+root:
+    path: /
+    defaults:
+        _controller: FrameworkBundle:Redirect:urlRedirect
+        path: /places
+        #route
+        permanent: true
+
+#krombox_main_place:
+#    resource: "@KromboxMainBundle/Resources/config/routing/place.yml"
+#    prefix:   /
+
+krombox_main_place:
+    resource: "@KromboxMainBundle/Controller"
+    type: annotation
+    
+krombox_payment_order_membership:
+    resource: "@KromboxPaymentBundle/Controller"
+    type: annotation    
+    
+krombox_main_event:
+    resource: "@KromboxMainBundle/Resources/config/routing/event.yml"
+    prefix:   /
+    
+krombox_main_tag:
+    resource: "@KromboxMainBundle/Resources/config/routing/tag.yml"
+    prefix:   /    
+    
+krombox_main_user:
+    resource: "@KromboxMainBundle/Resources/config/routing/user.yml"
+    prefix:   /my    
+
+fos_user:
+    resource: "@FOSUserBundle/Resources/config/routing/all.xml"
+    
+admin:
+    resource: '@SonataAdminBundle/Resources/config/routing/sonata_admin.xml'
+    prefix: /admin
+
+_sonata_admin:
+    resource: .
+    type: sonata_admin
+    prefix: /admin
+    
+_liip_imagine:
+    resource: "@LiipImagineBundle/Resources/config/routing.xml"
+    
+fos_js_routing:
+    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
+    
+oneup_uploader:
+    resource: .
+    type: uploader    
+    
+hwi_oauth_security:
+    resource: "@HWIOAuthBundle/Resources/config/routing/login.xml"
+    prefix: /login
+ 
+hwi_oauth_connect:
+    resource: "@HWIOAuthBundle/Resources/config/routing/connect.xml"
+    prefix: /login
+ 
+hwi_oauth_redirect:
+    resource: "@HWIOAuthBundle/Resources/config/routing/redirect.xml"
+    prefix:   /login
+ 
+vk_login:
+    pattern: /login/check-vk
+    
+fos_comment_api:
+    type: rest
+    resource: "@FOSCommentBundle/Resources/config/routing.yml"
+    prefix: /api
+    defaults: { _format: html }
+    
+genemu_image:
+    resource: "@GenemuFormBundle/Resources/config/routing/image.xml"
+    
+app_api:
+    type: rest
+    prefix: /ap{api_kind}/
+    resource: "routing/routing_api.yml"
+    options:
+      i18n: false
+    defaults:
+      api_kind: i
+    requirements:
+      api_kind: i|is    
+    

@@ -1,0 +1,27 @@
+Krombox\MainBundle\Entity\PlaceAddress:
+    type: entity    
+    table: p_address
+    #repositoryClass: Krombox\MainBundle\Repository\PlaceRepository
+    id:
+        id:
+            type: integer
+            generator: { strategy: IDENTITY }    
+    fields:            
+        lat:
+            type: string
+        lng:
+            type: string
+        country:
+            type: string    
+        state:
+            type: string
+        city:
+            type: string
+        street:
+            type: string    
+        streetNumber:
+            type: string
+        formatted:
+            type: string    
+    lifecycleCallbacks: {}
+        #

@@ -1,0 +1,98 @@
+{% extends 'KromboxMainBundle:Layout:layout.html.twig' %}
+
+{% form_theme form 
+    'bootstrap_3_layout.html.twig'
+    'KromboxMainBundle::jquery.collection.html.twig'
+%}
+
+{% block header %}
+    {{ parent() }}
+    
+    {% block stylesheets %}
+        {{ parent() }}
+        
+        <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="{{ asset('bower/dropzone/dist/dropzone.css') }}">
+        <link rel="stylesheet" href="{{ asset('bower/cropper/dist/cropper.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/gmaps.css') }}" type="text/css" />
+        <link href="{{ asset('bower/clockpicker/dist/bootstrap-clockpicker.min.css') }}" rel="stylesheet" type="text/css" />
+    {% endblock %}
+    
+    {% block javascripts_head %}
+        {{ parent() }}
+        
+        <script src="{{ asset('bower/dropzone/dist/dropzone.js') }}" type="text/javascript" charset="utf-8"></script>
+        <script src="{{ asset('js/jquery.collection.js') }}" type="text/javascript" charset="utf-8"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true&libraries=places&language=ru-RU&region=GB"></script>
+        <script src="{{ asset('bower/underscore/underscore-min.js') }}" type="text/javascript" charset="utf-8"></script>
+        <script src="{{ asset('bower/cropper/dist/cropper.min.js') }}" type="text/javascript" charset="utf-8"></script>
+        <script src="{{ asset('js/jquery.collection.js') }}"></script>            
+        <script src="{{ asset('bower/cropper/dist/cropper.min.js') }}" type="text/javascript" charset="utf-8"></script>
+        <script src="{{ asset('js/gmapsWidget.js') }}" type="text/javascript" charset="utf-8"></script>
+        <script src="{{ asset('js/place.js') }}" type="text/javascript" charset="utf-8"></script>
+        <script src="{{ asset('js/dropzoneWidget.js') }}" type="text/javascript" charset="utf-8"></script>
+        <script src="{{ asset('bower/clockpicker/dist/bootstrap-clockpicker.min.js') }}"></script>
+    {% endblock %}
+{% endblock %}
+
+
+{% block main_content %}       
+<div>
+    Steps:
+    {% include 'CraueFormFlowBundle:FormFlow:stepList.html.twig' %}
+</div>
+    
+{% set stepsCount = flow.steps | length %}
+{% set stepVolume = 100 / (flow.steps | length) %}
+
+    {#<a href="#" class="btn btn-info btn-xs" style="font-variant: small-caps; text-align:center" data-toggle="modal" data-target="#logo_modal">upload picture</a>#}
+
+<div class="progress">
+  <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: {{ stepVolume *  (flow.getCurrentStepNumber() - 1) }}%">
+    <span class="sr-only">{{ stepVolume *  flow.getCurrentStepNumber() }}% Complete</span>
+  </div>
+</div>
+        
+    {{ form_start(form) }}    
+    {{ form_errors(form) }}    
+    {{ form_rest(form) }}       
+
+    {% include 'CraueFormFlowBundle:FormFlow:buttons.html.twig' %}
+{{ form_end(form) }}
+
+{% include 'KromboxMainBundle:Default/modal:logo_new.html.twig' %} 
+
+{% if flow.getCurrentStepNumber() == 1 %}
+    <script type="text/javascript">
+    $(document).ready(function(){
+        initLogoUpload('{{ form.children.logo.vars.id }}', '{{ form.vars.id }}');
+    });
+    </script>
+    
+{% endif %}
+
+{#<script type="text/javascript">       
+  $('select').select2();
+</script>#}
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('select').select2();
+        
+        $('.collection').collection({
+            after_add: function(collection, element){
+                //init dropzone
+                dropzone.add($(element).find('.dropzone'));
+                //init clockpicker widget
+                $(element).find('.clockpicker').clockpicker({
+                    autoclose: true,
+                    'default': '10:00'
+                });
+            }
+        });                
+    });            
+        
+</script>
+
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends 'KromboxMainBundle:Layout:layout.html.twig' %}
+
+{% block main_content %}
+    {#<nav>
+        <ul class="nav nav-tabs">
+            <li><a href="{{ path('user_profile') }}">{% trans %} my.profile {% endtrans %}</a></li>
+            <li><a href="{{ path('user_places') }}">{% trans %} my.places {% endtrans %}</a></li>
+            <li><a href="/my/profile">{% trans %} my.profile {% endtrans %}</a></li>
+            <li><a href="/my/profile">{% trans %} my.profile {% endtrans %}</a></li>
+        </ul>
+    </nav>#}
+    
+    {% include 'KromboxMainBundle:User/Partial:profile_menu.html.twig' %}
+ 
+    {#{{ google_map(map) }}#}
+    <div class="col-lg-12">
+    {% if places is defined %}
+        {% for entity in places %}
+<div class="item col-lg-6">
+    <div class="description col-lg-8">    
+            <div class="place">
+                <h2><a href="{{ path('place_details', { 'slug': entity.slug })}}">{{ entity.getName }}</a></h2>{% if entity.status == 1 %}<span class="label label-warning">pending</span> {% endif %}
+                {#<p><strong>{% trans %}categories{% endtrans %}: </strong>{{ entity.getCategoriesName | join(',') }}{% if entity.is24h %}<span class="label label-danger">{% trans %}24h{% endtrans %}</span>{% endif %}</p>#}
+                <p><strong>{% trans %}address{% endtrans %}: </strong> {{ entity.address.city }}</p>
+                {% if entity.isWifi %}<p><strong>{% trans %}wifi{% endtrans %}: </strong> <span class="glyphicon glyphicon-transfer" aria-hidden="true"></span></p>{% endif %}
+                <p>
+                    <strong>{% trans %}business_hours{% endtrans %}: </strong>
+                    {#{% for bHours in entity.businessHours %}
+                        <span class="fromDay">{{ bHours.startsAt |readable('DayType') | trans({})}}</span> - <span class="toDay">{{ bHours.toDay |readable('DayType') | trans({}) }}</span>
+                        <span class="fromTime">{{ bHours.fromTime | date('H:i') }}</span> - <span class="toTime">{{ bHours.toTime | date('H:i') }}</span>,                        
+                    {% endfor %}    #}
+                    {% if isWorkingNow(entity) %}<span class="label label-warning">работает сейчас!</span>{% else %}<span class="label label-danger">закрыто</span>{% endif %}
+                </p>
+                
+                {% for img in entity.getPlaceImages %}
+                    {#{% set img_url = vich_uploader_asset(img, 'image') ~ '?size=1024' %}#}
+                    <img src="{{ generateImageUrl(img.fileName, 'place_image') | imagine_filter('place_image_thumb') }}">
+                    {#<img src="{{ 'https://copy.com/thumbs_public/nIdkDSHtsduPhb3E/place_images/553feca345d3b.jpg' | imagine_filter('place_image_thumb') }}">#}
+                    
+                    {#{% set pic = 'https://copy.com/thumbs_public/nIdkDSHtsduPhb3E/place_images/' ~ img.fileName ~ '?size=1024' %}                   #}
+                    {#<img src="{{ pic | imagine_filter('place_image_thumb')  }}" alt="" />#}
+                    {#<img src="{{ pic }}" alt="" />#}
+                    
+                {% endfor %}
+                <p>{{ entity.getDescription }}</p>
+            </div>            
+        
+        {#<img src="{{ 'http://s.ill.in.ua/i/news/630x373/266/266971.jpg'  | customImagine('place_image_thumb')  }}" alt="" />#}
+    
+    </div>
+    <div class="action-buttons col-lg-4">
+        {{ macro.edit_place_button(entity) }}
+        <a class="btn btn-danger">{% trans %}remove{% endtrans %}</a>
+    </div>
+</div>
+    {% endfor %}
+    {% endif %}
+    </div>
+    
+    
+    
+    
+{% endblock %}

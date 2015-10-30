@@ -1,0 +1,267 @@
+<?php
+
+namespace Krombox\MainBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Knp\DoctrineBehaviors\Model as ORMBehaviors;
+use Cocur\Slugify\Slugify;
+use Symfony\Component\HttpFoundation\File\File;
+
+/**
+ * Category
+ */
+class Category
+{
+    //use ORMBehaviors\Translatable\Translatable;
+    use ORMBehaviors\Timestampable\Timestampable;
+    use ORMBehaviors\Sluggable\Sluggable;    
+    
+    public function getSluggableFields()
+    {
+        return [ 'name' ];
+    }
+    /**
+     * @var integer
+     */
+    private $id;
+    
+    
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $places;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->places = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add places
+     *
+     * @param \Krombox\MainBundle\Entity\Place $places
+     * @return Category
+     */
+    public function addPlace(\Krombox\MainBundle\Entity\Place $places)
+    {
+        $this->places[] = $places;
+
+        return $this;
+    }
+
+    /**
+     * Remove places
+     *
+     * @param \Krombox\MainBundle\Entity\Place $places
+     */
+    public function removePlace(\Krombox\MainBundle\Entity\Place $places)
+    {
+        $this->places->removeElement($places);
+    }
+
+    /**
+     * Get places
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPlaces()
+    {
+        return $this->places;
+    }
+    
+    public function __toString() {
+        return $this->getName();
+    }    
+    
+//    public function generateSlug()
+//    {
+//        $slugify = new Slugify();
+//        $slug = $slugify->slugify($this->translate('ru')->getName());        
+//        $this->setSlug($slug);        
+//    }
+    /**
+     * @var string
+     */
+    private $name;
+
+    /**
+     * @var string
+     */
+    private $description;
+
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     * @return Category
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string 
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     * @return Category
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string 
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+    
+    
+    /**
+     * @var string
+     */
+    private $file_name;
+    
+    /**
+     * @var File $image
+     */
+    protected $image;
+
+ 
+    public function setImage(File $image = null)
+    {
+        $this->image = $image;
+        
+        if ($image) {
+            // It is required that at least one field changes if you are using doctrine
+            // otherwise the event listeners won't be called and the file is lost
+            $this->updatedAt = new \DateTime('now');
+        }
+        return $this;
+    }
+    public function getImage()
+    {
+        return $this->image;
+    }     
+
+    /**
+     * Set file_name
+     *
+     * @param string $fileName
+     * @return Category
+     */
+    public function setFileName($fileName)
+    {
+        $this->file_name = $fileName;
+
+        return $this;
+    }
+
+    /**
+     * Get file_name
+     *
+     * @return string 
+     */
+    public function getFileName()
+    {
+        return $this->file_name;
+    }
+    /**
+     * @var CategoryType
+     */
+    private $type;
+
+
+    /**
+     * Set type
+     *
+     * @param CategoryType $type
+     * @return Category
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * Get type
+     *
+     * @return CategoryType 
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $events;
+
+
+    /**
+     * Add events
+     *
+     * @param \Krombox\MainBundle\Entity\Event $events
+     * @return Category
+     */
+    public function addEvent(\Krombox\MainBundle\Entity\Event $events)
+    {
+        $this->events[] = $events;
+
+        return $this;
+    }
+
+    /**
+     * Remove events
+     *
+     * @param \Krombox\MainBundle\Entity\Event $events
+     */
+    public function removeEvent(\Krombox\MainBundle\Entity\Event $events)
+    {
+        $this->events->removeElement($events);
+    }
+
+    /**
+     * Get events
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getEvents()
+    {
+        return $this->events;
+    }
+}

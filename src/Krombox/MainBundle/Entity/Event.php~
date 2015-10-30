@@ -1,0 +1,770 @@
+<?php
+
+namespace Krombox\MainBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Knp\DoctrineBehaviors\Model as ORMBehaviors;
+use DoctrineExtensions\Taggable\Taggable;
+use Krombox\MainBundle\DBAL\Types\StatusType;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+/**
+ * Event
+ */
+//class Event implements Taggable
+class Event
+{
+    use ORMBehaviors\Timestampable\Timestampable;
+    use ORMBehaviors\Sluggable\Sluggable;
+    
+    public function getSluggableFields()
+    {
+        return [ 'hash','name' ];
+    }
+    /**
+     * @var integer
+     */
+    private $id;
+
+    /**
+     * @var string
+     */
+    private $name;
+
+    /**
+     * @var string
+     */
+    private $description;
+
+    /**
+     * @var StatusType
+     */
+    private $status;
+
+    /**
+     * @var string
+     */
+    private $hash;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->places = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->tags = new \Doctrine\Common\Collections\ArrayCollection();
+        $hash = md5(time() + rand(1, 99));
+        $this->setHash($hash);
+        $today = new \DateTime();
+        //$this->setStartDate($today);
+        //$this->setEndDate($today);
+        $this->setPriceLow(0);
+        $this->setPriceHigh(0);
+        $this->setStatus(StatusType::PENDING);
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     * @return Event
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string 
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     * @return Event
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string 
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * Set status
+     *
+     * @param StatusType $status
+     * @return Event
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * Get status
+     *
+     * @return StatusType 
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * Set hash
+     *
+     * @param string $hash
+     * @return Event
+     */
+    public function setHash($hash)
+    {
+        $this->hash = $hash;
+
+        return $this;
+    }
+
+    /**
+     * Get hash
+     *
+     * @return string 
+     */
+    public function getHash()
+    {
+        return $this->hash;
+    }
+    
+    /**
+     * @var \Krombox\UserBundle\Entity\User
+     */
+    private $user;
+
+
+    /**
+     * Set user
+     *
+     * @param \Krombox\UserBundle\Entity\User $user
+     * @return Event
+     */
+    public function setUser(\Krombox\UserBundle\Entity\User $user = null)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \Krombox\UserBundle\Entity\User 
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $places;
+
+
+    /**
+     * Add places
+     *
+     * @param \Krombox\MainBundle\Entity\Place $places
+     * @return Event
+     */
+    public function addPlace(\Krombox\MainBundle\Entity\Place $places)
+    {
+        $this->places[] = $places;
+
+        return $this;
+    }
+
+    /**
+     * Remove places
+     *
+     * @param \Krombox\MainBundle\Entity\Place $places
+     */
+    public function removePlace(\Krombox\MainBundle\Entity\Place $places)
+    {
+        $this->places->removeElement($places);
+    }
+
+    /**
+     * Get places
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPlaces()
+    {
+        return $this->places;
+    }
+    
+    public function prepareForCalendar(){                        
+        $e['id'] =    $this->getId();
+        $e['title'] = $this->getName();
+        $e['start'] = $this->getStartDate()->format('Y-m-d') . ' ' . $this->getStartTime()->format('H:i:s');
+        
+        if($this->getEndDate())
+            $e['end'] = $this->getEndDate()->format('Y-m-d') . ' ' . $this->getEndTime()->format('H:i:s');
+        
+        return $e;
+    }
+    /**
+     * @var \DateTime
+     */
+    private $start;
+
+    /**
+     * @var \DateTime
+     */
+    private $end;
+
+
+    /**
+     * Set start
+     *
+     * @param \DateTime $start
+     * @return Event
+     */
+    public function setStart($start)
+    {
+        $this->start = $start;
+
+        return $this;
+    }
+
+    /**
+     * Get start
+     *
+     * @return \DateTime 
+     */
+    public function getStart()
+    {
+        return $this->start;
+    }
+
+    /**
+     * Set end
+     *
+     * @param \DateTime $end
+     * @return Event
+     */
+    public function setEnd($end)
+    {
+        $this->end = $end;
+
+        return $this;
+    }
+
+    /**
+     * Get end
+     *
+     * @return \DateTime 
+     */
+    public function getEnd()
+    {
+        return $this->end;
+    }
+    
+//    private $tags;
+//
+//    public function getTags()
+//    {
+//        $this->tags = $this->tags ?: new ArrayCollection();
+//
+//        return $this->tags;
+//    }
+//
+//    public function getTaggableType()
+//    {
+//        return 'event_tag';
+//    }
+//
+//    public function getTaggableId()
+//    {
+//        return $this->getId();
+//    }  
+
+    protected $tags;
+    
+    public function getTags()
+    {
+        return $this->tags;
+    }
+    
+    public function setTags($tags)
+    {
+        $this->tags = $tags;;
+    }
+
+    
+
+    /**
+     * Add tags
+     *
+     * @param \Krombox\MainBundle\Entity\MyTag $tags
+     * @return Event
+     */
+    public function addTag(\Krombox\MainBundle\Entity\MyTag $tags)
+    {
+        $this->tags[] = $tags;
+
+        return $this;
+    }
+
+    /**
+     * Remove tags
+     *
+     * @param \Krombox\MainBundle\Entity\MyTag $tags
+     */
+    public function removeTag(\Krombox\MainBundle\Entity\MyTag $tags)
+    {
+        $this->tags->removeElement($tags);
+    }
+    
+    public function getOwner(){
+        return $this->getUser();
+    }
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $categories;
+
+
+    /**
+     * Add categories
+     *
+     * @param \Krombox\MainBundle\Entity\Category $categories
+     * @return Event
+     */
+    public function addCategory(\Krombox\MainBundle\Entity\Category $categories)
+    {
+        $this->categories[] = $categories;
+
+        return $this;
+    }
+
+    /**
+     * Remove categories
+     *
+     * @param \Krombox\MainBundle\Entity\Category $categories
+     */
+    public function removeCategory(\Krombox\MainBundle\Entity\Category $categories)
+    {
+        $this->categories->removeElement($categories);
+    }
+
+    /**
+     * Get categories
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getCategories()
+    {
+        return $this->categories;
+    }
+   
+    /**
+     * @var File $image
+     */
+    protected $image;
+
+ 
+    public function setImage(File $image = null)
+    {
+        $this->image = $image;
+        
+        if ($image) {
+            // It is required that at least one field changes if you are using doctrine
+            // otherwise the event listeners won't be called and the file is lost
+            $this->updatedAt = new \DateTime('now');
+        }
+        return $this;
+    }
+    public function getImage()
+    {
+        return $this->image;
+    }     
+    /**
+     * @var string
+     */
+    private $file_name;
+
+
+    /**
+     * Set file_name
+     *
+     * @param string $fileName
+     * @return Event
+     */
+    public function setFileName($fileName)
+    {
+        $this->file_name = $fileName;
+
+        return $this;
+    }
+
+    /**
+     * Get file_name
+     *
+     * @return string 
+     */
+    public function getFileName()
+    {
+        return $this->file_name;
+    }
+    /**
+     * @var string
+     */
+    private $lat;
+
+    /**
+     * @var string
+     */
+    private $lng;
+
+    /**
+     * @var string
+     */
+    private $address;
+
+
+    /**
+     * Set lat
+     *
+     * @param string $lat
+     * @return Event
+     */
+    public function setLat($lat)
+    {
+        $this->lat = $lat;
+
+        return $this;
+    }
+
+    /**
+     * Get lat
+     *
+     * @return string 
+     */
+    public function getLat()
+    {
+        return $this->lat;
+    }
+
+    /**
+     * Set lng
+     *
+     * @param string $lng
+     * @return Event
+     */
+    public function setLng($lng)
+    {
+        $this->lng = $lng;
+
+        return $this;
+    }
+
+    /**
+     * Get lng
+     *
+     * @return string 
+     */
+    public function getLng()
+    {
+        return $this->lng;
+    }
+
+    /**
+     * Set address
+     *
+     * @param string $address
+     * @return Event
+     */
+    public function setAddress($address)
+    {
+        $this->address = $address;
+
+        return $this;
+    }
+
+    /**
+     * Get address
+     *
+     * @return string 
+     */
+    public function getAddress()
+    {
+        return $this->address;
+    }
+    
+    /**
+     * Set latLng
+     *
+     * @param string $latLng
+     * @return Place
+     */
+    public function setMap($map)
+    {
+        $this->setLat($map['lat']);
+        $this->setLng($map['lng']);
+        $this->setAddress($map['address']);        
+        return $this;
+    }
+
+    /**
+     * Get latLng
+     *
+     * @return string 
+     */
+    public function getMap()
+    {        
+        return array('lat'=>$this->getLat(),'lng'=>$this->getLng(), 'address' => $this->getAddress());
+    }
+    /**
+     * @var \Krombox\MainBundle\Entity\Place
+     */
+    private $place;
+
+
+    /**
+     * Set place
+     *
+     * @param \Krombox\MainBundle\Entity\Place $place
+     * @return Event
+     */
+    public function setPlace(\Krombox\MainBundle\Entity\Place $place = null)
+    {
+        $this->place = $place;
+
+        return $this;
+    }
+
+    /**
+     * Get place
+     *
+     * @return \Krombox\MainBundle\Entity\Place 
+     */
+    public function getPlace()
+    {
+        return $this->place;
+    }
+    
+    /*VALIDATION*/
+    
+    /**
+     * @Assert\Callback
+     */
+    public function validate(ExecutionContextInterface $context)
+    {
+        if(!$this->getAddress() && !$this->getPlace()){                        
+            $context->buildViolation('Please, choose location adress or linked place')
+                ->atPath('map')                
+                ->addViolation();            
+        }
+    }
+    /**
+     * @var \DateTime
+     */
+    private $startDate;
+
+    /**
+     * @var \DateTime
+     */
+    private $endDate;
+
+    /**
+     * @var \DateTime
+     */
+    private $startTime;
+
+
+    /**
+     * Set startDate
+     *
+     * @param \DateTime $startDate
+     * @return Event
+     */
+    public function setStartDate($startDate)
+    {
+        $this->startDate = $startDate;
+
+        return $this;
+    }
+
+    /**
+     * Get startDate
+     *
+     * @return \DateTime 
+     */
+    public function getStartDate()
+    {
+        return $this->startDate;
+    }
+
+    /**
+     * Set endDate
+     *
+     * @param \DateTime $endDate
+     * @return Event
+     */
+    public function setEndDate($endDate)
+    {
+        $this->endDate = $endDate;
+
+        return $this;
+    }
+
+    /**
+     * Get endDate
+     *
+     * @return \DateTime 
+     */
+    public function getEndDate()
+    {
+        return $this->endDate;
+    }
+
+    /**
+     * Set startTime
+     *
+     * @param \DateTime $startTime
+     * @return Event
+     */
+    public function setStartTime($startTime)
+    {
+        $this->startTime = $startTime;
+
+        return $this;
+    }
+
+    /**
+     * Get startTime
+     *
+     * @return \DateTime 
+     */
+    public function getStartTime()
+    {
+        return $this->startTime;
+    }
+    /**
+     * @var \DateTime
+     */
+    private $endTime;
+
+
+    /**
+     * Set endTime
+     *
+     * @param \DateTime $endTime
+     * @return Event
+     */
+    public function setEndTime($endTime)
+    {
+        $this->endTime = $endTime;
+
+        return $this;
+    }
+
+    /**
+     * Get endTime
+     *
+     * @return \DateTime 
+     */
+    public function getEndTime()
+    {
+        return $this->endTime;
+    }
+
+    /**
+     * @var float
+     */
+    private $priceLow;  
+
+    /**
+     * Set priceLow
+     *
+     * @param float $priceLow
+     * @return Event
+     */
+    public function setPriceLow($priceLow)
+    {
+        $this->priceLow = $priceLow;
+
+        return $this;
+    }
+
+    /**
+     * Get priceLow
+     *
+     * @return float 
+     */
+    public function getPriceLow()
+    {
+        return $this->priceLow;
+    }
+    
+    /**
+     * @var float
+     */
+    private $priceHigh;
+
+
+    /**
+     * Set priceHigh
+     *
+     * @param float $priceHigh
+     * @return Event
+     */
+    public function setPriceHigh($priceHigh)
+    {
+        $this->priceHigh = $priceHigh;
+
+        return $this;
+    }
+
+    /**
+     * Get priceHigh
+     *
+     * @return float 
+     */
+    public function getPriceHigh()
+    {
+        return $this->priceHigh;
+    }
+}

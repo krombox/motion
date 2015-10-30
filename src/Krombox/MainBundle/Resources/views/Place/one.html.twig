@@ -1,0 +1,21 @@
+{% extends 'KromboxMainBundle:Layout:layout.html.twig' %}
+
+{% form_theme form 'bootstrap_3_layout.html.twig' %}
+
+
+{% block main_content %}
+    
+    {#{% block stylesheets %}    
+        {{ form_stylesheet(form) }}
+    {% endblock %}
+
+    {% block javascripts %}
+        {{ form_javascript(form) }}
+    {% endblock %}#}
+
+    {{ form_start(form) }}
+    {{ form_rest(form) }}
+    
+    <input class="btn btn-info" type="submit" value="next">
+    {{ form_end(form) }}
+{% endblock %}

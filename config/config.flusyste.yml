@@ -1,0 +1,342 @@
+imports:
+    - { resource: parameters.yml }
+    - { resource: security.yml }
+    - { resource: services.yml }
+    - { resource: @KromboxMainBundle/Resources/config/admin.yml }
+    - { resource: ../../vendor/knplabs/doctrine-behaviors/config/orm-services.yml }
+
+framework:
+    #esi:             ~
+    translator:      { fallbacks: ["%locale%"] }
+    secret:          "%secret%"
+    router:
+        resource: "%kernel.root_dir%/config/routing.yml"
+        strict_requirements: ~
+    form:            ~
+    csrf_protection: ~
+    validation:      { enable_annotations: true }
+    templating:
+        engines: ['twig']
+        #assets_version: SomeVersionScheme
+    default_locale:  "%locale%"
+    trusted_hosts:   ~
+    trusted_proxies: ~
+    session:
+        # handler_id set to null will use default session handler from php.ini
+        handler_id:  ~
+    fragments:       ~
+    http_method_override: true
+
+# Twig Configuration
+twig:
+    debug:            "%kernel.debug%"
+    strict_variables: "%kernel.debug%"
+    form_themes:
+        # other form themes
+        - 'VichUploaderBundle:Form:fields.html.twig'
+    form:
+        resources:            
+            - 'KromboxMainBundle:Form:map.html.twig'
+            - LexikFormFilterBundle:Form:form_div_layout.html.twig
+
+# Assetic Configuration
+assetic:
+    debug:          "%kernel.debug%"
+    use_controller: false
+    bundles:        [ ]
+    #java: /usr/bin/java
+    filters:
+        cssrewrite: ~
+        #closure:
+        #    jar: "%kernel.root_dir%/Resources/java/compiler.jar"
+        #yui_css:
+        #    jar: "%kernel.root_dir%/Resources/java/yuicompressor-2.4.7.jar"
+
+# Doctrine Configuration
+doctrine:
+    dbal:
+        driver:   "%database_driver%"
+        host:     "%database_host%"
+        port:     "%database_port%"
+        dbname:   "%database_name%"
+        user:     "%database_user%"
+        password: "%database_password%"
+        charset:  UTF8
+        mapping_types:
+            enum: string
+        types:
+            PlaceStatusType: Krombox\MainBundle\DBAL\Types\PlaceStatusType
+            DayType: Krombox\MainBundle\DBAL\Types\DayType
+#            json: Sonata\Doctrine\Types\JsonType
+
+        # if using pdo_sqlite as your database driver:
+        #   1. add the path in parameters.yml
+        #     e.g. database_path: "%kernel.root_dir%/data/data.db3"
+        #   2. Uncomment database_path in parameters.yml.dist
+        #   3. Uncomment next line:
+        #     path:     "%database_path%"
+
+    orm:
+        auto_generate_proxy_classes: "%kernel.debug%"
+        auto_mapping: true
+#        entity_managers:
+#            default:
+#              mappings:
+#                    # ApplicationSonataUserBundle: ~
+#                    SonataUserBundle: ~
+#        entity_managers:
+#            default:
+#                auto_mapping: true
+#                mappings:
+#                    gedmo_translatable:
+#                        type: annotation
+#                        prefix: Gedmo\Translatable\Entity
+#                        dir: "%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Translatable/Entity"
+#                        alias: GedmoTranslatable # this one is optional and will default to the name set for the mapping
+#                        is_bundle: false
+        
+stof_doctrine_extensions:
+    orm:
+        default:            
+            timestampable: true
+#            sluggable: true
+#             translatable: true
+
+# Swiftmailer Configuration
+swiftmailer:
+    transport: "%mailer_transport%"
+    host:      "%mailer_host%"
+    username:  "%mailer_user%"
+    password:  "%mailer_password%"
+    spool:     { type: memory }
+    
+a2lix_translation_form:
+    locale_provider: default       # [1]
+    locales: [ru, en]          # [1-a]
+    default_locale: ru             # [1-b]
+    required_locales: [ru]         # [1-c]
+    manager_registry: doctrine      # [2]
+    templating: "A2lixTranslationFormBundle::default.html.twig"      # [3  
+    
+#fos_user:
+#    db_driver: orm # other valid values are 'mongodb', 'couchdb' and 'propel'
+#    firewall_name: main
+#    user_class: Application\Sonata\UserBundle\Entity\User #Krombox\UserBundle\Entity\User
+#    
+#    group:
+#        group_class:   Application\Sonata\UserBundle\Entity\Group
+#        group_manager: sonata.user.orm.group_manager
+#        
+#    service:
+#        user_manager: sonata.user.orm.user_manager
+fos_user:
+    db_driver:      orm # can be orm or odm
+    firewall_name:  main
+    user_class:     Krombox\UserBundle\Entity\User
+    #user_class:     Application\Sonata\UserBundle\Entity\User
+
+
+#    group:
+#        group_class:   Application\Sonata\UserBundle\Entity\Group
+#        group_manager: sonata.user.orm.group_manager                    # If you're using doctrine orm (use sonata.user.mongodb.user_manager for mongodb)
+#
+#    service:
+#        user_manager: sonata.user.orm.user_manager
+        
+        
+#    group:
+#        group_class: Application\Sonata\UserBundle\Entity\Group
+    
+sonata_block:
+    #default_contexts: [sonata_page_bundle]
+    default_contexts: [cms]
+    blocks:
+        sonata.admin.block.admin_list:
+            contexts:   [admin]
+        sonata.user.block.menu:    # used to display the menu in profile pages
+        sonata.user.block.account: # used to display menu option (login option)    
+
+        #sonata.admin_doctrine_orm.block.audit:
+        #    contexts:   [admin]
+
+        sonata.block.service.text:
+        sonata.block.service.rss:
+            
+sonata_admin:
+    title:      Motion Admin Panel
+    #title_logo: bundles/acmedemo/img/fancy_acme_logo.png
+    security:
+        #handler: sonata.admin.security.handler.role
+    
+vich_uploader:
+    db_driver: orm
+    twig:       true
+    storage:    flysystem #file_system  or gaufrette or flysystem
+    mappings:
+        place_image:
+            #uri_prefix:         /images/places
+            #upload_destination: place_image_fs #%kernel.root_dir%/../web/images/places
+            uri_prefix:         https://copy.com/thumbs_public/nIdkDSHtsduPhb3E
+            upload_destination: place_image_fs
+            namer:              vich_uploader.namer_uniqid
+            directory_namer:    place_image_directory_namer
+            inject_on_load:     true
+            delete_on_update:   true
+            delete_on_remove:   true
+        category_image:
+            #uri_prefix:         /images/places
+            #upload_destination: place_image_fs #%kernel.root_dir%/../web/images/places
+            uri_prefix:         https://copy.com/thumbs_public/nIdkDSHtsduPhb3E
+            upload_destination: place_image_fs
+            namer:              vich_uploader.namer_uniqid
+            directory_namer:    place_image_directory_namer
+            inject_on_load:     true
+            delete_on_update:   true
+            delete_on_remove:   true    
+            
+oneup_flysystem:
+    cache:
+        my_cache:
+            predis:
+                client: cache.redis
+                key: ~
+                expires: ~
+
+    adapters:
+        place_adapter:
+             copy: 
+                client: flysystem.copy_client
+                prefix: ~                
+#            local:
+#                directory: %kernel.root_dir%/../web/images/places
+
+    filesystems:
+        place_filesystem:
+            adapter: place_adapter
+            mount:   place_image_fs
+            
+liip_imagine:
+    #data_loader: my_remote_loader
+    cache: my_remote_resolver
+    data_loader: my_remote_loader
+    #cache: ~
+    #cache: my_remote_resolver
+#    resolvers:
+#        default:
+#            web_path:
+#              web_root: http://www.ultraimg.com
+#              cache_prefix: /images
+#        my_remote_resolver:
+#            web_path:
+#              web_root: http://www.ultraimg.com
+#              cache_prefix: /images      
+#    loaders:
+#        default:
+#            filesystem:
+#                data_root: https://copy.com/thumbs_public/nIdkDSHtsduPhb3E/place_images/
+
+    filter_sets:
+        #cache: my_remote_resolver
+        #cache: ~
+        
+        place_image_thumb:            
+            cache: my_remote_resolver
+            quality: 90
+            filters:
+                thumbnail: { size: [350, 350], mode: outbound }  
+                
+jms_di_extra:
+    locations:
+        all_bundles: false
+        bundles: [KromboxMainBundle]
+        directories: ["%kernel.root_dir%/../src"]
+        
+jms_translation:
+    configs:
+        main:
+            dirs: [%kernel.root_dir%, %kernel.root_dir%/../src]
+            output_dir: %kernel.root_dir%/Resources/translations
+            ignored_domains: [routes]
+            excluded_names: ["*TestCase.php", "*Test.php"]
+            excluded_dirs: [cache, data, logs]
+            #extractors: [alias_of_the_extractor]        
+    
+lexik_form_filter:
+    force_case_insensitivity: false
+    
+fos_elastica:
+    clients:
+        default: { host: localhost, port: 9200 }
+    indexes:
+        app:
+            types:
+                place:
+                    mappings:
+                        name: ~
+                        description: ~
+                        status: ~
+                        categories:
+                            type: "object"
+                            properties:
+                                slug: ~
+                        is24h: ~
+                        isWifi: ~
+#                            type: "object"
+#                        user:
+#                            type: "object"    
+#                            properties:                                
+                    _parent:
+                        type: "user"
+                        property: "user"
+                        identifier: "username"
+                    persistence:
+                        # the driver can be orm, mongodb or propel
+                        # listener and finder are not supported by
+                        # propel and should be removed
+                        driver: orm
+                        model: Krombox\MainBundle\Entity\Place
+                        provider: ~
+                        listener: ~
+                            #immediate: ~
+                        finder: ~
+                        repository: Krombox\MainBundle\Repository\Search\PlaceRepository
+                category:
+                    mappings:
+                        id: ~
+                        name: ~
+                        description: ~
+                        slug: ~
+                    persistence:
+                        # the driver can be orm, mongodb or propel
+                        # listener and finder are not supported by
+                        # propel and should be removed
+                        driver: orm
+                        model: Krombox\MainBundle\Entity\Category
+                        provider: ~
+                        listener:
+                            immediate: ~
+                        finder: ~
+                        repository: Krombox\MainBundle\Repository\Search\PlaceRepository
+                user:
+                    mappings:                        
+                        username: ~                        
+                    persistence:
+                        # the driver can be orm, mongodb or propel
+                        # listener and finder are not supported by
+                        # propel and should be removed
+                        driver: orm
+                        model: Krombox\UserBundle\Entity\User
+                        provider: ~
+                        listener:
+                            immediate: ~
+                        finder: ~
+                        #repository: Krombox\MainBundle\Repository\Search\PlaceRepository
+                        
+snc_redis:
+    clients:
+        default:
+            type: predis
+            alias: default
+            dsn: redis://localhost                      
+    
+    

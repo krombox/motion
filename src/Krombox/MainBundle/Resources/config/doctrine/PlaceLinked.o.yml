@@ -1,0 +1,35 @@
+#Krombox\MainBundle\Entity\PlaceLinked:
+#    type: entity    
+#    table: place_linked
+#    #repositoryClass: Krombox\MainBundle\Repository\PlaceRepository
+#    id:
+#        id:
+#            type: integer
+#            generator: { strategy: IDENTITY }        
+#    manyToOne:
+##        user:
+##            targetEntity: Krombox\UserBundle\Entity\User
+##            inversedBy: likes
+##            joinColumn:
+##                name: user_id
+##                referencedColumnName: id
+##                onDelete: cascade
+##                onUpdate: cascade
+#        place:
+#            targetEntity: Krombox\MainBundle\Entity\Place
+#            inversedBy: placesLinked
+#            joinColumn:
+#                name: place_id
+#                referencedColumnName: id
+#                onDelete: cascade
+#                onUpdate: cascade
+#        placeLinked:
+#            targetEntity: Krombox\MainBundle\Entity\Place
+#            #inversedBy: placesLinked
+#            joinColumn:
+#                name: place_linked_id
+#                referencedColumnName: id
+#                onDelete: cascade
+#                onUpdate: cascade        
+#    lifecycleCallbacks: {}
+#        #

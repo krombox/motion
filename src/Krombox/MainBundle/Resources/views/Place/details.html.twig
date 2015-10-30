@@ -1,0 +1,213 @@
+{% extends 'KromboxMainBundle:Layout:layout.html.twig' %}
+
+{% block header %}
+    {{ parent()}}
+    
+    {% block stylesheets %}            
+        <link href="{{ asset('bower/fullcalendar/dist/fullcalendar.min.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ asset('bower/jquery-bar-rating/dist/themes/bars-1to10.css') }}" rel="stylesheet" type="text/css" />
+    {% endblock %}
+    
+    
+
+    {% block javascripts_head %}        
+        <script src="{{ asset('bower/fullcalendar/dist/fullcalendar.min.js') }}"></script>        
+        <script src="{{ asset('bower/jquery-bar-rating/dist/jquery.barrating.min.js') }}"></script>        
+        <script src="{{ asset('bower/echojs/dist/echo.min.js') }}"></script>        
+        <script src="{{ asset('js/spin.min.js') }}"></script>
+        <script src="{{ asset('js/ratingWidget.js') }}"></script>
+    {% endblock %}
+{% endblock %}
+    
+{% block main_content %}    
+<div class="place">
+    <h2>{{ place.getName }}</h2>
+    {% if place.logo is not null %}
+        <img src="{{ generateImageUrl(place.logo.fileName, 'place_image') | imagine_filter('place_logo_thumb') }}" >
+    {% endif %}
+    <p><strong>{% trans %}categories{% endtrans %}: </strong>{{ place.getCategoriesName | join(',') }}{% if place.is24h %}<span class="label label-danger">{% trans %}24h{% endtrans %}</span>{% endif %}</p>
+    <p><strong>{% trans %}address{% endtrans %}: </strong> {{ macro.nice_address(place.address) }}</p>
+    {% set services = place.services %}
+    <p>
+        {% if services.isWifi %}<span><strong>{% trans %}wifi{% endtrans %}: </strong> <span class="glyphicon glyphicon-transfer" aria-hidden="true"></span></span>{% endif %}
+        {% if services.isHookah %}<span><strong>{% trans %}hookah{% endtrans %}: </strong> <span class="glyphicon glyphicon-grain" aria-hidden="true"></span></span>{% endif %}
+        {% if services.isLiveMusic %}<span><strong>{% trans %}live.music{% endtrans %}: </strong> <span class="glyphicon glyphicon-music" aria-hidden="true"></span></span>{% endif %}
+        {% if services.isOpenAir %}<span><strong>{% trans %}open.air{% endtrans %}: </strong> <span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span></span>{% endif %}
+        {% if services.isParking %}<span><strong>{% trans %}parking{% endtrans %}: </strong> <span class="glyphicon glyphicon-road" aria-hidden="true"></span></span>{% endif %}
+        
+        {% if services.isSmokingLounge %}<span><strong>{% trans %}smoking.lounge{% endtrans %}: </strong> <span class="glyphicon glyphicon-fire" aria-hidden="true"></span></span>{% endif %}
+        {% if services.isBilliards %}<span><strong>{% trans %}billiards{% endtrans %}: </strong> <span class="glyphicon glyphicon-cd" aria-hidden="true"></span></span>{% endif %}
+        {% if services.isFaceControl %}<span><strong>{% trans %}face.control{% endtrans %}: </strong> <span class="glyphicon glyphicon-sunglasses" aria-hidden="true"></span></span>{% endif %}
+        {% if services.isBanquet %}<span><strong>{% trans %}banquet{% endtrans %}: </strong> <span class="glyphicon glyphicon-gift" aria-hidden="true"></span></span>{% endif %}
+        {% if services.isDanceFloor %}<span><strong>{% trans %}dance.floor{% endtrans %}: </strong> <span class="glyphicon glyphicon-star" aria-hidden="true"></span></span>{% endif %}
+        {% if services.isStriptease %}<span><strong>{% trans %}striptease{% endtrans %}: </strong> <span class="glyphicon glyphicon-queen" aria-hidden="true"></span></span>{% endif %}
+        {% if services.isMeetingHole %}<span><strong>{% trans %}meeting.hole{% endtrans %}: </strong> <span class="glyphicon glyphicon-briefcase" aria-hidden="true"></span></span>{% endif %}
+        {% if services.isDelivery %}<span><strong>{% trans %}delivery{% endtrans %}: </strong> <span class="glyphicon glyphicon-plane" aria-hidden="true"></span></span>{% endif %}
+        {% if services.isSportBroadcast %}<span><strong>{% trans %}football.broadcast{% endtrans %}: </strong> <span class="glyphicon glyphicon-blackboard" aria-hidden="true"></span></span>{% endif %}
+        {% if services.isChildrenMenu %}<span><strong>{% trans %}children.menu{% endtrans %}: </strong> <span class="glyphicon glyphicon-cutlery" aria-hidden="true"></span></span>{% endif %}
+        {% if services.isTerminalPayment %}<span><strong>{% trans %}terminal.payment{% endtrans %}: </strong> <i class="fa fa-credit-card fa-3x"></i></span>{% endif %}
+        {% if services.isDiscountSystem %}<span><strong>{% trans %}discount.system{% endtrans %}: </strong> <i class="fa fa-gift fa-3x"></i></span>{% endif %}
+        {% if services.isGameConsole %}<span><strong>{% trans %}game.console{% endtrans %}: </strong> <i class="fa fa-gamepad fa-3x"></i></span>{% endif %}
+        {% if services.isBoardGame %}<span><strong>{% trans %}board.game{% endtrans %}: </strong> <i class="fa fa-trophy fa-3x"></i></span>{% endif %}        
+    </p>
+    {#<p>
+        <strong>{% trans %}business_hours{% endtrans %}: </strong>        
+    </p>#}
+    {% if place.phones is not empty%}
+    <p>
+      <strong>{% trans %}phones{% endtrans %}: </strong>
+      {% for phone in place.phones %}
+            <span><i>{{ phone.type |readable('PhoneType') | trans({})}}:</i></span> {{ phone.number }}            
+        {% endfor %}
+    </p>
+    {% endif %}
+    {% if place.website is not empty %}
+        <p>
+            <strong>{% trans %}website{% endtrans %}:</strong><a href="{{ place.website }}">{{ place.website }}</a>
+        </p>
+    {% endif %}
+    
+    {% if place.vkGroup is not empty %}
+        <p>
+            <strong>{% trans %}vk.group{% endtrans %}:</strong><a href="{{ place.vkGroup }}">{{ place.vkGroup }}</a>
+        </p>
+    {% endif %}
+    
+    {% if place.fbGroup is not empty %}
+        <p>
+            <strong>{% trans %}fb.group{% endtrans %}:</strong><a href="{{ place.fbGroup }}">{{ place.fbGroup }}</a>
+        </p>
+    {% endif %}
+    
+    {% if place.kitchens is not empty%}
+    <p>
+      <strong>{% trans %}kitchens{% endtrans %}: </strong>
+      {% for kitchen in place.kitchens %}
+            <span><i>{{ kitchen.name | trans({})}}</i></span>,
+        {% endfor %}
+    </p>
+    {% endif %}
+    <p>
+        {% if place.birthdayDiscount > 0 %}<strong>{% trans %}birtday.discount{% endtrans %}: </strong> {{ place.birthdayDiscount }}%{% endif %}        
+    </p>
+    <p>
+        {% if place.serviceComission > 0 %}<strong>{% trans %}service.comission{% endtrans %}: </strong> {{ place.serviceComission }}%{% endif %}        
+    </p>
+    {#<p>
+        <strong>{% trans %}number.of.seats{% endtrans %}: </strong> {{ place.numberOfSeats }}
+    </p>#}
+    {#{% for img in place.getPlaceImages %}                            
+        <img src="{{ generateImageUrl(img.fileName, 'place_image') | imagine_filter('place_image_thumb') }}" alt="" />
+    {% endfor %}#}
+    <p>{{ place.getDescription }}</p>    
+    {% if place.halls is not empty %}        
+        <div class="panel panel-success">
+            <div class="panel-heading">{% trans %} halls.list {% endtrans %}</div>
+            <div class="panel-body">
+            {% for hall in place.halls %}        
+                <div class="hall">
+                    <p><strong>{% trans %} hall.name {% endtrans %}:</strong><i> {{ hall.name }}</i></p>
+                    <p><strong>{% trans %} hall.number.of.seats {% endtrans %}:</strong> {{ hall.numberOfSeats }}</p>
+                {% for img in hall.placeHallImages %}                        
+                    <img src="{{ asset('images/spinn_2.gif') }}"  data-echo="{{ generateImageUrl(img.fileName, 'place_hall_image') | imagine_filter('place_image_thumb') }}" alt="" />                
+                {% endfor %}
+                </div>
+            {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+    
+    {% if place.placesLinked is not empty %}       
+     <div class="panel panel-info">
+        <div class="panel-heading">Linked places</div>
+        <div class="panel-body">
+        {% for placeLinked in place.placesLinked %}
+            <div class="linked">
+                <a href="{{ path('place_details', {'slug': placeLinked.slug})  }}">{{ placeLinked.name }}
+                    <p><img src="{{ generateImageUrl(placeLinked.logoFileName, 'place_image') | imagine_filter('place_image_thumb') }}" ></p>
+                </a>
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+        
+    {% endif %}
+    {#<div class="likes-wrapper row">
+        {{ macro.likes_widget(place) }}
+    </div>#}
+    {#<div class="comments-wrapper">
+        <h2>Comments</h2>
+    {% include 'FOSCommentBundle:Thread:async.html.twig' with {'id': '17'} %}
+    </div>#}        
+    
+    <div class="panel panel-info">
+        <div class="panel-heading">Rating</div>
+        <div class="panel-body">
+            <div class="rating-wrapper rating-widget" data-url-rate="{{ path('place_rate', {'hash' : place.hash }) }}" data-url-unrate="{{ path('place_unrate', {'hash' : place.hash }) }}" >
+                {% set userRating = null %}
+                {% if is_granted("IS_AUTHENTICATED_FULLY") and place.getUserRating(app.user) is not null %}
+                    {% set userRating = place.getUserRating(app.user) %}
+                {% endif %}
+
+                <div class="col-lg-12">            
+                    {% if is_granted("IS_AUTHENTICATED_FULLY") %}
+                        {% if userRating is not null %}
+                            <div class="col-lg-12">                
+                                ваша оценка: {{ userRating }} %   <a class="unset-button" href="#">отменить</a>
+                            </div>
+                        {% else %}
+                            <div class="col-lg-12">
+                                {{ macro.rating_widget(place) }}
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                </div>
+                <div class="col-lg-12">
+                    <div id="rating" class="progress">
+                        <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: {{ place.rating }}%;">
+                          {{ place.rating }}%
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="bisinessHours">                
+        {{ macro.busuness_hours_widget(place) }}        
+    </div>
+    
+    <div class="events">
+        {% for event in place.events if place.events is not empty %}
+            <a href="{{path('event_details', {'slug': event.slug})}}">{{event.name}}</a>,
+        {% endfor %}
+    </div>
+        
+    <div class="calendar-wrapper">
+        {{ macro.calendar_widget(place) }}
+    </div>
+    
+    <div class="panel panel-info">
+        <div class="panel-heading">Comments</div>
+        <div class="panel-body">
+          {% include 'FOSCommentBundle:Thread:async.html.twig' with {'id': '17'} %}
+        </div>
+    </div>
+    
+</div>
+        
+        <script>
+            $(document).ready(function(){
+                echo.init({
+                    offset: 100,
+                    throttle: 250,
+                    unload: false,
+                    callback: function (element, op) {
+                      console.log(element, 'has been', op + 'ed')
+                    }
+                });
+            })  
+
+  // echo.render(); is also available for non-scroll callbacks
+  </script>
+{% endblock %}

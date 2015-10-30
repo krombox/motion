@@ -1,0 +1,16 @@
+{% extends "SonataAdminBundle::standard_layout.html.twig" %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    
+    <link rel="stylesheet" href="{{ asset('css/gmaps.css') }}" type="text/css" />
+{% endblock %}
+
+{% block javascripts %}
+   {{ parent()}}
+   
+   <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true&libraries=places&language=ru-RU&region=GB"></script>
+   <script src="{{ asset('bower/underscore/underscore-min.js') }}" type="text/javascript" charset="utf-8"></script>
+   <script src="{{ asset('js/gmapsWidget.js') }}" type="text/javascript" charset="utf-8"></script>
+   
+{% endblock %}

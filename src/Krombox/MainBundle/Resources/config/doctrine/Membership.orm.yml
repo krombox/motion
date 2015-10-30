@@ -1,0 +1,57 @@
+Krombox\MainBundle\Entity\Membership:
+    type: entity    
+    table: p_membership
+    #repositoryClass: Krombox\MainBundle\Repository\PlaceRepository
+    id:
+        id:
+            type: integer
+            generator: { strategy: IDENTITY }    
+    fields:        
+#        type:
+#            type: MembershipType
+#            nullable: false
+        name:
+            type: string
+            nullable: false    
+        score:
+            type: integer
+            nullable: false
+        price:
+            type: float
+            nullable: false
+        priceSpecial:
+            type: float
+            nullable: false
+        priceSpecialEndsAt:
+            type: datetime
+            nullable: true
+        isFree:
+            type: boolean
+            nullable: false    
+#        status:
+#            type: MembershipStatusType
+#            nullable: false    
+#        endsAt:
+#            type: string
+#            nullable: true            
+            
+#    oneToOne:        
+#        place:
+#            targetEntity: Krombox\MainBundle\Entity\Place
+#            inversedBy: membership
+#            joinColumn:
+#                name: place_id
+#                referencedColumnName: id
+#                onDelete: cascade
+#                onUpdate: cascade
+#    manyToOne:
+#        place:
+#            targetEntity: Krombox\MainBundle\Entity\Place
+#            inversedBy: membership
+#            joinColumn:
+#                name: place_id
+#                referencedColumnName: id
+#                onDelete: cascade
+#                onUpdate: cascade
+    lifecycleCallbacks: {}
+        #

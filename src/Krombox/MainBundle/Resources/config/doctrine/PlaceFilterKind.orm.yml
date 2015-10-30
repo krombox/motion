@@ -1,0 +1,34 @@
+Krombox\MainBundle\Entity\PlaceFilterKind:
+    type: entity    
+    table: p_filter_kind
+    repositoryClass: Krombox\MainBundle\Repository\PlaceFilterKindRepository
+    id:
+        id:
+            type: integer
+            generator: { strategy: IDENTITY }    
+    fields:    
+        name:
+            type: string
+            nullable: false
+        slug:
+            type: string
+            nullable: false    
+            
+    oneToMany:
+        placeFilterValues:
+            targetEntity: Krombox\MainBundle\Entity\PlaceFilterValue
+            mappedBy: placeFilterKind
+            cascade: ["persist", "merge"]
+            orphanRemoval: true
+    manyToMany:
+        categories:
+            targetEntity: Krombox\MainBundle\Entity\Category
+            inversedBy: placeFilterKinds            
+            joinColumns:
+                 place_filter_kind_id:
+                 referencedColumnName: id
+            inverseJoinColumns:
+                 category_id:
+                 referencedColumnName: id        
+    lifecycleCallbacks: {}
+        #

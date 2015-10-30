@@ -1,0 +1,4 @@
+Krombox\MainBundle\Entity\PlaceImage: 
+    image: 
+        mapping:           place_image
+        filename_property: file_name

@@ -1,0 +1,31 @@
+Krombox\UserBundle\Entity\User:
+    type:  entity
+    table: fos_user
+    id:
+        id:
+            type: integer
+            generator:
+                strategy: AUTO
+    fields:    
+        vk_id:
+            type: string
+            length: 255
+            nullable: true
+        vk_access_token:
+            type: string
+            length: 255
+            nullable: true
+        appStep:
+            type: integer
+            nullable: true    
+                
+    oneToMany:
+        places:
+            targetEntity: Krombox\MainBundle\Entity\Place
+            mappedBy: user
+        ratings:
+            targetEntity: Krombox\MainBundle\Entity\Rating
+            mappedBy: user
+        events:
+            targetEntity: Krombox\MainBundle\Entity\Event
+            mappedBy: user    

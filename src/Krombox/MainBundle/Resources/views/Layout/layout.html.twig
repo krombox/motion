@@ -1,0 +1,42 @@
+{#{% if title is not defined %}
+	{% set title = 'DDI Development | Welcome' %}
+{% endif %}#}
+
+{% import "KromboxMainBundle::macro.html.twig" as macro -%}
+<body>
+{% block header %}
+    {% include "KromboxMainBundle:Layout:header.html.twig" %}       
+{% endblock %}
+<div id="main-content" class="container">
+{% block main_content %}{% endblock %}
+</div>
+
+{% include "KromboxMainBundle:Layout:footer.html.twig" %}
+</body>
+<style>
+    .place {margin-bottom: 25px;}
+    .place-user-like {display: none;}
+    .place-user-like.active{display: block;}
+    //.progress-bar {background: #62b56d;}
+    //.progress {background: #bf5257}
+    .progress .delimiter {width:2px;float:right;background: #fff;height: 100%;}
+    .like-up {color: green;}
+    .like-down {color: red;}
+    
+    .place-user-like {
+        padding: 0 6px 0 11px;
+    }
+    .place-user-like.positive {
+        background-color: #62b56d;
+    }
+    
+    .place-user-like.negative {
+        background-color: #de7a7f;
+    }
+    
+    .action-buttons .btn {
+        width:100%;
+        margin-top: 10px;
+    }
+    .br-theme-bars-1to10 .br-widget a{width:5px;}
+</style>

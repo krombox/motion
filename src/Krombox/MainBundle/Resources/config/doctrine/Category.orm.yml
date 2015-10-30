@@ -1,0 +1,36 @@
+Krombox\MainBundle\Entity\Category:
+    type: entity    
+    table: category
+    repositoryClass: Krombox\MainBundle\Repository\CategoryRepository    
+    id:
+        id:
+            type: integer
+            generator: { strategy: IDENTITY }
+    
+    fields:
+        name:
+            type: string
+            nullable: false
+        slug:
+            type: string
+            nullable: false    
+        description:
+            type: text
+            nullable: false
+        type:
+            type: CategoryType
+            nullable: false            
+        file_name:      string
+        
+    oneToMany:
+        places:
+            targetEntity: Krombox\MainBundle\Entity\Place
+            mappedBy: category
+    manyToMany:        
+        placeFilterKinds:
+            targetEntity: Krombox\MainBundle\Entity\PlaceFilterKind
+            mappedBy: categories
+        events:
+            targetEntity: Krombox\MainBundle\Entity\Event
+            mappedBy: categories    
+    lifecycleCallbacks: {  }

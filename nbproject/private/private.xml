@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="1">
+        <file>
+            <url>src/Krombox/MainBundle/Form/Type/EventType.php</url>
+            <bookmark id="1">
+                <name/>
+                <line>32</line>
+                <key/>
+            </bookmark>
+        </file>
+    </editor-bookmarks>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/var/www/motion/src/Krombox/MainBundle/Resources/config/routing/place.yml</file>
+            <file>file:/var/www/motion/src/Krombox/MainBundle/Form/Type/PlaceType.php</file>
+            <file>file:/var/www/motion/src/Krombox/MainBundle/Controller/PlaceController.php</file>
+            <file>file:/var/www/motion/src/Krombox/MainBundle/Repository/PlaceFilterKindRepository.php</file>
+            <file>file:/var/www/motion/src/Krombox/MainBundle/Resources/config/routing.yml</file>
+            <file>file:/var/www/motion/app/config/config.yml</file>
+            <file>file:/var/www/motion/src/Krombox/MainBundle/Resources/config/doctrine/PlaceFilterKind.orm.yml</file>
+            <file>file:/var/www/motion/src/Krombox/MainBundle/Resources/views/Place/edit.html.twig</file>
+        </group>
+    </open-files>
+</project-private>

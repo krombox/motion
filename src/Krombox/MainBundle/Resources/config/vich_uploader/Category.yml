@@ -1,0 +1,4 @@
+Krombox\MainBundle\Entity\Category: 
+    image: 
+        mapping:           category_image
+        filename_property: file_name

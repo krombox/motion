@@ -1,0 +1,31 @@
+Krombox\MainBundle\Entity\Rating:
+    type: entity    
+    table: rating
+    #repositoryClass: Krombox\MainBundle\Repository\RatingRepository
+    id:
+        id:
+            type: integer
+            generator: { strategy: IDENTITY }    
+    fields:    
+        rate:
+            type: integer
+            nullable: false    
+    manyToOne:
+        user:
+            targetEntity: Krombox\UserBundle\Entity\User
+            inversedBy: ratings
+            joinColumn:
+                name: user_id
+                referencedColumnName: id
+                onDelete: cascade
+                onUpdate: cascade
+        place:
+            targetEntity: Krombox\MainBundle\Entity\Place
+            inversedBy: ratings
+            joinColumn:
+                name: place_id
+                referencedColumnName: id
+                onDelete: cascade
+                onUpdate: cascade        
+    lifecycleCallbacks: {}
+        #

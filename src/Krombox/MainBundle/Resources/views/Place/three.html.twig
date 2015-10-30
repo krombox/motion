@@ -1,0 +1,27 @@
+{% extends 'KromboxMainBundle:Layout:layout.html.twig' %}
+
+{% form_theme form 
+    'bootstrap_3_layout.html.twig'
+    'KromboxMainBundle::jquery.collection.html.twig'
+%}
+
+
+{% block main_content %}
+    
+    {% block stylesheets %}    
+        {{ form_stylesheet(form) }}
+    {% endblock %}
+
+    {% block javascripts %}
+        {{ form_javascript(form) }}
+    {% endblock %}
+
+    {{ form_start(form) }}
+    {{ form_rest(form) }}
+    {{ form_end(form) }}           
+    
+    <script src="{{ asset('js/jquery.collection.js') }}"></script>            
+    <script type="text/javascript">
+        $('.collection').collection();
+    </script>
+{% endblock %}

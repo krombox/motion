@@ -1,0 +1,42 @@
+Krombox\MainBundle\Entity\MembershipSubscription:
+    type: entity    
+    table: p_membership_subscription
+    #repositoryClass: Krombox\MainBundle\Repository\PlaceRepository
+    id:
+        id:
+            type: integer
+            generator: { strategy: IDENTITY }    
+    fields:        
+#        membershipType:
+#            type: MembershipType
+#            nullable: false
+#        score:
+#            type: integer
+#            nullable: false
+#        statusSubscription:
+#            type: MembershipStatusType
+#            nullable: false
+        status:
+            type: MembershipStatusType
+            nullable: false    
+        endsAt:
+            type: datetime
+            nullable: true                                    
+            
+    manyToOne:
+        place:
+            targetEntity: Krombox\MainBundle\Entity\Place
+            inversedBy: membershipSubscriptions
+            joinColumn:
+                name: place_id
+                referencedColumnName: id
+                #orphanRemoval: true
+                onDelete: cascade
+                onUpdate: cascade
+        membership:
+            targetEntity: Krombox\MainBundle\Entity\Membership            
+            joinColumn:
+                name: membership_id
+                referencedColumnName: id
+    lifecycleCallbacks: {}
+        #

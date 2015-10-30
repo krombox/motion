@@ -1,0 +1,19 @@
+{#<form action="https://api.privatbank.ua/p24api/ishop" method="POST" accept-charset="UTF-8">
+  <input type="text" name="amt" value="{{ paymentArr.amt }}"/>
+  <input type="text" name="ccy" value="{{ paymentArr.ccy }}" />
+  <input type="hidden" name="merchant" value="{{ paymentArr.merchant }}" />
+  <input type="hidden" name="order" value="{{ paymentArr.order }}" />
+  <input type="hidden" name="details" value="{{ paymentArr.details }}" />
+  <input type="hidden" name="ext_details" value="{{ paymentArr.ext_details }}" />
+  <input type="hidden" name="pay_way" value="{{ paymentArr.pay_way }}" />
+  <input type="hidden" name="return_url" value="https://mysite.net/papi/rurl.php" />
+  <input type="hidden" name="server_url" value="http://93.78.12.177/pay/response" />
+  <input type="hidden" name="signature" value="{{ paymentArr.signature }}" />
+  <input type="submit" value="Оплатить" />
+</form>#}
+
+<form method="POST" accept-charset="utf-8" action="https://www.liqpay.com/api/checkout">
+<input type="hidden" name="data" value="eyJ2ZXJzaW9uIjozLCJwdWJsaWNfa2V5IjoiaTMxODAxNzM0MzYxIiwiYW1vdW50IjoiNSIsImN1cnJlbmN5IjoiVUFIIiwiZGVzY3JpcHRpb24iOiLQnNC+0Lkg0YLQvtCy0LDRgCIsInR5cGUiOiJidXkiLCJsYW5ndWFnZSI6InJ1IiwicGF5X3dheSI6ImNhcmQsbGlxcGF5LGRlbGF5ZWQsaW52b2ljZSxwcml2YXQyNCJ9" />
+<input type="hidden" name="signature" value="/bE9c32pcmXwnVcKyUVqlhP57AQ=" />
+<input type="image" src="//static.liqpay.com/buttons/p1ru.radius.png" name="btn_text" />
+</form>

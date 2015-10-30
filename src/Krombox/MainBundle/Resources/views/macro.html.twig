@@ -1,0 +1,346 @@
+{% macro edit_place_button(place) %}
+    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") and place.user == app.user %}
+        <a href="{{ path('place_edit', {'slug' : place.slug }) }}" class="btn btn-success">edit</a>
+    {% endif %}
+{% endmacro %}
+
+{% macro edit_event_button(event) %}
+    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") and event.user == app.user %}
+        <a href="{{ path('user_event_edit', {'slug' : event.slug }) }}" class="btn btn-success">edit</a>
+    {% endif %}
+{% endmacro %}
+
+{% macro logo(entity) %}    
+    {%- if (entity is null) or (entity.fileName is null) -%}        
+        http://dogvacay.com/img/default_home.jpg       
+    {%- else -%}
+        {{ generateImageUrl(entity.fileName, 'place_image') | imagine_filter('place_logo_thumb') }}
+    {%- endif -%}
+{% endmacro %}
+
+{% macro membership(entity) %}
+    <img src="{{ asset('images/membership/' ~ entity.membership.name ~ '.png' ) }}">
+{% endmacro %}
+
+{% macro nice_address(address) %}
+    {{ address.street }}, {{ address.streetNumber }}, {{address.city }}
+{% endmacro %}
+
+{#{% macro likes_widget(place) %}
+    <div class="likes-widget">
+        <div class="progress-info col-lg-8">    
+            
+        <span class="glyphicon glyphicon-thumbs-up positive"  aria-hidden="true">{{ place.getUpLikesCount() }}</span>
+        <span class="glyphicon glyphicon-thumbs-down negative"  aria-hidden="true">{{ place.getDownLikesCount() }}</span>        
+            
+        <div class="progress">
+            <div class="progress-bar" role="progressbar" aria-valuenow="20"
+            aria-valuemin="0" aria-valuemax="" style="width: {{ place.getLikesPersent }}%">              
+              <div class="delimiter"></div>
+            </div>
+        </div>
+        </div>
+    <div class="like-vote-buttons col-lg-4">          
+    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+        {% set userLike = place.getUserLike(app.user) %}
+                <div class="place-user-like empty {% if userLike|readable('LikeType') == 'Notset' %}active{% endif %}">            
+                    <a href="{{ path('place_like_up', {'hash': place.hash}) }}" data-like-type="positive" data-like-value="positive" class="btn btn-success">{% trans %}like{% endtrans %}</a>
+                    <a href="{{ path('place_like_down', {'hash': place.hash}) }}" data-like-type="negative" data-like-value="negative" class="btn btn-danger">{% trans %}dislike{% endtrans %}</a>                            
+                </div>                        
+                <div class="place-user-like positive {% if userLike|readable('LikeType') == 'Up' %}active{% endif %}">
+                    {% trans%}your.mark{% endtrans %}
+                    <span class="like-value">+1</span>
+                    <a href="{{ path('place_like_unset', {'hash' : place.hash}) }}" class="decrease" data-like-type="empty" data-like-value="positive" rel="nofollow">{% trans %}cancel{% endtrans %}</a>
+                </div>           
+                <div class="place-user-like negative {% if userLike|readable('LikeType') == 'Down' %}active{% endif %}">
+                    {% trans%}your.mark{% endtrans %}
+                    <span class="like-value">-1</span>
+                    <a href="{{ path('place_like_unset', {'hash' : place.hash}) }}" class="decrease" data-like-type="empty" data-like-value="negative" rel="nofollow">{% trans %}cancel{% endtrans %}</a>
+                </div>            
+                
+            {% endif %}
+    </div>
+    </div>
+{% endmacro %}#}
+
+{% macro rating_widget(place) %}
+    {% set userRating = null %}
+    {% if is_granted("IS_AUTHENTICATED_FULLY") %}
+        {% set userRating = place.getUserRating(app.user) %}{{ userRating }}
+    {% endif %}    
+    <select id="barRating" name="rating" data-url="{{ path('place_rate', {'hash': place.hash}) }}">
+        {% set step = 1 %}
+        {% for i in range(step, 100, step) %}
+            {% if userRating is not null and i == userRating %}
+                <option selected value="{{ i }}">{{ i }}</option>
+            {% else %}
+                <option value="{{ i }}">{{ i }}</option>
+            {% endif %}
+        {% endfor %}
+    </select>    
+{% endmacro %}
+
+
+
+{% macro busuness_hours_widget(place) %}
+    
+    <div class="bisiness-hours-widget">                
+        <table class="table table-bordered">
+            <tr>
+                <td class="success"></td>
+                {% set today = null %}
+                {% for sheet in businessHoursSheet(place) %}                    
+                    {% set class = 'success' %}                    
+                    {% if date() | date('d') == sheet.day | date('d') %}
+                        {% set class = 'info' %}
+                        {% set today = sheet.day %}
+                    {% endif %}
+                    <td class="{{ class }}">{{ sheet.day | date('l') | trans }} {{ sheet.day | date('(d.m)')}}</td>
+                {% endfor %}
+            </tr>
+            
+            <tr>
+                <td>{% trans %}from{% endtrans %}</td>
+                {% for sheet in businessHoursSheet(place) %}                    
+                    {% if sheet.startsAt is defined %}
+                        {% set class = '' %}
+                        {% if sheet.day == today %}
+                            {% set class = 'info' %}                            
+                        {% endif %}                        
+                            <td class="{{ class }}">{{ sheet.startsAt | date('H:i') }}</td>                        
+                    {% else %}
+                        <td class="danger"></td>                
+                    {% endif %}                      
+                {% endfor %}
+            </tr>
+            
+            <tr>
+                <td>{% trans %}to{% endtrans %}</td>
+                {% for sheet in businessHoursSheet(place) %}
+                    {% if sheet.startsAt is defined %}
+                        {% set class = '' %}
+                        {% if sheet.day == today %}
+                            {% set class = 'info' %}                            
+                        {% endif %}                        
+                            <td class="{{ class }}">{{ sheet.endsAt | date('H:i') }}</td>                        
+                    {% else %}
+                        <td class="danger"></td>                
+                    {% endif %}                      
+                {% endfor %}
+            </tr>
+        </table>
+    </div>            
+{% endmacro %}
+
+{% macro busuness_hours_widget_old(place) %}
+    {#{{ dump(place.getBusinessHoursSheet) }}#}
+    <div class="bisiness-hours-widget">                
+        <table class="table table-bordered">
+            <tr>
+                <td class="success"></td>
+                {% set currentDayKey = null %}
+                {% for sheet in place.getBusinessHoursSheet %}
+                    {#{{ dump(sheet) }}#}
+                    {% set class = 'success' %}
+                    {{  sheet.day | date('d') }}
+                    {% if date() | date('d') == sheet.day | date('d') %}
+                        {% set class = 'info' %}
+                        {% set currentDayKey = sheet.day | date('l') %}
+                    {% endif %}
+                    <td class="{{ class }}">{{ sheet.day | date('l') | trans }} {{ sheet.day | date('(d.m)')}}</td>
+                {% endfor %}
+            </tr>
+            
+            <tr>
+                <td>{% trans %}from{% endtrans %}</td>
+                {% for key,sheet in place.getBusinessHoursSheet %}                    
+                    {% if sheet.fromTime is defined or sheet.exception %}
+                        {% set class = '' %}
+                        {% if key == currentDayKey %}
+                            {% set class = 'info' %}                            
+                        {% endif %}
+                        {% if sheet.exception %}
+                            <td class="warning">{{ sheet.exception.fromTime | date('H:i') }}</td>
+                        {% else %}
+                            <td class="{{ class }}">{{ sheet.fromTime | date('H:i') }}</td>
+                        {% endif %}
+                    {% else %}
+                        <td class="danger"></td>                
+                    {% endif %}                      
+                {% endfor %}
+            </tr>
+                        
+            <tr>
+                <td>{% trans %}to{% endtrans %}</td>
+                {% for key,sheet in place.getBusinessHoursSheet %}                    
+                    {% if sheet.toTime is defined or sheet.exception %}
+                        {% set class = '' %}
+                        {% if key == currentDayKey %}
+                            {% set class = 'info' %}                            
+                        {% endif %}
+                        {% if sheet.exception %}
+                            <td class="warning">{{ sheet.exception.toTime | date('H:i') }}</td>
+                        {% else %}
+                            <td class="{{ class }}">{{ sheet.toTime | date('H:i') }}</td>
+                        {% endif %}
+                    {% else %}
+                        <td class="danger"></td>                
+                    {% endif %}                      
+                {% endfor %}
+            </tr>                        
+        </table>
+    </div>            
+{% endmacro %}
+    
+{#{% macro busuness_hours_widget(place) %}
+    <div class="bisiness-hours-widget">                
+        <table class="table table-bordered">
+            <tr>
+                <td class="success"></td>
+                {% set currentDayKey = null %}
+                {% for day in place.getWeekDays %}
+                    {% set class = 'success' %}
+                    {{  day | date('d') }}
+                    {% if date() | date('d') == day | date('d') %}
+                        {% set class = 'info' %}
+                        {% set currentDayKey = day | date('l') %}
+                    {% endif %}
+                    <td class="{{ class }}">{{ day | date('l') | trans }} {{ day | date('(d.m)')}}</td>
+                {% endfor %}
+            </tr>
+            {% if place.is24h %}
+                <tr>
+                    <td>{% trans %}from{% endtrans %}</td>
+                    {% for key,day in place.getBusinessHoursSheet %}                        
+                            {% set class = '' %}
+                            {% if key == currentDayKey %}
+                                {% set class = 'info' %}                            
+                            {% endif %}
+                            <td class="{{ class }}">00:00</td>                        
+                    {% endfor %}
+                </tr>
+                <tr>
+                <td>{% trans %}to{% endtrans %}</td>
+                {% for key,day in place.getBusinessHoursSheet %}                    
+                        {% set class = '' %}
+                        {% if key == currentDayKey %}
+                            {% set class = 'info' %}                            
+                        {% endif %}
+                        <td class="{{ class }}">24:00</td>                                        
+                {% endfor %}
+            </tr>
+            {% else %}    
+            <tr>
+                <td>{% trans %}from{% endtrans %}</td>
+                {% for key,day in place.getBusinessHoursSheet %}
+                    {% if day.fromTime is defined %}
+                        {% set class = '' %}
+                        {% if key == currentDayKey %}
+                            {% set class = 'info' %}                            
+                        {% endif %}
+                        <td class="{{ class }}">{{ day.fromTime | date('H:i') }}</td>
+                    {% else %}
+                        <td class="danger"></td>                    
+                    {% endif %}
+                {% endfor %}
+            </tr>
+            <tr>
+                <td>{% trans %}to{% endtrans %}</td>
+                {% for key,day in place.getBusinessHoursSheet %}            
+                    {% if day.toTime is defined %}
+                        {% set class = '' %}
+                        {% if key == currentDayKey %}
+                            {% set class = 'info' %}                            
+                        {% endif %}
+                        <td class="{{ class }}">{{ day.toTime | date('H:i') }}</td>
+                    {% else %}
+                        <td class="danger"></td>                
+                    {% endif %}                      
+                {% endfor %}
+            </tr>
+            {% endif %}
+        </table>        
+    </div>
+{% endmacro %}#}
+
+{% macro calendar_widget(place) %}
+    <div id="calendar"></div>
+    
+    <script>
+        
+        $(document).ready(function() {
+            $('#calendar').fullCalendar({
+                    events: Routing.generate('api_1.get_place_events', {'place' : '{{ place.id }}'}),
+                    defaultView: 'agendaWeek',
+                    contentHeight: 550,
+                    //aspectRatio: 5,
+                    allDaySlot: false,
+                    allDayDefault: false,
+                    timeFormat: 'H:mm',
+                    axisFormat: 'H:mm',
+                    scrollTime: '12:00:00',
+                    slotDuration: '01:00:00',
+                    firstDay: 1, //Monday                    
+                    header: {right:  'today prev,next'},
+                    loading: function (bool) { 
+                    if (bool) 
+                        console.log('loading...')
+                        else 
+                            console.log('finish')
+                    },        
+            })
+        });
+    </script>
+{% endmacro %}
+{#{% macro likes_widget(place) %}
+    <div class="likes-widget">
+        <div class="progress-info col-lg-8">    
+        {% set placeLikes = redis_manager.getPlaceLikes(place.id) %}        
+        <span class="glyphicon glyphicon-thumbs-up positive"  aria-hidden="true">{{ placeLikes.positive }}</span>
+        <span class="glyphicon glyphicon-thumbs-down negative"  aria-hidden="true">{{ placeLikes.negative }}</span>        
+            
+        <div class="progress">
+            <div class="progress-bar" role="progressbar" aria-valuenow="20"
+            aria-valuemin="0" aria-valuemax="{{ placeLikes.total }}" style="width: {{ placeLikes.persent }}%">              
+              <div class="delimiter"></div>
+            </div>
+        </div>
+        </div>
+    <div class="like-vote-buttons col-lg-4">          
+    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}        
+        {% set placeUserLike = redis_manager.getPlaceUserLike(place.id) %}               
+                <div class="place-user-like empty {% if placeUserLike is null %}active{% endif %}">            
+                    <a href="{{ path('place_like_up', {'hash': place.hash}) }}" data-like-type="positive" data-like-value="positive" class="btn btn-success">{% trans %}like{% endtrans %}</a>
+                    <a href="{{ path('place_like_down', {'hash': place.hash}) }}" data-like-type="negative" data-like-value="negative" class="btn btn-danger">{% trans %}dislike{% endtrans %}</a>                            
+                </div>                        
+                <div class="place-user-like positive {% if placeUserLike == '1' %}active{% endif %}">
+                    {% trans%}your.mark{% endtrans %}
+                    <span class="like-value">+1</span>
+                    <a href="{{ path('place_like_unset', {'hash' : place.hash}) }}" class="decrease" data-like-type="empty" data-like-value="positive" rel="nofollow">{% trans %}cancel{% endtrans %}</a>
+                </div>           
+                <div class="place-user-like negative {% if placeUserLike == '0' %}active{% endif %}">
+                    {% trans%}your.mark{% endtrans %}
+                    <span class="like-value">-1</span>
+                    <a href="{{ path('place_like_unset', {'hash' : place.hash}) }}" class="decrease" data-like-type="empty" data-like-value="negative" rel="nofollow">{% trans %}cancel{% endtrans %}</a>
+                </div>            
+                
+            {% endif %}
+    </div>   
+{% endmacro %}#}
+
+{% macro event_price(event) %}
+    {% if event.priceLow > 0 %}
+        <p><span>{% trans %} price {% endtrans %}:</span>
+        {% if event.priceHigh > 0 %}
+            {% trans %} from {% endtrans %} {{ event.priceLow }} {% trans %} to {% endtrans %} {{ event.priceHigh }}
+        {% else %}
+            {{ event.priceLow }}
+        {% endif %}
+        </p>
+    {% endif %}
+{% endmacro %}
+
+{% block like_vote_buttons %}
+    
+{% endblock %}
+

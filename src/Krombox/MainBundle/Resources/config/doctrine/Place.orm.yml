@@ -1,0 +1,233 @@
+Krombox\MainBundle\Entity\Place:
+    type: entity    
+    table: place
+    repositoryClass: Krombox\MainBundle\Repository\PlaceRepository
+    id:
+        id:
+            type: integer
+            generator: { strategy: IDENTITY }    
+    fields:    
+        name:
+            type: string
+            nullable: false
+        description:
+            type: text
+            nullable: false                  
+        status:
+            type: StatusType
+            nullable: false        
+        hash:
+            type: string            
+        website:
+            type: string
+            nullable: true
+        vkGroup:
+            type: string
+            nullable: true
+        fbGroup:
+            type: string
+            nullable: true    
+        rating:
+            type: float
+            nullable: true
+        ratingCount:
+            type: integer
+            nullable: true
+        is24h:
+            type: boolean
+            nullable: false    
+#        membership:
+#            type: MembershipType
+#            nullable: false
+#        createdAt:
+#            type: datetime
+##            gedmo:
+##                timestampable:
+##                    on: create
+#        updatedAt:
+#            type: datetime
+        
+#    oneToMany:
+#        features:
+#            targetEntity: Feature
+#            mappedBy: product
+    oneToOne:
+#        services:
+#            targetEntity: Krombox\MainBundle\Entity\Services
+#            cascade: ["persist", "merge"]
+#            orphanRemoval: true
+#            joinColumn:
+#                name: service_id
+#                referencedColumnName: id
+#        relaxations:
+#            targetEntity: Krombox\MainBundle\Entity\Relaxations
+#            cascade: ["persist", "merge"]
+#            orphanRemoval: true
+#            joinColumn:
+#                name: relaxation_id
+#                referencedColumnName: id
+#        paymentServices:
+#            targetEntity: Krombox\MainBundle\Entity\PaymentServices
+#            cascade: ["persist", "merge"]
+#            orphanRemoval: true
+#            joinColumn:
+#                name: payment_services_id
+#                referencedColumnName: id        
+        logo:
+            targetEntity: Krombox\MainBundle\Entity\PlaceImage
+            cascade: ["persist", "merge"]
+            orphanRemoval: true
+            joinColumn:
+                name: logo_id
+                referencedColumnName: id        
+        address:
+            targetEntity: Krombox\MainBundle\Entity\PlaceAddress
+            cascade: ["persist", "merge"]
+            orphanRemoval: true
+            joinColumn:
+                name: address_id
+                referencedColumnName: id
+#        membership:
+#            targetEntity: Krombox\MainBundle\Entity\Membership
+#            joinColumn:
+#                name: membership_id
+#                referencedColumnName: id
+            #orphanRemoval: true        
+    oneToMany:
+#        placeImages:
+#            targetEntity: Krombox\MainBundle\Entity\PlaceHallImage
+#            mappedBy: place
+#            cascade: ["persist", "merge"]
+#            orphanRemoval: true
+        businessHours:
+            targetEntity: Krombox\MainBundle\Entity\BusinessHours
+            mappedBy: place
+            cascade: ["persist", "merge"]
+            orphanRemoval: true        
+        businessHoursException:
+            targetEntity: Krombox\MainBundle\Entity\BusinessHoursException
+            mappedBy: place
+            cascade: ["persist", "merge"]
+            orphanRemoval: true    
+        ratings:
+            targetEntity: Krombox\MainBundle\Entity\Rating
+            mappedBy: place
+            cascade: ["persist", "merge"]
+            orphanRemoval: true
+        phones:
+            targetEntity: Krombox\MainBundle\Entity\Phone
+            mappedBy: place
+            cascade: ["persist", "merge"]
+            orphanRemoval: true        
+            orphanRemoval: true    
+        events:
+            targetEntity: Krombox\MainBundle\Entity\Event
+            mappedBy: place
+            cascade: ["persist", "merge"]
+            orphanRemoval: true
+        halls:
+            targetEntity: Krombox\MainBundle\Entity\Hall
+            mappedBy: place
+            cascade: ["persist", "merge"]
+            orphanRemoval: true                    
+        membershipSubscriptions:
+            targetEntity: Krombox\MainBundle\Entity\MembershipSubscription
+            mappedBy: place
+            cascade: ["persist", "merge"]
+            orphanRemoval: true
+#        placeFilterKindValue:
+#            targetEntity: Krombox\MainBundle\Entity\PlaceFilterKindValue
+#            mappedBy: place
+#            cascade: ["persist", "merge"]
+#            orphanRemoval: true    
+#        halls:
+#            targetEntity: Krombox\MainBundle\Entity\PlaceHall
+#            mappedBy: place
+#            cascade: [persist]    
+            #onUpdate: cascade
+            #onPersist: cascade
+#        placesLinked:
+#            targetEntity: Krombox\MainBundle\Entity\PLaceLinked
+#            mappedBy: place
+#            cascade: ["persist", "merge"]
+#            orphanRemoval: true
+    manyToOne:
+        user:
+            targetEntity: Krombox\UserBundle\Entity\User
+            inversedBy: places
+            joinColumn:
+                name: user_id
+                referencedColumnName: id
+                onDelete: cascade
+                onUpdate: cascade
+#        category:
+#            targetEntity: Krombox\MainBundle\Entity\Category
+#            inversedBy: places
+#            joinColumn:
+#                name: category_id
+#                referencedColumnName: id
+#                onDelete: cascade
+#                onUpdate: cascade        
+                
+    manyToMany:
+        categories:
+            targetEntity: Krombox\MainBundle\Entity\Category
+            inversedBy: places            
+            joinColumns:
+                 place_id:
+                 referencedColumnName: id
+            inverseJoinColumns:
+                 category_id:
+                 referencedColumnName: id
+        placeFilterValues:
+            targetEntity: Krombox\MainBundle\Entity\PlaceFilterValue
+            inversedBy: places            
+            joinColumns:
+                 place_id:
+                 referencedColumnName: id
+            inverseJoinColumns:
+                 place_filter_value_id:
+                 referencedColumnName: id
+        services:
+            targetEntity: Krombox\MainBundle\Entity\Service
+            inversedBy: places            
+            joinColumns:
+                 place_id:
+                 referencedColumnName: id
+            inverseJoinColumns:
+                 service_id:
+                 referencedColumnName: id         
+        kitchens:
+            targetEntity: Krombox\MainBundle\Entity\Kitchen
+            inversedBy: places            
+            joinColumns:
+                 place_id:
+                 referencedColumnName: id
+            inverseJoinColumns:
+                 kitchen_id:
+                 referencedColumnName: id
+        menu:
+            targetEntity: Krombox\MainBundle\Entity\Menu
+            inversedBy: places            
+            joinColumns:
+                 place_id:
+                 referencedColumnName: id
+            inverseJoinColumns:
+                 menu_id:
+                 referencedColumnName: id                 
+        placesLinked:
+            targetEntity: Krombox\MainBundle\Entity\Place
+            #inversedBy: places
+            joinTable:
+                name: place_linked
+                joinColumns:
+                    place_id:
+                        referencedColumnName: id
+                inverseJoinColumns:
+                    place_linked_id:
+                        referencedColumnName: id        
+#        events:
+#            targetEntity: Krombox\MainBundle\Entity\Event
+#            mappedBy: places                
+    lifecycleCallbacks: {}
+        #

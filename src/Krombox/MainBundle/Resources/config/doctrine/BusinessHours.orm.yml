@@ -1,0 +1,38 @@
+Krombox\MainBundle\Entity\BusinessHours:
+    type: entity    
+    table: business_hours
+    #repositoryClass: DDI\MainBundle\Repository\NewsRepository    
+    id:
+        id:
+            type: integer
+            generator: { strategy: IDENTITY }    
+    fields:
+        dayMonday:
+            type: boolean
+        dayTuesday:
+            type: boolean
+        dayWednesday:
+            type: boolean
+        dayThursday:
+            type: boolean
+        dayFriday:
+            type: boolean
+        daySaturday:
+            type: boolean
+        daySunday:
+            type: boolean        
+        startsAt:
+            type: time
+        endsAt:
+            type: time
+        
+    manyToOne:
+        place:
+            targetEntity: Krombox\MainBundle\Entity\Place
+            inversedBy: businessHours
+            joinColumn:
+                name: place_id
+                referencedColumnName: id
+                onDelete: cascade
+                onUpdate: cascade
+    lifecycleCallbacks: {  }

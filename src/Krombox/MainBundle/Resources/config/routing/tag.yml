@@ -1,0 +1,5 @@
+tags_feed:    
+    path:     feed/tags
+    defaults: { _controller: KromboxMainBundle:MyTag:getFeed }
+    options:
+        expose: true

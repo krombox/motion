@@ -1,0 +1,21 @@
+Krombox\MainBundle\Entity\PlaceTranslation:
+    type: entity    
+    table: place_translation
+    #repositoryClass: DDI\MainBundle\Repository\NewsRepository    
+            
+    fields:        
+        name:
+            type: string
+            nullable: false
+        description:
+            type: text
+            nullable: false    
+#    manyToOne:
+#        media:
+#            targetEntity: Application\Sonata\MediaBundle\Entity\Media
+#            joinColumn:
+#                name: img_id
+#                referencedColumnName: id
+#                onDelete: cascade
+#                onUpdate: cascade
+    lifecycleCallbacks: {  }

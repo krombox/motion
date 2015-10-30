@@ -1,0 +1,134 @@
+services:
+#    krombox_main.example:
+#        class: Krombox\MainBundle\Example
+#        arguments: [@service_id, "plain_value", %parameter%]    
+#    krombox.image_type_extension:
+#        class: Krombox\CommonBundle\Form\Extension\ImageTypeExtension
+#        tags:
+#            - { name: form.type_extension, alias: file }
+    
+#    krombox.eav_type_extension:
+#        class: Krombox\MainBundle\Form\Extension\EAVTypeExtension
+#        tags:
+#            - { name: form.type_extension, alias: file }
+    #DIRECTORY NAMER
+    place_hall_image_directory_namer:
+        class: Krombox\MainBundle\Helper\PlaceHallImageDirectoryNamer
+        
+    event_image_directory_namer:
+        class: Krombox\MainBundle\Helper\EventImageDirectoryNamer
+        
+    place_image_directory_namer:
+        class: Krombox\MainBundle\Helper\PlaceImageDirectoryNamer
+        
+    category_image_directory_namer:
+        class: Krombox\MainBundle\Helper\CategoryImageDirectoryNamer    
+        
+    my.remote_loader:
+        class: Krombox\MainBundle\Helper\RemoteStreamLoader        
+        tags:
+            - { name: liip_imagine.binary.loader, loader: my_remote_loader }
+            
+    my.remote_resolver:
+        class: Krombox\MainBundle\Helper\RemoteCacheResolver
+        arguments: [@filesystem, @router.request_context, %kernel.root_dir%/../web]
+        tags:
+            - { name: liip_imagine.cache.resolver, resolver: my_remote_resolver }
+            
+#    redis.manager:
+#        class: Krombox\MainBundle\Service\RedisManager
+#        arguments: [@snc_redis.default, @security.context]        
+            
+    #FORM
+    main_bundle.form.type.category:
+        class: Krombox\MainBundle\Form\Type\CategoryType
+        tags:
+            - { name: form.type, alias: category }
+    
+    main_bundle.form.type.map:
+        class: Krombox\MainBundle\Form\Type\MapType        
+        tags:
+            - { name: form.type, alias: map }
+            
+    main_bundle.form.type.my_tag:
+        class: Krombox\MainBundle\Form\Type\MyTagType        
+        arguments: ["@doctrine.orm.entity_manager"]
+        tags:
+            - { name: form.type, alias: my_tag }
+    
+    main_bundle.form.type.image_file:
+        class: Krombox\MainBundle\Form\Type\ImageFileType        
+        #arguments: ["@doctrine.orm.entity_manager"]
+        tags:
+            - { name: form.type, alias: image_file }
+            
+    main_bundle.form.type.images_dropzone:
+        class: Krombox\MainBundle\Form\Type\ImagesDropzoneType        
+        arguments: ["@doctrine.orm.entity_manager"]
+        tags:
+            - { name: form.type, alias: images_dropzone }
+            
+    main_bundle.form.type.eav:
+        class: Krombox\MainBundle\Form\Type\EAVType        
+        arguments: ["@doctrine.orm.entity_manager"]
+        tags:
+            - { name: form.type, alias: eav }        
+            
+    main_bundle.form.type.clock_picker:
+        class: Krombox\MainBundle\Form\Type\ClockPickerType        
+        arguments: ["@doctrine.orm.entity_manager"]
+        tags:
+            - { name: form.type, alias: clock_picker }        
+            
+    main_bundle.form.type.search.place:
+        class: Krombox\MainBundle\Form\Type\Search\PlaceSearchType
+        tags:
+            - { name: form.type, alias: place_search_type }
+    
+    #FLOW
+    main_bundle.form.flow.new_place:
+        class: Krombox\MainBundle\Form\Flow\NewPlaceFlow
+        parent: craue.form.flow
+        scope: request
+            
+    #LISTENERS
+#    place.subscriber:
+#        class: Krombox\MainBundle\EventListener\PlaceSubscriber
+#        arguments: ['@service_container']
+##        tags:
+##            - { name: doctrine.event_subscriber }
+#        tags:
+#            - { name: kernel.event_subscriber }            
+            
+    local_event.subscriber:
+        class: Krombox\MainBundle\EventListener\LocalEventSubscriber
+        arguments: ['@service_container']
+        tags:
+            - { name: doctrine.event_subscriber }        
+    
+    #SECURITY
+    security.access.place_voter:
+        class:      Krombox\MainBundle\Security\Authorization\Voter\PlaceVoter
+        public:     false
+        tags:
+           - { name: security.voter }
+           
+    security.access.event_voter:
+        class:      Krombox\MainBundle\Security\Authorization\Voter\EventVoter
+        public:     false
+        tags:
+           - { name: security.voter }       
+        
+            
+#    my.remote_cache_manager:
+#        class: Krombox\MainBundle\Helper\RemoteCacheManager
+#        arguments: [@liip_imagine.filter.configuration, @router, @event_dispatcher,%ultraimg_base_url%]
+##        tags:
+##            - { name: liip_imagine.cache.resolver, resolver: my_remote_resolver }        
+#            
+#    custom.imagine_extension:
+#        class: Krombox\MainBundle\Twig\MyImagineExtension
+#        public: false
+#        arguments: [@my.remote_cache_manager]
+#        tags:
+#            - { name: twig.extension }        

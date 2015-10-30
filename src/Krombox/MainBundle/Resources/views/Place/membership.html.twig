@@ -1,0 +1,49 @@
+{% extends 'KromboxMainBundle:Layout:layout.html.twig' %}
+
+{% block main_content %} 
+    
+    {#{% for k, v in {
+        'silver': 'SILVER',
+        'gold' : 'GOLD'
+    } %}#}
+    {#{% for membership in membershipList %}
+        <a class="btn btn-info" href="{{ path('place_membership_change', {'slug' : place.slug, 'name' : membership.name }) }}">{{ membership.name }}</a>
+    {% endfor %}#}
+    
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                {% for membership in membershipList %}
+                    <td>
+                        <p>
+                            <strong>{{ membership.name }}</strong>
+                            <span>{% if place.membership == membership %}({% trans %}current.membership{% endtrans %}){% endif %}</span>
+                        </p>
+                        <p>{{ membership.price }} {% trans %}uah{% endtrans %}</p>
+                        <p>{% trans %}per.day{% endtrans %}
+                    </td>
+                {% endfor %}            
+            </tr>
+        </thead>
+        
+        <tr>
+            {% for membership in membershipList %}
+                <td>
+                    {% set class = '' %}
+                    {% if membership.price == 0 %}{% set class = 'disabled' %}{% endif %}
+                    {% if place.membership == membership %}
+                        
+                        {#<a class="btn btn-default disabled">{% trans %}current.membership{% endtrans %}</a>#}
+                        <a class="btn btn-success {{ class }}" href="{{ path('place_membership_extend', {'slug' : place.slug, 'name' : membership.name }) }}">{% trans %}extend{% endtrans %}</a>
+                    {% else %}
+                        <a class="btn btn-info {{ class }}" href="{{ path('place_membership_change', {'slug' : place.slug, 'name' : membership.name }) }}">{% trans %}change{% endtrans %}</a>
+                    {% endif %}
+                </td>
+            {% endfor %}            
+        </tr>
+    </table>
+    
+    
+    {#<a href="{{ path('place_membership_invoice', {'place' : place.slug, 'type' :  }) }}" class="btn btn-info">SILVER</a>
+    <a href="#" class="btn btn-info">GOLD</a>#}
+{% endblock %}        

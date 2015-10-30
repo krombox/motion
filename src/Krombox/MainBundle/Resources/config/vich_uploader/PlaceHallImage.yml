@@ -1,0 +1,4 @@
+Krombox\MainBundle\Entity\PlaceHallImage:
+    image:
+        mapping:           place_hall_image
+        filename_property: file_name

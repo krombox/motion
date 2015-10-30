@@ -1,0 +1,97 @@
+Krombox\MainBundle\Entity\Event:
+    type: entity    
+    table: event
+    repositoryClass: Krombox\MainBundle\Repository\EventsRepository
+    id:
+        id:
+            type: integer
+            generator: { strategy: IDENTITY }    
+    fields:    
+        name:
+            type: string
+            nullable: false
+        description:
+            type: text
+            nullable: false
+        startDate:
+            type: date
+            nullable: false
+        endDate:
+            type: date
+            nullable: true
+        startTime:
+            type: time
+            nullable: false
+        endTime:
+            type: time
+            nullable: true    
+        status:
+            type: StatusType
+            nullable: false
+        priceLow:
+            type: float
+        priceHigh:
+            type: float    
+        hash:
+            type: string               
+        file_name:      string
+        
+    manyToOne:
+        user:
+            targetEntity: Krombox\UserBundle\Entity\User
+            inversedBy: places
+            joinColumn:
+                name: user_id
+                referencedColumnName: id
+                onDelete: cascade
+                onUpdate: cascade
+                
+        place:
+            targetEntity: Krombox\MainBundle\Entity\Place
+            inversedBy: events
+            joinColumn:
+                name: place_id
+                referencedColumnName: id
+                onDelete: cascade
+                onUpdate: cascade
+    oneToOne:
+        address:
+            targetEntity: Krombox\MainBundle\Entity\EventAddress
+            cascade: ["persist", "merge"]
+            orphanRemoval: true
+            joinColumn:
+                name: address_id
+                referencedColumnName: id
+    manyToMany:
+#        places:
+#            targetEntity: Krombox\MainBundle\Entity\Place
+#            inversedBy: events
+#            joinTable:
+#                name: event_place
+#                joinColumns:
+#                    event_id:
+#                        referencedColumnName: id
+#                inverseJoinColumns:
+#                    place_id:
+#                        referencedColumnName: id    
+        tags:
+            targetEntity: Krombox\MainBundle\Entity\MyTag
+            inversedBy: events            
+            joinColumns:
+                 event_id:
+                 referencedColumnName: id
+            inverseJoinColumns:
+                 tag_id:
+                 referencedColumnName: id
+                 
+#        categories:
+#            targetEntity: Krombox\MainBundle\Entity\Category
+#            inversedBy: events            
+#            joinColumns:
+#                 event_id:
+#                 referencedColumnName: id
+#            inverseJoinColumns:
+#                 category_id:
+#                 referencedColumnName: id         
+    lifecycleCallbacks: {}
+        #

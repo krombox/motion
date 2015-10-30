@@ -1,0 +1,35 @@
+{% extends 'KromboxMainBundle:Layout:layout.html.twig' %}
+
+{#{% form_theme form 
+    'bootstrap_3_layout.html.twig'
+    'KromboxMainBundle::jquery.collection.html.twig'
+%}#}
+
+{% block main_content %}
+    <div class="row">
+        <div class="col-lg-10 col-lg-offset-2">
+            {#{{ render(controller('KromboxMainBundle:Category:categoriesList', {'type': 'place'})) }} #}
+        </div>
+    </div>
+    {#{% include 'KromboxMainBundle:Place/partial:placesList.html.twig' with {'places': places, 'placeSearchForm' : placeSearchForm } %}#}
+    {% include 'KromboxMainBundle:Place/partial:placesList.html.twig' with {'places': places, 'filterForm' : filterForm } %}
+    
+    <script>
+        $(document).ready(function(){
+            $('#main-content').on('click', '.filter-form-wrapper input', function(){
+                console.log($(this).closest('form'), 'form', $(this));
+                var form = $(this).parents('form');
+                
+                $.ajax({
+                    type: form.attr('method'),
+                    url: form.attr('action'),
+                    data: form.serialize(),
+                    complete     : function(data) {
+                        console.log( data );
+                        $('#main-content .places-wrapper').html(data.responseText);
+                    }
+                })
+            });
+        });
+    </script>
+{% endblock %}

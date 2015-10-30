@@ -1,0 +1,11 @@
+{#{% use "form_div_layout.html.twig" %}#}
+{% import "KromboxMainBundle::macro.html.twig" as macro -%}
+
+{% use "bootstrap_3_layout.html.twig" %}
+
+{% block checkbox_label -%}
+    {% import "KromboxMainBundle::macro.html.twig" as macro -%}
+    
+    {{- block('checkbox_radio_label') -}}    
+    {#{{ macro.filter_facet(form) }}#}
+{%- endblock checkbox_label %}

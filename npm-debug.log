@@ -1,0 +1,190 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/bin/node', '/usr/bin/npm', 'install', 'elasticdump', '-g' ]
+2 info using npm@1.4.28
+3 info using node@v0.10.37
+4 verbose node symlink /usr/bin/node
+5 verbose cache add [ 'elasticdump', null ]
+6 verbose cache add name=undefined spec="elasticdump" args=["elasticdump",null]
+7 verbose parsed url { protocol: null,
+7 verbose parsed url   slashes: null,
+7 verbose parsed url   auth: null,
+7 verbose parsed url   host: null,
+7 verbose parsed url   port: null,
+7 verbose parsed url   hostname: null,
+7 verbose parsed url   hash: null,
+7 verbose parsed url   search: null,
+7 verbose parsed url   query: null,
+7 verbose parsed url   pathname: 'elasticdump',
+7 verbose parsed url   path: 'elasticdump',
+7 verbose parsed url   href: 'elasticdump' }
+8 silly lockFile af24cf50-elasticdump elasticdump
+9 verbose lock elasticdump /home/roman/.npm/af24cf50-elasticdump.lock
+10 silly lockFile af24cf50-elasticdump elasticdump
+11 silly lockFile af24cf50-elasticdump elasticdump
+12 verbose addNamed [ 'elasticdump', '' ]
+13 verbose addNamed [ null, '*' ]
+14 silly lockFile bf898e33-elasticdump elasticdump@
+15 verbose lock elasticdump@ /home/roman/.npm/bf898e33-elasticdump.lock
+16 silly addNameRange { name: 'elasticdump', range: '*', hasData: false }
+17 verbose request where is /elasticdump
+18 verbose request registry https://registry.npmjs.org/
+19 verbose request id e17971ed42347a35
+20 verbose url raw /elasticdump
+21 verbose url resolving [ 'https://registry.npmjs.org/', './elasticdump' ]
+22 verbose url resolved https://registry.npmjs.org/elasticdump
+23 verbose request where is https://registry.npmjs.org/elasticdump
+24 info trying registry request attempt 1 at 23:14:14
+25 verbose etag "6EBJEXKXXA5KK2CPGKC8MYRIO"
+26 http GET https://registry.npmjs.org/elasticdump
+27 http 304 https://registry.npmjs.org/elasticdump
+28 silly registry.get cb [ 304,
+28 silly registry.get   { date: 'Thu, 22 Oct 2015 20:14:15 GMT',
+28 silly registry.get     via: '1.1 varnish',
+28 silly registry.get     'cache-control': 'max-age=60',
+28 silly registry.get     etag: '"6EBJEXKXXA5KK2CPGKC8MYRIO"',
+28 silly registry.get     age: '39',
+28 silly registry.get     connection: 'keep-alive',
+28 silly registry.get     'x-served-by': 'cache-fra1249-FRA',
+28 silly registry.get     'x-cache': 'HIT',
+28 silly registry.get     'x-cache-hits': '1',
+28 silly registry.get     'x-timer': 'S1445544855.025743,VS0,VE0',
+28 silly registry.get     vary: 'Accept' } ]
+29 verbose etag https://registry.npmjs.org/elasticdump from cache
+30 silly addNameRange number 2 { name: 'elasticdump', range: '*', hasData: true }
+31 silly addNameRange versions [ 'elasticdump',
+31 silly addNameRange   [ '0.0.1',
+31 silly addNameRange     '0.0.2',
+31 silly addNameRange     '0.0.3',
+31 silly addNameRange     '0.0.4',
+31 silly addNameRange     '0.0.5',
+31 silly addNameRange     '0.1.0',
+31 silly addNameRange     '0.2.0',
+31 silly addNameRange     '0.2.1',
+31 silly addNameRange     '0.2.3',
+31 silly addNameRange     '0.2.4',
+31 silly addNameRange     '0.2.5',
+31 silly addNameRange     '0.3.0',
+31 silly addNameRange     '0.3.1',
+31 silly addNameRange     '0.4.0',
+31 silly addNameRange     '0.5.0',
+31 silly addNameRange     '0.5.1',
+31 silly addNameRange     '0.6.0',
+31 silly addNameRange     '0.6.1',
+31 silly addNameRange     '0.6.2',
+31 silly addNameRange     '0.7.0',
+31 silly addNameRange     '0.7.1',
+31 silly addNameRange     '0.7.2',
+31 silly addNameRange     '0.7.3',
+31 silly addNameRange     '0.7.4',
+31 silly addNameRange     '0.7.5',
+31 silly addNameRange     '0.7.6',
+31 silly addNameRange     '0.7.7',
+31 silly addNameRange     '0.8.1',
+31 silly addNameRange     '0.9.0',
+31 silly addNameRange     '0.10.0',
+31 silly addNameRange     '0.11.0',
+31 silly addNameRange     '0.12.0',
+31 silly addNameRange     '0.13.0',
+31 silly addNameRange     '0.13.1',
+31 silly addNameRange     '0.14.1',
+31 silly addNameRange     '0.14.2',
+31 silly addNameRange     '0.14.3',
+31 silly addNameRange     '0.14.4',
+31 silly addNameRange     '0.14.5',
+31 silly addNameRange     '0.14.6',
+31 silly addNameRange     '0.15.0',
+31 silly addNameRange     '0.16.0' ] ]
+32 verbose addNamed [ 'elasticdump', '0.16.0' ]
+33 verbose addNamed [ '0.16.0', '0.16.0' ]
+34 silly lockFile 5f2775f4-elasticdump-0-16-0 elasticdump@0.16.0
+35 verbose lock elasticdump@0.16.0 /home/roman/.npm/5f2775f4-elasticdump-0-16-0.lock
+36 silly lockFile 5f2775f4-elasticdump-0-16-0 elasticdump@0.16.0
+37 silly lockFile 5f2775f4-elasticdump-0-16-0 elasticdump@0.16.0
+38 silly lockFile bf898e33-elasticdump elasticdump@
+39 silly lockFile bf898e33-elasticdump elasticdump@
+40 silly resolved [ { author: { name: 'Evan Tahler', email: 'evantahler@gmail.com' },
+40 silly resolved     name: 'elasticdump',
+40 silly resolved     description: 'import and export tools for elasticsearch',
+40 silly resolved     version: '0.16.0',
+40 silly resolved     repository:
+40 silly resolved      { type: 'git',
+40 silly resolved        url: 'git://github.com/taskrabbit/elasticsearch-dump.git' },
+40 silly resolved     main: 'elasticdump.js',
+40 silly resolved     keywords:
+40 silly resolved      [ 'elasticsearch',
+40 silly resolved        'dump',
+40 silly resolved        'elasticdump',
+40 silly resolved        'import',
+40 silly resolved        'export',
+40 silly resolved        'transfer',
+40 silly resolved        'migrate',
+40 silly resolved        'migartion',
+40 silly resolved        'elasitic',
+40 silly resolved        'cluster',
+40 silly resolved        'elastic-dump',
+40 silly resolved        'elastic dump' ],
+40 silly resolved     engines: { node: '>=0.9.0' },
+40 silly resolved     dependencies:
+40 silly resolved      { optimist: 'latest',
+40 silly resolved        request: '2.x.x',
+40 silly resolved        JSONStream: '0.9.x',
+40 silly resolved        'line-reader': '0.2.x' },
+40 silly resolved     devDependencies: { mocha: 'latest', should: 'latest' },
+40 silly resolved     bin:
+40 silly resolved      { elasticdump: './bin/elasticdump',
+40 silly resolved        multielasticdump: './bin/multielasticdump' },
+40 silly resolved     scripts: { test: 'mocha' },
+40 silly resolved     gitHead: 'ef2a95ffa34575650c5412f0761233d735189aa5',
+40 silly resolved     bugs: { url: 'https://github.com/taskrabbit/elasticsearch-dump/issues' },
+40 silly resolved     homepage: 'https://github.com/taskrabbit/elasticsearch-dump#readme',
+40 silly resolved     _id: 'elasticdump@0.16.0',
+40 silly resolved     _shasum: '3f26ac4ee24cc3c110c0ecc79b3b4b0d101bf421',
+40 silly resolved     _from: 'elasticdump@',
+40 silly resolved     _npmVersion: '2.14.2',
+40 silly resolved     _nodeVersion: '0.12.7',
+40 silly resolved     _npmUser: { name: 'evantahler', email: 'evan@evantahler.com' },
+40 silly resolved     dist:
+40 silly resolved      { shasum: '3f26ac4ee24cc3c110c0ecc79b3b4b0d101bf421',
+40 silly resolved        tarball: 'http://registry.npmjs.org/elasticdump/-/elasticdump-0.16.0.tgz' },
+40 silly resolved     maintainers: [ [Object], [Object], [Object] ],
+40 silly resolved     directories: {},
+40 silly resolved     _resolved: 'https://registry.npmjs.org/elasticdump/-/elasticdump-0.16.0.tgz',
+40 silly resolved     readme: 'ERROR: No README data found!' } ]
+41 info install elasticdump@0.16.0 into /usr/lib
+42 info installOne elasticdump@0.16.0
+43 verbose lib/node_modules/elasticdump unbuild
+44 verbose tar unpack /home/roman/.npm/elasticdump/0.16.0/package.tgz
+45 silly lockFile fc56f408-usr-lib-node-modules-elasticdump tar:///usr/lib/node_modules/elasticdump
+46 verbose lock tar:///usr/lib/node_modules/elasticdump /home/roman/.npm/fc56f408-usr-lib-node-modules-elasticdump.lock
+47 silly lockFile 9853eab1-m-elasticdump-0-16-0-package-tgz tar:///home/roman/.npm/elasticdump/0.16.0/package.tgz
+48 verbose lock tar:///home/roman/.npm/elasticdump/0.16.0/package.tgz /home/roman/.npm/9853eab1-m-elasticdump-0-16-0-package-tgz.lock
+49 silly gunzTarPerm modes [ '775', '664' ]
+50 error Error: EACCES, mkdir '/usr/lib/node_modules/elasticdump'
+50 error  { [Error: EACCES, mkdir '/usr/lib/node_modules/elasticdump']
+50 error   errno: 3,
+50 error   code: 'EACCES',
+50 error   path: '/usr/lib/node_modules/elasticdump',
+50 error   fstream_type: 'Directory',
+50 error   fstream_path: '/usr/lib/node_modules/elasticdump',
+50 error   fstream_class: 'DirWriter',
+50 error   fstream_stack:
+50 error    [ '/usr/lib/node_modules/npm/node_modules/fstream/lib/dir-writer.js:36:23',
+50 error      '/usr/lib/node_modules/npm/node_modules/mkdirp/index.js:46:53',
+50 error      'Object.oncomplete (fs.js:108:15)' ] }
+51 error Please try running this command again as root/Administrator.
+52 error System Linux 3.13.0-45-generic
+53 error command "/usr/bin/node" "/usr/bin/npm" "install" "elasticdump" "-g"
+54 error cwd /var/www/motion
+55 error node -v v0.10.37
+56 error npm -v 1.4.28
+57 error path /usr/lib/node_modules/elasticdump
+58 error fstream_path /usr/lib/node_modules/elasticdump
+59 error fstream_type Directory
+60 error fstream_class DirWriter
+61 error code EACCES
+62 error errno 3
+63 error stack Error: EACCES, mkdir '/usr/lib/node_modules/elasticdump'
+64 error fstream_stack /usr/lib/node_modules/npm/node_modules/fstream/lib/dir-writer.js:36:23
+64 error fstream_stack /usr/lib/node_modules/npm/node_modules/mkdirp/index.js:46:53
+64 error fstream_stack Object.oncomplete (fs.js:108:15)
+65 verbose exit [ 3, true ]

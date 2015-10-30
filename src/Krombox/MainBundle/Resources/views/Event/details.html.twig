@@ -1,0 +1,87 @@
+{% extends 'KromboxMainBundle:Layout:layout.html.twig' %}
+
+{% block header %}
+    {{ parent()}}
+    
+    {#{% block stylesheets %}            
+        <link href="{{ asset('bower/fullcalendar/dist/fullcalendar.min.css') }}" rel="stylesheet" type="text/css" />        
+    {% endblock %}
+
+    {% block javascripts_head %}        
+        <script src="{{ asset('bower/fullcalendar/dist/fullcalendar.min.js') }}"></script>        
+    {% endblock %}#}
+{% endblock %}
+    
+{% block main_content %}    
+<div class="event">
+    <h2>{{ entity.getName }}</h2>
+    <p>{{ entity.startDate | date('Y-m-d') }} | {{ entity.startTime | date('H:i') }}</p>
+    {% if entity.endDate is not empty %}
+        <p>{{ entity.endDate | date('Y-m-d') }} | {{ entity.endTime | date('H:i') }}</p>
+    {% endif %}
+        
+    {#<p><strong>{% trans %}categories{% endtrans %}: </strong>{{ entity.getCategoriesName | join(',') }}{% if entity.is24h %}<span class="label label-danger">{% trans %}24h{% endtrans %}</span>{% endif %}</p>
+    <p><strong>{% trans %}address{% endtrans %}: </strong> {{ entity.address }}</p>#}
+    
+    {#<p>
+        <strong>{% trans %}business_hours{% endtrans %}: </strong>
+        {% for bHours in entity.businessHours %}
+            <span class="fromDay">{{ bHours.fromDay |readable('DayType') | trans({})}}</span> - <span class="toDay">{{ bHours.toDay |readable('DayType') | trans({}) }}</span>
+            <span class="fromTime">{{ bHours.fromTime | date('H:i') }}</span> - <span class="toTime">{{ bHours.toTime | date('H:i') }}</span>,                        
+        {% endfor %}    
+        {% if entity.isWorkingNow() %}<span class="label label-warning">работает сейчас!</span>{% endif %}
+    </p>#}
+    {#<p>
+        {% if entity.birthdayDiscount > 0 %}<strong>{% trans %}birtday.discount{% endtrans %}: </strong> {{ entity.birthdayDiscount }}%{% endif %}        
+    </p>
+    <p>
+        {% if entity.serviceComission > 0 %}<strong>{% trans %}service.comission{% endtrans %}: </strong> {{ entity.serviceComission }}%{% endif %}        
+    </p>
+    <p>
+        <strong>{% trans %}number.of.seats{% endtrans %}: </strong> {{ entity.numberOfSeats }}
+    </p>#}
+    {#{% for img in entity.getPlaceImages %}                            
+        <img src="{{ generateImageUrl(img.fileName, 'place_image') | imagine_filter('place_image_thumb') }}" alt="" />
+    {% endfor %}#}
+    <div class="image">
+        <img src="{{ generateImageUrl(entity.fileName, 'event_image') | imagine_filter('place_image_thumb') }}" alt="" />
+    </div>
+    <p>{{ entity.getDescription }}</p>
+    {{ macro.event_price(entity) }}
+    <p><span>{% trans %} location {% endtrans %}: </span>{% if entity.address is not empty %}{{ entity.address.city }}{% else %}<a href="{{ path('place_details', {'slug':entity.place.slug}) }}">{{ entity.place.name }}</a></p>{% endif %}
+    {% if entity.tags is defined %}
+        <p><span>{% trans %} tags {% endtrans %}: </span>
+            {% for tag in entity.tags %}
+                <a href="#">{{ tag }}</a>,
+            {% endfor %}
+        </p>
+        
+    {% endif %}
+        
+    {#{% if entity.placesLinked is not empty %}
+    <p>
+        <strong>{% trans %}place.linked.with{% endtrans %}: </strong>
+        {% for placeLinked in entity.placesLinked %}
+            <a href="{{ path('place_details', {'slug': placeLinked.slug})  }}">{{ placeLinked.name }}</a>,
+        {% endfor %}    
+    </p>
+    {% endif %}#}
+    {#<div class="likes-wrapper row">
+        {{ macro.likes_widget(entity) }}
+    </div>
+    
+    <div class="bisinessHours">                
+        {{ macro.busuness_hours_widget(entity) }}        
+    </div>#}
+    
+    {#<div class="events">
+        {% for event in entity.events if entity.events is not empty %}
+            <a href="{{path('event_details', {'slug': event.slug})}}">{{event.name}}</a>,
+        {% endfor %}
+    </div>
+    <div class="calendar-wrapper">
+        {{ macro.calendar_widget(entity) }}
+    </div>#}
+    
+</div>
+{% endblock %}

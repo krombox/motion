@@ -1,0 +1,23 @@
+Krombox\MainBundle\Entity\MyTag:
+    type: entity    
+    table: my_tag
+    #repositoryClass: DDI\MainBundle\Repository\NewsRepository    
+    id:
+        id:
+            type: integer
+            generator: { strategy: IDENTITY }
+    
+    fields:
+        name:
+            type: string
+            nullable: false        
+        
+#    oneToMany:
+#        features:
+#            targetEntity: Feature
+#            mappedBy: product
+    manyToMany:        
+        events:
+            targetEntity: Krombox\MainBundle\Entity\Event
+            mappedBy: tags
+    lifecycleCallbacks: {  }
