@@ -44,7 +44,7 @@ class PlaceControllerTest extends WebTestCase
         return $client;
     }
     
-    public function qtestEditAsNotOwner()
+    public function testEditAsNotOwner()
     {        
         $client = $this->logInAsUser('user', 'user');
         
@@ -62,7 +62,7 @@ class PlaceControllerTest extends WebTestCase
         );                        
     }
     
-    public function qtestEditAsOwner()
+    public function testEditAsOwner()
     {        
         $client = $this->logInAsUser('admin', 'admin');
         
