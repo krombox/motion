@@ -31,7 +31,8 @@ class EAVTransformer implements DataTransformerInterface
      * @return string
      */
     public function transform($collection)
-    {   
+    {return [];
+        var_dump($collection);die();
 //        foreach ($collection as $c){
 //            var_dump($c->getValue());
 //        }die();

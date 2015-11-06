@@ -88,6 +88,20 @@ class PlaceRepository extends Repository
 //                )
 //            ));
 //        }
+        
+        $boolQuery->addMust(new \Elastica\Query\Range('businessHours.startsAt',
+                array(
+                    //'gte' => \Elastica\Util::convertDate($articleSearch->getDateFrom()->getTimestamp()),
+                    'lte' => 'now'
+                ))
+        );
+        
+//        $boolQuery->addMust(new \Elastica\Query\Range('businessHours.startsAt',
+//                array(
+//                    //'gte' => \Elastica\Util::convertDate($articleSearch->getDateFrom()->getTimestamp()),
+//                    'lte' => 'now'
+//                ))
+//        );
 //
         // Published or not filter
         if($placeSearch->getIs24h() !== null && $placeSearch->getIs24h()){
@@ -156,53 +170,79 @@ class PlaceRepository extends Repository
     
     $queryStatus = new \Elastica\Query\Match();
     $queryStatus->setFieldQuery('place.status', StatusType::VALIDATED);
-    $boolQuery->addMust($queryStatus);                  
-    ##AGGREGATION - FACETED##
-    $aggregServices = new \Elastica\Aggregation\Terms('services');
-    $aggregServices->setField('services.slug');    
-    $aggregServices->setSize(0);
+    $boolQuery->addMust($queryStatus);
     
-    $aggregMenu = new \Elastica\Aggregation\Terms('menu');
-    $aggregMenu->setField('menu.slug');    
-    $aggregMenu->setSize(0);
+    $queryCategory = new \Elastica\Query\Match();
+    $queryCategory->setFieldQuery('place.categories.slug', $category->getSlug());
+    $boolQuery->addMust($queryCategory);
+        
+    $now = new \DateTime();    
+    $boolQuery->addMust(new \Elastica\Query\Range('businessHours.timeStartsAt',
+                array('lte' => $now->format('H:i:s')))
+    );
+    $boolQuery->addMust(new \Elastica\Query\Range('businessHours.timeEndsAt',
+                array('gte' => $now->format('H:i:s')))
+    );
+    ##AGGREGATION - FACETED##
+//    $aggregServices = new \Elastica\Aggregation\Terms('services');
+//    $aggregServices->setField('services.slug');    
+//    $aggregServices->setSize(0);
+//    
+//    $aggregMenu = new \Elastica\Aggregation\Terms('menu');
+//    $aggregMenu->setField('menu.slug');    
+//    $aggregMenu->setSize(0);
+    $aggregFilters = new \Elastica\Aggregation\Terms('filters');
+    $aggregFilters->setField('placeFilterValues.slug');    
+    $aggregFilters->setSize(0);        
     
     
     $this->addCollections($boolQuery, $filter);
-    var_dump($boolQuery->getParams()['must']);
-    $boolFilter = new \Elastica\Filter\Bool();  
-    //$active = new \Elastica\Filter\Term(['membershipSubscriptions.m_status' => MembershipStatusType::ACTIVE]);
-    $active = new \Elastica\Filter\Term(['membershipSubscriptions.m_status' => MembershipStatusType::ACTIVE]);
-    $boolFilter->addMust($active);
     
-    //$boolQuery->
+    $boolFilter = new \Elastica\Filter\Bool();      
+        
     $filtered = new \Elastica\Query\Filtered($boolQuery, $boolFilter);
     $query = \Elastica\Query::create($filtered);
         
-    $query->addAggregation($aggregServices);
-    $query->addAggregation($aggregMenu);
+    $query->addAggregation($aggregFilters);
+    //$query->addAggregation($aggregMenu);
     
     //$query = $elasticaQuery;    
     //$query->addSort(array('membershipSubscriptions.m_status' => 'desc'));
-    $query->addSort(array('membershipSubscriptions.membership.score' => 'desc'));    
+    $query->addSort(array('membershipSubscriptions.membership.score' => array(
+        'nested_filter' => array('term' => array('membershipSubscriptions.m_status' => MembershipStatusType::ACTIVE)),
+        'order' => 'desc'
+    )));    
       
     //var_dump(json_encode($query->getQuery(), JSON_PRETTY_PRINT));die();
     //$ob = $query->toArray()['query']['filtered']['query']['bool'];
     //var_dump($query->getParams()['query']['filtered']['query']['bool'], $ob, $query->getQuery()['filtered']['query']['bool']);die();
-    
+    //var_dump($query->getQuery());die();
     return $elasticaResultSet = $this->findPaginated($query);    
     }
     
     protected function addCollections($query, $filter){                
-        foreach($filter->getProperties() as $k => $v){
-            $method = 'get' . ucfirst($k);            
-            if($filter->$method() != null && !$filter->$method()->isEmpty()){                
-                foreach ($filter->$method() as $item){                                    
+//        foreach($filter->getProperties() as $k => $v){
+//            $method = 'get' . ucfirst($k);    
+//            var_dump($method);
+//            if($filter->$method() != null && !$filter->$method()->isEmpty()){                
+//                foreach ($filter->$method() as $item){                                    
+//                    $term = new \Elastica\Query\Match();                
+//                    $term->setFieldQuery($k . '.slug', $item->getSlug());        
+//                    $query->addMust($term);
+//                }
+//            }
+//        }
+//        foreach($filter->getProperties() as $k => $v){
+//            $method = 'get' . ucfirst($k);    
+            //var_dump($filter);die();
+            if($filter->getFilters() != null && !empty($filter->getFilters())){
+                foreach ($filter->getFilters() as $item){                                            
                     $term = new \Elastica\Query\Match();                
-                    $term->setFieldQuery($k . '.slug', $item->getSlug());        
+                    $term->setFieldQuery('placeFilterValues.slug', $item);        
                     $query->addMust($term);
                 }
             }
-        }        
+//        }
     }
 
 }

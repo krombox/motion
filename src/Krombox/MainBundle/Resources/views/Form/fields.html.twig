@@ -180,6 +180,7 @@
 
 
 {% block entity_filter_widget %}
+    <div class="filterValues">
     {#{{ dump(form) }}#}
     {% set label = '' %}
     {% for child in form.children %}        
@@ -187,9 +188,11 @@
             <label>{{ child.vars.filter_kind }}</label>
             {% set label = child.vars.filter_kind %}
         {% endif %}
+        {{ form_label(child) }}
         {{ form_widget(child) }}
         {#{{ dump(child.vars) }}#}
     {% endfor %}
+    </div>
 {% endblock %}
 
     

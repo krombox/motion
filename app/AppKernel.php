@@ -35,6 +35,7 @@ class AppKernel extends Kernel
             new JMS\DiExtraBundle\JMSDiExtraBundle($this),
             new JMS\AopBundle\JMSAopBundle(),
             new Fresh\DoctrineEnumBundle\FreshDoctrineEnumBundle(),
+            new Ivory\OrderedFormBundle\IvoryOrderedFormBundle(),
             new Ivory\GoogleMapBundle\IvoryGoogleMapBundle(),
             new Cocur\Slugify\Bridge\Symfony\CocurSlugifyBundle(),
             new Lexik\Bundle\FormFilterBundle\LexikFormFilterBundle(),

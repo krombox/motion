@@ -27,7 +27,7 @@
     {% endif %}
     <p><strong>{% trans %}categories{% endtrans %}: </strong>{{ place.getCategoriesName | join(',') }}{% if place.is24h %}<span class="label label-danger">{% trans %}24h{% endtrans %}</span>{% endif %}</p>
     <p><strong>{% trans %}address{% endtrans %}: </strong> {{ macro.nice_address(place.address) }}</p>
-    {% set services = place.services %}
+    {#{% set services = place.services %}
     <p>
         {% if services.isWifi %}<span><strong>{% trans %}wifi{% endtrans %}: </strong> <span class="glyphicon glyphicon-transfer" aria-hidden="true"></span></span>{% endif %}
         {% if services.isHookah %}<span><strong>{% trans %}hookah{% endtrans %}: </strong> <span class="glyphicon glyphicon-grain" aria-hidden="true"></span></span>{% endif %}
@@ -49,7 +49,7 @@
         {% if services.isDiscountSystem %}<span><strong>{% trans %}discount.system{% endtrans %}: </strong> <i class="fa fa-gift fa-3x"></i></span>{% endif %}
         {% if services.isGameConsole %}<span><strong>{% trans %}game.console{% endtrans %}: </strong> <i class="fa fa-gamepad fa-3x"></i></span>{% endif %}
         {% if services.isBoardGame %}<span><strong>{% trans %}board.game{% endtrans %}: </strong> <i class="fa fa-trophy fa-3x"></i></span>{% endif %}        
-    </p>
+    </p>#}
     {#<p>
         <strong>{% trans %}business_hours{% endtrans %}: </strong>        
     </p>#}
@@ -79,14 +79,14 @@
         </p>
     {% endif %}
     
-    {% if place.kitchens is not empty%}
+    {#{% if place.kitchens is not empty%}
     <p>
       <strong>{% trans %}kitchens{% endtrans %}: </strong>
       {% for kitchen in place.kitchens %}
             <span><i>{{ kitchen.name | trans({})}}</i></span>,
         {% endfor %}
     </p>
-    {% endif %}
+    {% endif %}#}
     <p>
         {% if place.birthdayDiscount > 0 %}<strong>{% trans %}birtday.discount{% endtrans %}: </strong> {{ place.birthdayDiscount }}%{% endif %}        
     </p>
@@ -99,7 +99,17 @@
     {#{% for img in place.getPlaceImages %}                            
         <img src="{{ generateImageUrl(img.fileName, 'place_image') | imagine_filter('place_image_thumb') }}" alt="" />
     {% endfor %}#}
-    <p>{{ place.getDescription }}</p>    
+    <p>{{ place.getDescription }}</p>
+    
+    {% if place.placeFilterValues is not empty %}
+        <div class="panel panel-success">
+            <div class="panel-heading">{% trans %} Features {% endtrans %}</div>
+            <div class="panel-body">
+                {{ macro.filters_widget(place) }}
+            </div>
+        </div>
+    {% endif %}
+    
     {% if place.halls is not empty %}        
         <div class="panel panel-success">
             <div class="panel-heading">{% trans %} halls.list {% endtrans %}</div>

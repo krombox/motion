@@ -21,8 +21,8 @@ class BusinessHours
         SchedulableEntity;
     
     public function __construct() {        
-        DayFlaggableHelper::fillFields($this, true);        
-        $this->setStartsAt(new \DateTime());
+        //DayFlaggableHelper::fillFields($this, true);        
+        //$this->setStartsAt(new \DateTime());
     }
 
         /**
@@ -51,5 +51,15 @@ class BusinessHours
     public function getPlace()
     {
         return $this->place;
-    }    
+    }
+    
+    public function getTimeStartsAt()
+    {
+        return $this->startsAt->format('H:i:s');
+    }
+    
+    public function getTimeEndsAt()
+    {
+        return $this->endsAt->format('H:i:s');
+    }
 }

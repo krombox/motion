@@ -15,11 +15,18 @@ class PlaceFilter
 //    /** @var  \DateTime */
 //    private $availableAt;
 //    private $skills = [];
-    private $services;
+    //private $services;
     //private $relaxations = [];
     //private $kitchens = [];
-    private $menu = [];
-    
+   //private $menu = [];
+    private $filters;
+    private $businessHours;
+    private $categories = [];
+
+    public function __construct(array $categories) {
+        $this->categories = $categories;
+    }
+
     public function getProperties()
     {
         return get_object_vars($this);        
@@ -45,67 +52,48 @@ class PlaceFilter
 //        }
 //    }
 
-    /**
-     * @return array
-     */
-        
-
-    /**
-     * @return array
-     */
-    public function getServices()
+    public function getBusinessHours()
     {
-        return $this->services;
+        return $this->businessHours;
     }
 
     /**
-     * @param array $services
+     * @param array $businessHours
      */
-    public function setServices($services)
+    public function setBusinessHours($businessHours)
     {
-        $this->services = $services;
+        $this->businessHours = $businessHours;
     }
     
     /**
      * @return array
      */
-    public function getRelaxations()
+    public function getFilters()
     {
-        return $this->relaxations;
+        return $this->filters;
     }
 
     /**
-     * @param array $relaxations
+     * @param array $filters
      */
-    public function setRelaxations($relaxations)
+    public function setFilters($filters)
     {
-        $this->relaxations = $relaxations;
-    }
-    
-    public function getKitchens()
-    {
-        return $this->kitchens;
-    }
-    
-    /**
-     * @param array $kitchens
-     */
-    public function setKitchens($kitchens)
-    {
-        $this->kitchens = $kitchens;
-    }
-    
-    public function getMenu()
-    {
-        return $this->menu;
-    }
-    
-    /**
-     * @param array $menu
-     */
-    public function setMenu($menu)
-    {
-        $this->menu = $menu;
+        $this->filters = $filters;
     }
 
+    /**
+     * @return array
+     */
+    public function getCategories()
+    {
+        return $this->categories;
+    }
+
+    /**
+     * @param array $category
+     */
+    public function setCategories($categories)
+    {
+        $this->categories = $categories;
+    }        
 }

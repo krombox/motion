@@ -10,21 +10,41 @@ fos_elastica:
                         description: ~
                         status: ~
                         birthdayDiscount: ~
-#                        categories:
-#                            type: "object"
-#                            properties:
-#                                #id: ~
-#                                slug: ~
-                        services:
+                        categories:
+                            type: "object"
+                            properties:
+                                #id: ~
+                                slug: ~
+                        placeFilterValues:
                             type: "object"
                             properties:                                
                                 slug: ~
-                        menu: 
+                        businessHours:
                             type: "object"
                             properties:                                
-                                slug: ~        
+                                dayMonday: ~        
+                                dayTuesday: ~
+                                dayWednesday: ~
+                                dayThursday: ~
+                                dayFriday: ~
+                                daySaturday: ~
+                                daySunday: ~
+                                timeStartsAt:
+                                    type: "date"
+                                    format: "H:m:s"
+                                timeEndsAt:
+                                    type: "date"
+                                    format: "H:m:s"
+#                        services:
+#                            type: "object"
+#                            properties:                                
+#                                slug: ~
+#                        menu: 
+#                            type: "object"
+#                            properties:                                
+#                                slug: ~        
                         membershipSubscriptions:
-                            type: "object"
+                            type: "nested"
                             properties:                                
                                 m_status:
                                     property_path: status
@@ -97,10 +117,10 @@ fos_elastica:
                         name: ~
                         description: ~
                         status: ~                        
-                        categories:
-                            type: "object"
-                            properties:
-                                slug: ~                                                        
+#                        categories:
+#                            type: "object"
+#                            properties:
+#                                slug: ~                                                        
                     _parent:
                         type: "user"
                         property: "user"
@@ -122,16 +142,26 @@ fos_elastica:
                         name: ~
                         description: ~
                         slug: ~
-                    persistence:
-                        # the driver can be orm, mongodb or propel
-                        # listener and finder are not supported by
-                        # propel and should be removed
+                    persistence:                        
                         driver: orm
                         model: Krombox\MainBundle\Entity\Category
                         provider: ~
                         listener: ~                           
                         finder: ~
                         repository: Krombox\MainBundle\Repository\Search\PlaceRepository
+                businessHours:
+                    mappings:
+                        id: ~
+                        dayMonday: ~
+                        dayTuesday: ~
+                        dayWednesday: ~                        
+                    persistence:                        
+                        driver: orm
+                        model: Krombox\MainBundle\Entity\BusinessHours
+                        provider: ~
+                        listener: ~                           
+                        finder: ~
+                        #repository: Krombox\MainBundle\Repository\Search\PlaceRepository        
                 tag:
                     mappings:                        
                         name: ~                        

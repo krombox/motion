@@ -38,7 +38,7 @@
 <img src="{{ macro.logo(place.logo) }}" id="logo-img" class="center-block" style="width: 180px; height: 180px">
 <a href="#" class="btn btn-info btn-xs" style="font-variant: small-caps; text-align:center" data-toggle="modal" data-target="#logo_modal">edit picture</a>
 
-{{ form_start(form, {'attr': {'data-object-id': 888} }) }}
+{{ form_start(form, {'attr': {'data-object-id': place.id } }) }}
     
     {#{{ dump(form.placeFilterValues) }}#}
 
@@ -47,8 +47,8 @@
 {{ form_end(form) }}
 {% include 'KromboxMainBundle:Default/modal:logo_edit.html.twig' %}
 
-{% set place_id = null %}
-{% if place.id %}{% set place_id = place.id %}{% endif %}
+{#{% set place_id = null %}
+{% if place.id %}{% set place_id = place.id %}{% endif %}#}
     
 <script type="text/javascript">       
   $('select').select2();
@@ -63,20 +63,23 @@
             }
         });
                            
-        initEditLogoUpload('{{ logo_form.vars.id }}');
+        initEditLogoUpload('{{ logo_form.vars.id }}');                
         
-        var place_id = '{{ place_id }}';
-        console.log(place_id)
-        
-        var url = Routing.generate('filter_values_by_categories', { 'place': place_id });
-        $('#krombox_mainbundle_place_categories').change(function(){
+        var url = Routing.generate('filter_values_by_categories', { 'place': null });
+        $('#krombox_mainbundle_place_categories').change(function()
+        {
+            
             var data = {'categories': $(this).val()};
-            console.log($(this).val());
+            //console.log($(this).closest('form').data('object-id'));
+            var object_id = $(this).closest('form').data('object-id');
+            data.place = object_id;
+            
             $.ajax({
                     type: 'post',
                     url: url,
                     data: data,
                     complete     : function(data) {
+                        $('.filterValues').html(data.responseText);
                         console.log( data );
                         //$('#main-content .places-wrapper').html(data.responseText);
                     }

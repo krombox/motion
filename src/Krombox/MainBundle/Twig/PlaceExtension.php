@@ -16,17 +16,21 @@ class PlaceExtension extends \Twig_Extension
     private $container;
     
     private $busineesHoursHelper;
+    
+    private $filtermanager;
 
     /**
      * @DI\InjectParams({     
      *     "container" = @DI\Inject("service_container"),
-     *     "businessHoursHelper" = @DI\Inject("krombox.business_hours_helper")
+     *     "businessHoursHelper" = @DI\Inject("krombox.business_hours_helper"),
+     *     "filterManager" = @DI\Inject("krombox.filter_manager")
      * })
      */
-    public function __construct($container, $businessHoursHelper)
+    public function __construct($container, $businessHoursHelper, $filterManager)
     {        
         $this->container = $container;
         $this->busineesHoursHelper = $businessHoursHelper;
+        $this->filtermanager = $filterManager;
     }
 
     public function getFunctions()
@@ -34,7 +38,8 @@ class PlaceExtension extends \Twig_Extension
         return array(            
             'businessHoursSheet' => new \Twig_Function_Method($this, 'businessHoursSheet'),
             'isWorkingNow' => new \Twig_Function_Method($this, 'isWorkingNow'),
-            'placeCount' => new \Twig_Function_Method($this, 'placeCount')
+            'placeCount' => new \Twig_Function_Method($this, 'placeCount'),
+            'filters' => new \Twig_Function_Method($this, 'filters')
         );
     }    
     
@@ -66,6 +71,11 @@ class PlaceExtension extends \Twig_Extension
 //                array_push($selected, $current);
 //        }
         return $em->getRepository(Place::class)->filterCount($filters);
+    }
+    
+    public function filters($place)
+    {
+        return $this->filtermanager->getFilters($place);
     }
 
     public function getName()

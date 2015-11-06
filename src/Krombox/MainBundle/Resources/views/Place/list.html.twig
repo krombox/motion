@@ -20,6 +20,14 @@
                 console.log($(this).closest('form'), 'form', $(this));
                 var form = $(this).parents('form');
                 
+                var data = form.serialize();
+                var url = window.location.origin + window.location.pathname + '?' + data; 
+                console.log($(this).closest('form').serialize(), window.location);
+                window.history.pushState("object or string", "Title", url);
+                //window.location.replace(url);
+                //return;
+                
+                
                 $.ajax({
                     type: form.attr('method'),
                     url: form.attr('action'),

@@ -4,6 +4,7 @@ namespace Krombox\MainBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\Form;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Krombox\MainBundle\Form\Type\PlaceImageType;
 use Krombox\MainBundle\Form\Type\BusinessHoursType;
@@ -12,11 +13,14 @@ use Krombox\MainBundle\Form\Type\PlaceAddressType;
 use Krombox\MainBundle\Form\Type\HallType;
 use Krombox\MainBundle\Form\Type\ServicesType;
 use Krombox\MainBundle\Form\Type\MenuType;
+use Doctrine\ORM\EntityRepository;
 use JMS\DiExtraBundle\Annotation as DI;
 use Krombox\MainBundle\Entity\Enum\ServicesEnum;
 use Krombox\MainBundle\DBAL\Types\CategoryType as CategoryTypeEnum;
 
 use Krombox\MainBundle\Form\Type\PlaceFilterKindValueType;
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormEvent;
 
 /**
 *   @DI\FormType
@@ -27,43 +31,8 @@ class PlaceType extends AbstractType
     {
         $builder
             ->add('name', null, array('label' => 'name'))
-            ->add('description', null, array('label' => 'description'))
-            ->add('placeFilterValues', 'entity_filter', array(
-                    'class' => 'Krombox\MainBundle\Entity\PlaceFilterValue',
-                    'property' => 'slug',
-                    'multiple' => true,
-                    'expanded' => true,
-                    'label' => false,
-                    'required' => false
-                ))
-            ->add('categories')    
-//            ->add('placeFilterKindValue', 'entity', array(
-//                    'class' => 'Krombox\MainBundle\Entity\PlaceFilterKindValue',
-//                    'property' => 'id',
-//                    'multiple' => true,
-//                    'expanded' => true,
-//                    'label' => 'services',
-//                    'required' => false
-//                ))   
-//            ->add('placeFilterKindValue','collection', array(
-//                    'type' => new PlaceFilterKindValueType(),
-//                    'allow_add' => true,
-//                    'allow_delete' => true,
-//                    'label' => 'phones',
-//                    'required' => false,
-//                    'by_reference' => false,
-//                    'options' => array('label' => false),
-//                    'translation_domain' => 'messages',
-//                    'attr' => array('class' => 'collection')))
-            //->add('placeFilterKindValue','eav')
-                    //, 'entity', array(
-//                    'class' => 'Krombox\MainBundle\Entity\PlaceFilterKindValue'                    
-//                'type' => new PlaceFilterKindValueType(),
-//                'allow_add'    => true,
-//                'allow_delete' => true,
-//                'prototype'    => true,
-//                'attr' => array('class' => 'collection')
-            //))   
+            ->add('description', null, array('label' => 'description'))        
+            ->add('categories')
             //->add('image', 'file', ['required' => false])                                 
 //                ->add('image', 'file', [
 //                'label'    => false,
@@ -103,33 +72,33 @@ class PlaceType extends AbstractType
                     'translation_domain' => 'messages',
                     'attr' => array('class' => 'collection')
                 ))
-                ->add('services', 'entity', array(
-                    'class' => 'Krombox\MainBundle\Entity\Service',
-                    'property' => 'name',
-                    'multiple' => true,
-                    'expanded' => true,
-                    'label' => 'services',
-                    'required' => false
-                ))
-                //->add('services', new ServicesType())
-                ->add('kitchens', 'entity', array(
-                    'class' => 'Krombox\MainBundle\Entity\Kitchen',
-                    'property' => 'name',
-                    'multiple' => true,
-                    'expanded' => true,
-                    'label' => 'kitchens',
-                    'translation_domain' => 'messages',
-                    'required' => false
-                ))
-                ->add('menu', 'entity', array(
-                    'class' => 'Krombox\MainBundle\Entity\Menu',
-                    'property' => 'name',
-                    'multiple' => true,
-                    'expanded' => true,
-                    'label' => 'menu',
-                    'translation_domain' => 'messages',
-                    'required' => false
-                ))
+//                ->add('services', 'entity', array(
+//                    'class' => 'Krombox\MainBundle\Entity\Service',
+//                    'property' => 'name',
+//                    'multiple' => true,
+//                    'expanded' => true,
+//                    'label' => 'services',
+//                    'required' => false
+//                ))
+//                //->add('services', new ServicesType())
+//                ->add('kitchens', 'entity', array(
+//                    'class' => 'Krombox\MainBundle\Entity\Kitchen',
+//                    'property' => 'name',
+//                    'multiple' => true,
+//                    'expanded' => true,
+//                    'label' => 'kitchens',
+//                    'translation_domain' => 'messages',
+//                    'required' => false
+//                ))
+//                ->add('menu', 'entity', array(
+//                    'class' => 'Krombox\MainBundle\Entity\Menu',
+//                    'property' => 'name',
+//                    'multiple' => true,
+//                    'expanded' => true,
+//                    'label' => 'menu',
+//                    'translation_domain' => 'messages',
+//                    'required' => false
+//                ))
                 ->add('website', null, array(
                     'label' => 'website',
                     'required' => false
@@ -188,8 +157,56 @@ class PlaceType extends AbstractType
                 ))
                 ->add('save', 'submit', array('label' => 'save', 'attr' => array(
                     'class' => 'btn btn-info'
-                ) ))
+                ) ))                                
         ;
+        
+        $formModifier = function (Form $form, $categories = null) {
+            $options = array(
+                'class' => 'Krombox\MainBundle\Entity\PlaceFilterValue',
+                'property' => 'slug',
+                'multiple' => true,
+                'expanded' => true,
+                'label' => false,
+                'required' => false,
+                'position' => array('after' => 'description'),
+                'query_builder' => function(EntityRepository $repository) use ($categories) {                    
+                    return $repository->queryGet(['categories' => $categories]);
+                }
+            );
+
+            $form->add('placeFilterValues', 'entity_filter', $options);
+        };
+        
+        $builder
+                ->addEventListener(
+            FormEvents::PRE_SET_DATA,
+            function (FormEvent $event) use ($formModifier) {
+                $data = $event->getData();                
+                $categories = [];                
+                foreach ($data->getCategories() as $category){
+                    $categories[] = $category->getId();
+                }
+
+                $formModifier($event->getForm(), $categories);                
+            }
+        );
+            
+        $builder->get('categories')->addEventListener(
+            FormEvents::POST_SUBMIT,
+            function (FormEvent $event) use ($formModifier){                
+                $categoriesData = $event->getForm()->getData();
+                
+                $categories = [];
+                if(!$categoriesData->isEmpty()){
+                    foreach ($categoriesData as $category){
+                        $categories[] = $category->getId();
+                    }
+                }    
+                // since we've added the listener to the child, we'll have to pass on
+                // the parent to the callback functions!
+                $formModifier($event->getForm()->getParent(), $categories);
+            }
+        );
     }
     
     /**

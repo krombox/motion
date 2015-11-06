@@ -262,6 +262,16 @@
         </table>        
     </div>
 {% endmacro %}#}
+{% macro filters_widget(place) %}    
+    {% for filterKind, filterValues in filters(place) %}
+        <label>{{ filterKind }}</label>
+        <div>
+        {% for value in filterValues %}            
+            <span class="label label-info">{{ value.name }}</span>                            
+        {% endfor %}
+        </div>
+    {% endfor %}
+{% endmacro %}
 
 {% macro calendar_widget(place) %}
     <div id="calendar"></div>

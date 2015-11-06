@@ -18,15 +18,16 @@ class PlaceProfileType extends AbstractType
         $builder
             ->add('name', null, array('label' => 'name'))
             ->add('description', null, array('label' => 'description'))
-            ->add('placeFiltersVariants', 'collection', array(
-                'type' => new PlaceFilterVariantType(),
-                'allow_add'    => true,
-                'allow_delete' => true,
-                'prototype'    => true,
-                'attr' => array('class' => 'collection')
-            ))    
+//            ->add('placeFiltersVariants', 'collection', array(
+//                'type' => new PlaceFilterVariantType(),
+//                'allow_add'    => true,
+//                'allow_delete' => true,
+//                'prototype'    => true,
+//                'attr' => array('class' => 'collection')
+//            ))    
             //->add('image', 'logo', ['required' => false])                                                 
-            ->add('logo','logo')    
+            ->add('logo','logo')
+            ->add('categories')    
 //            ->add('categories', 'entity', array(
 //                'class' => 'Krombox\MainBundle\Entity\Category',
 //                'multiple' => true,

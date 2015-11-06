@@ -108,4 +108,49 @@ class PlaceFilterValue
     {
         return $this->placeFilterKind;
     }
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $places;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->places = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add places
+     *
+     * @param \Krombox\MainBundle\Entity\Place $places
+     * @return PlaceFilterValue
+     */
+    public function addPlace(\Krombox\MainBundle\Entity\Place $places)
+    {
+        $this->places[] = $places;
+
+        return $this;
+    }
+
+    /**
+     * Remove places
+     *
+     * @param \Krombox\MainBundle\Entity\Place $places
+     */
+    public function removePlace(\Krombox\MainBundle\Entity\Place $places)
+    {
+        $this->places->removeElement($places);
+    }
+
+    /**
+     * Get places
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPlaces()
+    {
+        return $this->places;
+    }
 }

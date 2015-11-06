@@ -16,7 +16,7 @@ use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 /**
  * @DI\Service
  * @DI\DoctrineListener(
- *     events = {"prePersist", "preUpdate"},
+ *     events = {"prePersist", "preUpdate", "postUpdate"},
  *     connection = "default",
  *     lazy = true,
  *     priority = 0
@@ -51,6 +51,25 @@ class PlaceListener
         $place->setStatus($status);       
     }
     
+    /**
+     * @DI\Observe(PlaceEvents::POST_SAVE, priority=0)     
+     */
+    public function onPlacePostSave(PlaceEvent $event)
+    {        die('?????????');
+        $place = $event->getPlace();                
+        $this->updateES($place);
+    }
+    //????????/
+    public function postUpdate(LifecycleEventArgs $args)
+    {
+        $entity = $args->getObject();        
+        if ($entity instanceof Place) 
+        {            
+            $this->updateES($entity);
+        }              
+    }
+
+    //TODO - is used?????
     public function prePersist(LifecycleEventArgs $args)
     {
         $entity = $args->getObject();        
@@ -73,5 +92,11 @@ class PlaceListener
     {                        
         $this->security->isGranted('ROLE_USER_VERIFIED') ? $status = StatusType::VALIDATED : $status = StatusType::PENDING;        
         $entity->setStatus($status);        
+    }
+    
+    protected function updateES($place){
+
+        $persister = $this->get('fos_elastica.object_persister.app.place');
+        $persister->insertOne($place);
     }
 }

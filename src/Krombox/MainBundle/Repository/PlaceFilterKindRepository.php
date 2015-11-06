@@ -14,19 +14,22 @@ use Krombox\MainBundle\DBAL\Types\MembershipStatusType;
  */
 class PlaceFilterKindRepository extends EntityRepository
 {
-    /*GET Single Place object*/
-    public function getPlaceFilterKindByCategories($categories)
+    
+    public function queryPlaceFilterKindByCategories($categories)
     {                
         $qb = $this->createQueryBuilder('pfk')
                 ->innerJoin('pfk.categories', 'pfkc')
-                ->where('pfkc.id IN(:categories)')
-                //->andWhere('p.status = :status')
-                //->setParameter('status', StatusType::VALIDATED)
+                ->where('pfkc.id IN(:categories)')                
                 ->setParameter('categories', $categories)                
         ;                
                                 
-        $query = $qb->getQuery();        
-        //var_dump($query->getSQL());die();
+        return $qb;
+    }        
+    
+    public function getPlaceFilterKindByCategories($categories)
+    {                
+        $qb = $this->queryPlaceFilterKindByCategories($categories);                                                
+        $query = $qb->getQuery();                
         
         try {
             $result = $query->getResult();                        
@@ -35,155 +38,5 @@ class PlaceFilterKindRepository extends EntityRepository
         }
                           
         return $result;
-    }
-    
-    /*NOT USED*/
-    public function getPlaces($category = null)
-    {
-        $qb = $this->createQueryBuilder('p')
-                ->addSelect('pms')
-                ->where('p.status = :status')
-                ->setParameter('status', StatusType::VALIDATED)
-                ->innerJoin('p.membershipSubscriptions', 'pms', 'WITH', 'pms.status = :mStatus')
-                ->innerJoin('pms.membership', 'pmsm')
-                ->orderBy('pmsm.score', 'DESC')
-                ->setParameter('mStatus', MembershipStatusType::ACTIVE)
-        ;
-        
-//        if($category){
-//            $qb->innerJoin('p.categories', 'c', 'WITH', 'c.slug = :category')
-//                ->setParameter('category', $category)
-//            ;
-//        }
-                                
-        $query = $qb->getQuery();
-        //echo $query->getSQL();die();
-        
-        try {
-            $result = $query->getResult();                        
-        } catch (\Doctrine\ORM\NoResultException $e) {
-            return null;
-        }
-                          
-        return $result;
-    }
-    
-    public function filter($obj)
-    {
-        $qb = $this->createQueryBuilder('p')                
-                ->where('p.status = :status')
-                ->setParameter('status', StatusType::VALIDATED)
-                ->innerJoin('p.membershipSubscriptions', 'pms', 'WITH', 'pms.status = :mStatus')
-                ->innerJoin('pms.membership', 'pmsm')
-                ->innerJoin('p.services', 'ps')
-                ->orderBy('pmsm.score', 'DESC')
-                ->setParameter('mStatus', MembershipStatusType::ACTIVE)
-        ;
-        
-        
-        $val = $obj->getServices();
-        if (!empty($val)) {
-            //$qb->innerJoin('p.services', 'ps');
-            foreach ($val as $k) {    
-                //var_dump($k);die();
-                $qb->andWhere('ps.id = :s_name')
-                   ->setParameter('s_name', $k)     
-                ;
-            }
-        }
-        
-//        $val = $obj->getRelaxations();
-//        if (!empty($val)) {
-//            //$qb->innerJoin('p.services', 'ps');
-//            foreach ($val as $k) {                
-//                $qb->andWhere('ps.' . $k . '=' . true);
-//            }
-//        }
-//        
-//        $val = $obj->getKitchens();
-//        if (!empty($val)) {
-//            $qb->innerJoin('p.kitchens', 'pk');
-//            $kitchens = [];
-//            foreach ($val as $k) {                                
-//                array_push($kitchens, $k);                
-//            }
-//            $qb->andWhere('pk.id IN(:kitchens)')
-//                ->setParameter('kitchens', $kitchens)
-//            ;
-//        }
-//        
-//        $val = $obj->getMenu();
-//        if (!empty($val)) {
-//            $qb->innerJoin('p.menu', 'pm');
-//            $menu = [];
-//            foreach ($val as $k) {                                
-//                array_push($menu, $k);                
-//            }
-//            $qb->andWhere('pm.id IN(:menu)')
-//                ->setParameter('menu', $menu)
-//            ;
-//        }
-        
-        //$qb->groupBy('ps');
-        
-        $query = $qb->getQuery();
-        //echo $query->getSQL();die();
-        
-        try {
-            $result = $query->getResult();                        
-        } catch (\Doctrine\ORM\NoResultException $e) {
-            return null;
-        }
-                          
-        return $result;
-        //var_dump($filter);die();
-    }
-
-    public function getPlaceRatingsSum($place)
-    {
-        $qb = $this->createQueryBuilder('p')
-            ->select('SUM(r.rate)')    
-            ->leftJoin('p.ratings', 'r')
-            ->where('p.id = :place_id')
-            ->setParameter('place_id', $place->getId())    
-        ;
-        
-        $query = $qb->getQuery();
-        
-        try {
-            $result = $query->getSingleScalarResult();                        
-        } catch (\Doctrine\ORM\NoResultException $e) {
-            return null;
-        }
-                          
-        return $result;
-    }
-    
-    public function filterCount(array $filters)
-    {        
-        $qb = $this->createQueryBuilder('s')
-            ->select('s.slug, COUNT(*)')    
-            ->leftJoin('s.places', 'sp')
-        ;
-        
-//        foreach ($filters as $filter){
-//            $qb->andWhere('s')
-//        }
-        
-        foreach($services as $s){
-            $qb
-                ->andWhere('ps.' . $s . '= :active')
-                ->setParameter('active', true)    
-            ;
-        }
-        
-        $query = $qb->getQuery();
-        try {
-            $result = $query->getSingleScalarResult();                        
-        } catch (\Doctrine\ORM\NoResultException $e) {
-            return null;
-        }
-                          
-        return $result;
-    }
+    }        
 }

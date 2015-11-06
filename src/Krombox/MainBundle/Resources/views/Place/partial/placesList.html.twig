@@ -11,10 +11,24 @@
                 
         {{ form_start(filterForm) }}
         
-        {% for filterType in filterForm.children %}
+        {% for filterType in filterForm.children %}{#{{ dump(filterType.vars.name) }}#}
             {% if filterType.vars.name in filterFacet | keys %}
-                <legend>{{ filterType.vars.name }}</legend>
+                
+                {% set filter_kind = '' %}
+                {% set filter_label = '' %}
                 {% for filter in filterType.children %}
+                    {% if filter.vars.filter_kind is not defined %}
+                        
+                        {% if filterType.vars.name != filter_label %}
+                            <legend>{{ filterType.vars.name }}</legend>
+                            {% set filter_label = filterType.vars.name %}
+                        {% endif %}
+                    {% else %}                    
+                        {% if filter.vars.filter_kind != filter_kind %}
+                            <legend>{{ filter.vars.filter_kind }}</legend>
+                            {% set filter_kind = filter.vars.filter_kind %}
+                        {% endif %}
+                    {% endif %}
                     {% set filterTypeName = filterType.vars.name %}                                        
                     {% set filterFacetType =  attribute(filterFacet, filterTypeName) %}
                     {% set filterCount = 0 %}
@@ -33,6 +47,7 @@
                 {% endfor %}
             {% endif %}
         {% endfor %}
+        
         {{ form_rest(filterForm) }}
         {{ form_end(filterForm) }}
         {#<input type="submit" class="btn btn-info">#}

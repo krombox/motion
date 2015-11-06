@@ -44,7 +44,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="{{ path('places_list') }}">Home</a>
+      <a class="navbar-brand" href="{{ path('places_list', {'slug': 'restaurants-cafe'}) }}">Home</a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
@@ -52,8 +52,8 @@
       <ul class="nav navbar-nav">
         {#<li class="active"><a href="{{ path('place_create') }}">{% trans %}create.new.place{% endtrans %}<span class="sr-only">(current)</span></a></li>
         <li><a href="{{ path('event_create') }}">{% trans %}create.new.event{% endtrans %}<span class="sr-only">(current)</span></a></li>#}
-        <li><a href="{{ path('places_list') }}">{% trans %}places{% endtrans %}<span class="sr-only">(current)</span></a></li>
-        <li><a href="{{ path('events_list') }}">{% trans %}events{% endtrans %}<span class="sr-only">(current)</span></a></li>
+        <li><a href="{{ path('places_list', {'slug': 'restaurants-cafe'}) }}">{% trans %}places{% endtrans %}<span class="sr-only">(current)</span></a></li>
+        <li><a href="{{ path('events_list', {'slug': 'restaurants-cafe'}) }}">{% trans %}events{% endtrans %}<span class="sr-only">(current)</span></a></li>
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{% trans %}create{% endtrans %} <span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">

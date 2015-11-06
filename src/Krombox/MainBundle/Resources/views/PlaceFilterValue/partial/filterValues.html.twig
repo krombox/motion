@@ -1,0 +1,11 @@
+{% for filterKindKey, filterKindValues in filterKindList %}
+    <label>{{ filterKindKey }}</label>
+    {% for filterValue in filterKindValues %}
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" id="krombox_mainbundle_place_placeFilterValues_{{filterValue.object.id}}" name="krombox_mainbundle_place[placeFilterValues][]" value="{{ filterValue.object.id }}" {{ filterValue.isChecked ? 'checked' }}>
+                {{ filterValue.object.slug }}
+            </label>
+        </div>
+    {% endfor %}
+{% endfor %}

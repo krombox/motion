@@ -28,6 +28,7 @@ use Krombox\MainBundle\Entity\Membership;
 use Krombox\MainBundle\Form\Type\Filter\PlaceFilterType;
 use Krombox\MainBundle\DBAL\Types\MembershipStatusType;
 use Krombox\MainBundle\DBAL\Types\StatusType;
+use Pagerfanta\Adapter\ArrayAdapter;
 use Krombox\Constants;
 
 /**
@@ -266,172 +267,41 @@ class PlaceController extends Controller
 //    }
 
     /**
-     * @FW\Route("/places/{category}", defaults={"category" = null}, name="places_list")
+     * @FW\Route("/places/{slug}", name="places_list")     
      * @FW\Template        
      */
-    public function listAction(Request $request, $category)
-    {           
-//        $em = $this->getDoctrine()->getManager();
-//                
-//        $filterForm = $this->get('form.factory')->createNamed('', new PlaceFilterType());
-//        $places = $em->getRepository(Place::class)->getPlaces();
-//            
-//            $filterForm->handleRequest($request);           
-//            if ($filterForm->isValid()) {
-//                $places = $em->getRepository(Place::class)->filter($filterForm->getData());
-//            }                    
-//        $filterForm = $filterForm->createView();    
-//        if($request->isXmlHttpRequest()){
-//            return $this->render('KromboxMainBundle:Place/partial:placesList.html.twig', array(
-//                'places' => $places,
-//                'form' => $filterForm,
-//            ));
-//        }    
-//
-//        return compact('places','filterForm');
-        
-               
-        
-        
-        
-        /////////test///////////////
-//        $placeSearch = new PlaceSearch();
-//        
-//        $filterForm = $this->get('form.factory')
-//            ->createNamed(
-//                '',
-//                'place_search_type',
-//                $placeSearch,
-//                array(
-//                    'action' => $this->generateUrl('places_list', ['category' => $category]),
-//                    'method' => 'GET'
-//                )
-//            );
-//        
-//        $places = $em->getRepository(Place::class)->getPlaces();
-//        return $this->render('KromboxMainBundle:Place:list.html.twig',array(
-//            'places' => $places,
-//            'filterForm' => $filterForm->createView(),
-//        ));
-//        
-//        
-         // index
-    $search = $this->get('fos_elastica.index.app.place');
-
-
-    $query = new \Elastica\Query\MatchAll();
-
-//    $elasticaQuery = new \Elastica\Query();
-//    $elasticaQuery->setQuery($query);
-//    $elasticaQuery->setSize(550);
-//
-//    $elasticaAggreg= new \Elastica\Aggregation\Terms('category');
-//    $elasticaAggreg->setField('place.categories.slug');
-//    $elasticaAggreg->setSize(550);
-//    
-//    $elasticaAggreg2= new \Elastica\Aggregation\Terms('service');
-//    $elasticaAggreg2->setField('place.services.slug');
-//    $elasticaAggreg2->setSize(550);
-//
-//    $elasticaQuery->addAggregation($elasticaAggreg);
-//    $elasticaQuery->addAggregation($elasticaAggreg2);
-    
-//    $boolQuery = new \Elastica\Query\Bool();
-//    
-//    $queryStatus = new \Elastica\Query\Match();
-//    $queryStatus->setFieldQuery('place.status', StatusType::VALIDATED);
-//    $boolQuery->addMust($queryStatus);
-       
-//    $queryCategories = new \Elastica\Query\Terms();
-//    $queryCategories->setTerms('place.categories.slug', ['pizza']);
-//    $boolQuery->addShould($queryCategories);            
-
-//    $elasticaQuery = new \Elastica\Query();
-//    $elasticaQuery->setQuery($query);
-//    $elasticaQuery->setSize(550);
-
-//    $elasticaAggreg = new \Elastica\Aggregation\Terms('category');
-//    $elasticaAggreg->setField('place.categories.slug');
-//    $elasticaAggreg->setSize(550);
-//    
-//    $elasticaAggreg2 = new \Elastica\Aggregation\Terms('service');
-//    $elasticaAggreg2->setField('place.services.slug');
-//    $elasticaAggreg2->setSize(550);
-
-    //$elasticaAggreg->setOrder('_count', 'desc');
-
-    //$elasticaQuery->addAggregation($elasticaAggreg);
-    //$elasticaQuery->addAggregation($elasticaAggreg2);
-    
-//    $sort = array( 
-//            "_script" => array( 
-//                'script' => "place.membershipSubscriptions.membership.score", 
-//                'type' => 'number',
-//                'order' => 'desc'
-//            ) 
-//        );
-    //$boolQuery->setSort($sort);
-//$query->setSort($sort); 
-    //$elasticaQuery->setSort($sort);
-//    $elasticaQuery->addSort(
-//    ['place.membershipSubscriptions.membership.score' => 
-//        ['order' => 'asc']
-//    ]);
-    //$elasticaQuery->addSort($elasticaAggreg2);
-    //var_dump($elasticaQuery->getAggregations());die();
-    // ResultSet
-    //var_dump($this->find($elasticaQuery));die();
-    
-//    $boolFilter = new \Elastica\Filter\Bool();        
-//    $active = new \Elastica\Filter\Term(['place.membershipSubscriptions.status' => MembershipStatusType::ACTIVE]);
-//    $boolFilter->addMust($active);
-//        
-//    $filtered = new \Elastica\Query\Filtered($boolQuery, $boolFilter);
-//    $query = \Elastica\Query::create($filtered);
-//
-//    //$places = $search->findPaginated($elasticaQuery);
-//    var_dump(json_encode($query->getQuery(), JSON_PRETTY_PRINT));die();
-    
-    //var_dump($elasticaResultSet);die();
-    //$elasticaAggregs = $elasticaResultSet->getAggregations();
-    
-    //var_dump($elasticaResultSet->getResponse(), get_class_methods($elasticaResultSet));die();
-        ############################################################
-        $placeFilter = new PlaceFilter();
+    public function listAction(Request $request, \Krombox\MainBundle\Entity\Category $category)
+    {              
+        $placeFilter = new PlaceFilter([$category]);
         $elasticaManager = $this->container->get('fos_elastica.manager');
 
         $filterForm = $this->get('form.factory')
             ->createNamed(
                 '',
-                new PlaceFilterType(),
+                new PlaceFilterType($this->get('krombox.filter_manager')),
                 $placeFilter,
                 array(
-                    'action' => $this->generateUrl('places_list', ['category' => $category]),
+                    'action' => $this->generateUrl('places_list', ['slug' => $category->getSlug()]),
                     'method' => 'GET'
                 )
             );
-        $filterForm->handleRequest($request);
-        //if ($filterForm->isValid()) {
-            //$placeSearch = $filterForm->getData();                
-            
-            //$places = $elasticaManager->getRepository(Place::class)->search($category, $placeSearch);
-//            $places = $elasticaManager->getRepository(Place::class)->facet($category, $placeSearch);            
-            $places = $elasticaManager->getRepository(Place::class)->facet($category, $placeFilter);            
-            $filterFacet = $places->getAdapter()->getAggregations();
-            
-            //var_dump($places->getAdapter()->getAggregations());
-            //var_dump($places);die();
-            //var_dump($places);die();
-            $helper = $this->container->get('krombox.business_hours_helper');
-            
-//            if($placeSearch->getIsWorkingNow()){
-//                /*TODO make external helper*/
-//                foreach($places as $key => $place){
-//                    if(!$helper->isWorkingNow($place)){                    
-//                        unset($places[$key]);                    
-//                    }
+        $filterForm->handleRequest($request);                   
+        $places = $elasticaManager->getRepository(Place::class)->facet($category, $placeFilter);            
+        $filterFacet = $places->getAdapter()->getAggregations();
+        $filterFacet['businessHours']['buckets'][] = ['key' => 'workingNow', 'doc_count' => 5]; 
+        //var_dump($placeFilter);die();
+        $helper = $this->container->get('krombox.business_hours_helper');
+                        
+//        if($placeFilter->getBusinessHours()){
+//            echo 'here';
+//            /*TODO make external helper*/
+//            foreach($places as $key => $place){
+//                if(!$helper->isWorkingNow($place)){                    
+//                    var_dump($places);die();
+//                    unset($places[$key]);                    
 //                }
 //            }
+//        }
         if($request->isXmlHttpRequest()){
             return $this->render('KromboxMainBundle:Place/partial:placesList.html.twig', array(
                 'places' => $places,
@@ -462,31 +332,45 @@ class PlaceController extends Controller
         if ($form->isValid()) {                                        
             $em->persist($place);            
             $em->flush();
-
+            
+            //$this->updateES($place);
             return $this->redirectToRoute('user_places');
         }
         
         //return ['form' => $form->createView(), 'place' => $place];
         return ['form' => $form->createView(), 'place' => $place,'logo_form' => $logoForm->createView()];                   
-    }
-    
+    }        
+    //AJAX
     /**
-    * @FW\Route("/filter-values/{place}", name="filter_values_by_categories", options={"expose"=true})
+    * @FW\Route("/filter-values", name="filter_values_by_categories", options={"expose"=true})
     */
-    public function getPlaceValuesByCategories(Place $place, Request $request){
-        $categories = $request->request->get('categories');
-        //var_dump($categories);die();
-        $result = $this->getDoctrine()->getManager()
-                ->getRepository(\Krombox\MainBundle\Entity\PlaceFilterKind::class)->getPlaceFilterKindByCategories($categories);
-        $filters = [];
-        foreach ($result as $k => $v){
-            foreach ($v->getPlaceFilterValues() as $pfv){
-                $filters[$v->getName()][] = $pfv->getName();
-            }
-             //r->getPlaceFilterValues()->toArray();
-        }
-        var_dump($filters);die();
-        return new JsonResponse($result);
+    public function getPlaceValuesByCategories(Request $request){
+        $em = $this->getDoctrine()->getManager();
+        $criteria = $request->request->all();
+        $filterManager = $this->get('krombox.filter_manager');
+        $filters = $filterManager->getFilterOptions($request);
+        
+//        $filters = [];
+//        if(isset($criteria['place'])){            
+//            $placeValues = $em->getRepository(\Krombox\MainBundle\Entity\PlaceFilterValue::class)->get($criteria);            
+//            unset($criteria['place']);
+//            $categoriesValues = $em->getRepository(\Krombox\MainBundle\Entity\PlaceFilterValue::class)->get($criteria);
+//            
+//            foreach($categoriesValues as $k => $cv){
+//                $filters[$cv->getPlaceFilterKind()->getSlug()][$k]['object'] = $cv;//TODO getSlug()                
+//                $filters[$cv->getPlaceFilterKind()->getSlug()][$k]['isChecked'] = in_array($cv, $placeValues) ? true : false;
+//            }            
+//        } else {
+//            $categoriesValues = $em->getRepository(\Krombox\MainBundle\Entity\PlaceFilterValue::class)->get($criteria);
+//            foreach ($categoriesValues as $k => $cv){
+//                $filters[$cv->getPlaceFilterKind()->getSlug()][$k]['object'] = $cv;//TODO getSlug()                
+//                $filters[$cv->getPlaceFilterKind()->getSlug()][$k]['isChecked'] = false;
+//            }
+//        }
+        
+        return $this->render('KromboxMainBundle:PlaceFilterValue/partial:filterValues.html.twig',array(
+            'filterKindList' => $filters
+        ));        
     }
 
         protected function saveImages(Place $place)

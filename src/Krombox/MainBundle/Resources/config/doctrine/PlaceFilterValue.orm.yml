@@ -1,7 +1,7 @@
 Krombox\MainBundle\Entity\PlaceFilterValue:
     type: entity    
     table: p_filter_value
-    #repositoryClass: Krombox\MainBundle\Repository\RatingRepository
+    repositoryClass: Krombox\MainBundle\Repository\PlaceFilterValueRepository
     id:
         id:
             type: integer
@@ -30,5 +30,10 @@ Krombox\MainBundle\Entity\PlaceFilterValue:
                 referencedColumnName: id
                 onDelete: cascade
                 onUpdate: cascade
+                
+    manyToMany:        
+        places:
+            targetEntity: Krombox\MainBundle\Entity\Place
+            mappedBy: placeFilterValues            
     lifecycleCallbacks: {}
         #
