@@ -55,9 +55,9 @@ class PlaceListener
      * @DI\Observe(PlaceEvents::POST_SAVE, priority=0)     
      */
     public function onPlacePostSave(PlaceEvent $event)
-    {        die('?????????');
+    {        //die('?????????');
         $place = $event->getPlace();                
-        $this->updateES($place);
+        //$this->updateES($place);
     }
     //????????/
     public function postUpdate(LifecycleEventArgs $args)
@@ -65,7 +65,7 @@ class PlaceListener
         $entity = $args->getObject();        
         if ($entity instanceof Place) 
         {            
-            $this->updateES($entity);
+            //$this->updateES($entity);
         }              
     }
 
@@ -89,7 +89,8 @@ class PlaceListener
     }
     
     protected function manageStatus($entity)
-    {                        
+    {    
+        return;//TODO REMOVE. JUST FOR Fixtures 
         $this->security->isGranted('ROLE_USER_VERIFIED') ? $status = StatusType::VALIDATED : $status = StatusType::PENDING;        
         $entity->setStatus($status);        
     }

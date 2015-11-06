@@ -1,0 +1,17 @@
+Krombox\MainBundle\Entity\Place:
+    place0:
+        name: place_first
+        description: <text()>
+        is24h: true
+        status: validated
+        user: @user0
+        address: @address0
+        categories: [@category0]
+    place1:
+        name: place_second
+        description: <text()>
+        is24h: true
+        user: @user1
+        status: pending
+        address: @address1
+        categories: [@category1]

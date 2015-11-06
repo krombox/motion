@@ -49,8 +49,9 @@
         "ornicar/akismet-bundle": "dev-master",
         "florianv/business": "^1.2",
         "liqpay/liqpay" : "dev-master",
-        "white-october/pagerfanta-bundle": "^1.0"        
-        
+        "white-october/pagerfanta-bundle": "^1.0",
+        "egeloen/ordered-form-bundle": "2.0.0",
+        "h4cc/alice-fixtures-bundle": "^0.5.1"        
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3"

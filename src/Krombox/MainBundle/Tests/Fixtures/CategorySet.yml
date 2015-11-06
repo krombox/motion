@@ -1,0 +1,10 @@
+Krombox\MainBundle\Entity\Category:
+    category0:        
+        name: cafe                
+        description: cafe decr
+        slug: cafe
+    category1:        
+        name: other                
+        description: other decr
+        slug: other    
+

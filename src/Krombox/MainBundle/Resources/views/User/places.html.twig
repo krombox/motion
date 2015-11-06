@@ -29,7 +29,7 @@
                         <span class="fromDay">{{ bHours.startsAt |readable('DayType') | trans({})}}</span> - <span class="toDay">{{ bHours.toDay |readable('DayType') | trans({}) }}</span>
                         <span class="fromTime">{{ bHours.fromTime | date('H:i') }}</span> - <span class="toTime">{{ bHours.toTime | date('H:i') }}</span>,                        
                     {% endfor %}    #}
-                    {% if isWorkingNow(entity) %}<span class="label label-warning">работает сейчас!</span>{% else %}<span class="label label-danger">закрыто</span>{% endif %}
+                    {#{% if isWorkingNow(entity) %}<span class="label label-warning">работает сейчас!</span>{% else %}<span class="label label-danger">закрыто</span>{% endif %}#}
                 </p>
                 
                 {% for img in entity.getPlaceImages %}

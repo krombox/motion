@@ -417,7 +417,7 @@ fos_rest:
         view_response_listener: force
 
 sensio_framework_extra:
-    view:    { annotations: false }    
+    view:    { annotations: false }       
             
     
     

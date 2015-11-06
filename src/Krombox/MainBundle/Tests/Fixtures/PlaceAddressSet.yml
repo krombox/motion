@@ -1,0 +1,20 @@
+Krombox\MainBundle\Entity\PlaceAddress:
+    address0:        
+        lat: 49.5661527
+        lng: 34.516988699999956
+        country: UA
+        state: Полтавська область
+        city: Полтава
+        street: вулиця Калініна
+        streetNumber: 2
+        formatted: улица Калинина 2, Полтава, Полтавская область, Украина    
+    address1:        
+        lat: 49.5928939
+        lng: 34.54413899999997
+        country: UA
+        state: Полтавська область
+        city: Полтава
+        street: Жовтнева вулиця
+        streetNumber: 47
+        formatted: Октябрьская улица 47, Полтава, Полтавская область, Украина
+
