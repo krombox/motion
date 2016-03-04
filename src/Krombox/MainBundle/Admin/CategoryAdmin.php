@@ -18,10 +18,11 @@ class CategoryAdmin extends Admin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper                              
-            ->add('name')
+            //->add('name')
+                ->add('translations', 'a2lix_translations')
             ->add('slug')
-            ->add('description')
-            ->add('type')
+            //->add('description')
+            //->add('type')
             ->add('image', 'file', ['required' => false])
         ;
     }
@@ -40,8 +41,8 @@ class CategoryAdmin extends Admin
     {//if ($this->isGranted('LIST')) {
         $listMapper
             ->addIdentifier('id')    
-            ->addIdentifier('name')
-            ->add('type')
+            ->addIdentifier('translations')
+            //->add('type')
         ;
     //}
     }

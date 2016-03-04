@@ -6,10 +6,18 @@ fos_elastica:
             types:
                 place:
                     mappings:
-                        name: ~
-                        description: ~
+                        id: ~
+                        #name: ~
+                        nameTranslatableRU: ~
+                        nameTranslatableEN: ~
+                        #description: ~
                         status: ~
-                        birthdayDiscount: ~
+                        #birthdayDiscount: ~
+                        is24h: ~
+                        city:
+                            type: "object"
+                            properties:
+                                slug: ~
                         categories:
                             type: "object"
                             properties:
@@ -20,7 +28,7 @@ fos_elastica:
                             properties:                                
                                 slug: ~
                         businessHours:
-                            type: "object"
+                            type: "nested"
                             properties:                                
                                 dayMonday: ~        
                                 dayTuesday: ~
@@ -29,12 +37,24 @@ fos_elastica:
                                 dayFriday: ~
                                 daySaturday: ~
                                 daySunday: ~
-                                timeStartsAt:
+                                startsAtFormatted:
                                     type: "date"
                                     format: "H:m:s"
-                                timeEndsAt:
+                                endsAtFormatted:
                                     type: "date"
                                     format: "H:m:s"
+                        businessHoursException:
+                            type: "nested"
+                            properties:                                                                
+                                dayFormatted:
+                                    type: "date"
+                                    format: "Y-m-d"
+                                startsAtFormatted:
+                                    type: "date"
+                                    format: "H:m:s"
+                                endsAtFormatted:
+                                    type: "date"
+                                    format: "H:m:s"            
 #                        services:
 #                            type: "object"
 #                            properties:                                
@@ -62,6 +82,7 @@ fos_elastica:
 #                        isDelivery: ~
                         rating: ~
                         ratingCount: ~
+                        viewsCount: ~
 #                        membershipSubscriptions:
 #                            type: "object"
 #                            properties:
@@ -139,8 +160,8 @@ fos_elastica:
                 category:
                     mappings:
                         id: ~
-                        name: ~
-                        description: ~
+                        #name: ~
+                        #description: ~
                         slug: ~
                     persistence:                        
                         driver: orm
@@ -152,16 +173,45 @@ fos_elastica:
                 businessHours:
                     mappings:
                         id: ~
-                        dayMonday: ~
+                        dayMonday: ~        
                         dayTuesday: ~
-                        dayWednesday: ~                        
+                        dayWednesday: ~
+                        dayThursday: ~
+                        dayFriday: ~
+                        daySaturday: ~
+                        daySunday: ~
+                        startsAtFormatted:
+                            type: "date"
+                            format: "H:m:s"
+                        endsAtFormatted:
+                            type: "date"
+                            format: "H:m:s"                        
                     persistence:                        
                         driver: orm
                         model: Krombox\MainBundle\Entity\BusinessHours
                         provider: ~
                         listener: ~                           
                         finder: ~
-                        #repository: Krombox\MainBundle\Repository\Search\PlaceRepository        
+                        #repository: Krombox\MainBundle\Repository\Search\PlaceRepository
+                businessHoursException:
+                    mappings:
+                        id: ~
+                        dayFormatted:
+                            type: "date"
+                            format: "Y-m-d"
+                        startsAtFormatted:
+                            type: "date"
+                            format: "H:m:s"
+                        endsAtFormatted:
+                            type: "date"
+                            format: "H:m:s"                        
+                    persistence:                        
+                        driver: orm
+                        model: Krombox\MainBundle\Entity\BusinessHoursException
+                        provider: ~
+                        listener: ~                           
+                        finder: ~
+                        #repository: Krombox\MainBundle\Repository\Search\PlaceRepository                                
                 tag:
                     mappings:                        
                         name: ~                        

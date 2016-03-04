@@ -20,11 +20,12 @@
     <div class="description col-lg-8">    
             <div class="place">
                 <h2><a href="{{ path('place_details', { 'slug': entity.slug })}}">{{ entity.getName }}</a></h2>{% if entity.status == 1 %}<span class="label label-warning">pending</span> {% endif %}
-                {#<p><strong>{% trans %}categories{% endtrans %}: </strong>{{ entity.getCategoriesName | join(',') }}{% if entity.is24h %}<span class="label label-danger">{% trans %}24h{% endtrans %}</span>{% endif %}</p>#}
-                <p><strong>{% trans %}address{% endtrans %}: </strong> {{ entity.address.city }}</p>
-                {% if entity.isWifi %}<p><strong>{% trans %}wifi{% endtrans %}: </strong> <span class="glyphicon glyphicon-transfer" aria-hidden="true"></span></p>{% endif %}
                 <p>
-                    <strong>{% trans %}business_hours{% endtrans %}: </strong>
+                    <img src="{{ macro.logo(entity.logo) | imagine_filter('place_logo_thumb') }}"></p>
+                {#<p><strong>{% trans %}categories{% endtrans %}: </strong>{{ entity.getCategoriesName | join(',') }}{% if entity.is24h %}<span class="label label-danger">{% trans %}24h{% endtrans %}</span>{% endif %}</p>#}
+                <p><strong>{% trans %}address{% endtrans %}: </strong> {{ entity.address.city }}, {{ entity.address.street }}, {% if entity.address.streetNumber is not empty %}{{ entity.address.streetNumber }}{% endif %}</p>                
+                <p>
+                    {#<strong>{% trans %}business_hours{% endtrans %}: </strong>#}
                     {#{% for bHours in entity.businessHours %}
                         <span class="fromDay">{{ bHours.startsAt |readable('DayType') | trans({})}}</span> - <span class="toDay">{{ bHours.toDay |readable('DayType') | trans({}) }}</span>
                         <span class="fromTime">{{ bHours.fromTime | date('H:i') }}</span> - <span class="toTime">{{ bHours.toTime | date('H:i') }}</span>,                        

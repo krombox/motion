@@ -77,6 +77,7 @@ doctrine:
             LikeType: Krombox\MainBundle\DBAL\Types\LikeType
             CategoryType: Krombox\MainBundle\DBAL\Types\CategoryType
             PhoneType: Krombox\MainBundle\DBAL\Types\PhoneType
+            SocialLinkType: Krombox\MainBundle\DBAL\Types\SocialLinkType
             KitchenType: Krombox\MainBundle\DBAL\Types\KitchenType
             MembershipType: Krombox\MainBundle\DBAL\Types\MembershipType
             MembershipStatusType: Krombox\MainBundle\DBAL\Types\MembershipStatusType
@@ -126,11 +127,11 @@ swiftmailer:
     
 a2lix_translation_form:
     locale_provider: default       # [1]
-    locales: [ru, en]          # [1-a]
+    locales: %locales%          # [1-a]
     default_locale: ru             # [1-b]
-    required_locales: [ru]         # [1-c]
+    required_locales: [ru, en]         # [1-c]
     manager_registry: doctrine      # [2]
-    templating: "A2lixTranslationFormBundle::default.html.twig"      # [3  
+    templating: "KromboxMainBundle::Form/fields.html.twig"      # [3  
     
 #fos_user:
 #    db_driver: orm # other valid values are 'mongodb', 'couchdb' and 'propel'
@@ -189,17 +190,17 @@ vich_uploader:
     twig:       true
     storage:    flysystem #file_system  or gaufrette or flysystem
     mappings:
-        place_hall_image:
-#            uri_prefix:         /images/places
-#            upload_destination: place_image_fs #%kernel.root_dir%/../web/images/places
-            uri_prefix:         https://copy.com/thumbs_public/KO2t8RdDRUBpINWa
-            #uri_prefix:         https://copy.com/thumbs_public/xpGFXGkG1T4MzW0r            
-            upload_destination: place_hall_image_fs
-            namer:              vich_uploader.namer_uniqid
-            directory_namer:    place_hall_image_directory_namer
-            inject_on_load:     false
-            delete_on_update:   true
-            delete_on_remove:   true
+#        place_hall_image:
+##            uri_prefix:         /images/places
+##            upload_destination: place_image_fs #%kernel.root_dir%/../web/images/places
+#            uri_prefix:         https://copy.com/thumbs_public/KO2t8RdDRUBpINWa
+#            #uri_prefix:         https://copy.com/thumbs_public/xpGFXGkG1T4MzW0r            
+#            upload_destination: place_hall_image_fs
+#            namer:              vich_uploader.namer_uniqid
+#            directory_namer:    place_hall_image_directory_namer
+#            inject_on_load:     false
+#            delete_on_update:   true
+#            delete_on_remove:   true
         category_image:
             #uri_prefix:         /images/places
             #upload_destination: place_image_fs #%kernel.root_dir%/../web/images/places
@@ -220,26 +221,28 @@ vich_uploader:
             inject_on_load:     true
             delete_on_update:   true
             delete_on_remove:   true
-        place_image:
-            #uri_prefix:         /images/places
-            #upload_destination: place_image_fs #%kernel.root_dir%/../web/images/places
-            uri_prefix:         https://copy.com/thumbs_public/xpGFXGkG1T4MzW0r
-            upload_destination: place_hall_image_fs
-            namer:              vich_uploader.namer_uniqid
-            directory_namer:    place_image_directory_namer
-            inject_on_load:     true
-            delete_on_update:   true
-            delete_on_remove:   true    
+#        place_image:
+#            #uri_prefix:         /images/places
+#            #upload_destination: place_image_fs #%kernel.root_dir%/../web/images/places
+#            uri_prefix:         https://copy.com/thumbs_public/xpGFXGkG1T4MzW0r
+#            upload_destination: place_hall_image_fs
+#            namer:              vich_uploader.namer_uniqid
+#            directory_namer:    place_image_directory_namer
+#            inject_on_load:     true
+#            delete_on_update:   true
+#            delete_on_remove:   true    
             
 oneup_flysystem:
 #    cache:
 #        my_cache: ~            
 
     adapters:
-        place_adapter:
-             copy: 
-                client: flysystem.copy_client
-                prefix: ~
+#        place_adapter:
+#            custom:
+#                service: krombox.flysystem.flickr_client
+#             copy: 
+#                client: flysystem.copy_client
+#                prefix: ~
         event_adapter:
              copy: 
                 client: flysystem.copy_client
@@ -251,9 +254,9 @@ oneup_flysystem:
                 directory: %kernel.root_dir%/../web/images/categories
 
     filesystems:
-        place_filesystem:
-            adapter: place_adapter
-            mount:   place_hall_image_fs
+#        place_filesystem:
+#            adapter: place_adapter
+#            mount:   place_hall_image_fs
         category_filesystem:
             adapter: category_adapter
             mount:   category_image_fs
@@ -417,7 +420,53 @@ fos_rest:
         view_response_listener: force
 
 sensio_framework_extra:
-    view:    { annotations: false }       
+    view:    { annotations: false } 
+    
+lunetics_locale:
+  strict_mode: false
+  allowed_locales:
+    - en
+    - ru
+  guessing_order:
+    - query
+    - router
+    - session
+    - cookie
+    - browser
+  cookie:
+    set_on_change: true
+    
+matthias_noback_microsoft_translator:
+    oauth:
+        client_id: "%microsoft_translator.client_id%"
+        client_secret: %microsoft_translator.client_secret%    
+    
+krombox_form_auto_translation:
+    auto_translated_locales: %locales%
+    locale_provider: default
+    templating: "KromboxFormAutoTranslationBundle::default.html.twig"
+    
+bazinga_geocoder:
+    providers:
+        google_maps:
+            locale:               null
+            region:               null
+            use_ssl:              true
+            api_key:              AIzaSyDzmQiEmu390yCXaB9RQ4jFwXnm_hEJJBI
+            
+#rezzza_flickr:
+#    key: 29f44a3c5eb65e3be1e7ec4dfe6e4a5e
+#    secret: f554a6fb7c6b76ce            
+    
+rezzza_flickr:
+    default_client: default
+    clients:
+        default:
+            key: 29f44a3c5eb65e3be1e7ec4dfe6e4a5e
+            secret: f554a6fb7c6b76ce
+#        second:
+#            key: 'my second api key'
+#            secret: 'my second api secret'    
             
     
     

@@ -54,7 +54,12 @@ class AppKernel extends Kernel
             new Krombox\CommentBundle\KromboxCommentBundle(),
             new Ornicar\AkismetBundle\OrnicarAkismetBundle(),
             new Krombox\PaymentBundle\KromboxPaymentBundle(),
-            new WhiteOctober\PagerfantaBundle\WhiteOctoberPagerfantaBundle()            
+            new WhiteOctober\PagerfantaBundle\WhiteOctoberPagerfantaBundle(),
+            new Lunetics\LocaleBundle\LuneticsLocaleBundle(),
+            new MatthiasNoback\MicrosoftTranslatorBundle\MatthiasNobackMicrosoftTranslatorBundle(),
+            new Krombox\FormAutoTranslationBundle\KromboxFormAutoTranslationBundle(),
+            new Bazinga\Bundle\GeocoderBundle\BazingaGeocoderBundle(),
+            new Rezzza\FlickrBundle\RezzzaFlickrBundle()
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
@@ -62,7 +67,8 @@ class AppKernel extends Kernel
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
             $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
-            $bundles[] = new h4cc\AliceFixturesBundle\h4ccAliceFixturesBundle();
+            $bundles[] = new Hautelook\AliceBundle\HautelookAliceBundle();
+            $bundles[] = new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle();
         }
 
         return $bundles;

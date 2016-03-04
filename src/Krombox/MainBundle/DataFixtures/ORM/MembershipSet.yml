@@ -1,0 +1,23 @@
+Krombox\MainBundle\Entity\Membership:
+    membership1:
+        name: standart           
+        score: 0           
+        price: 0           
+        priceSpecial: 0           
+        priceSpecialEndsAt:             
+        isFree: true
+    membership2:
+        name: silver           
+        score: 1           
+        price: 3           
+        priceSpecial: 2           
+        priceSpecialEndsAt:             
+        isFree: false
+    membership3:
+        name: gold           
+        score: 2           
+        price: 5           
+        priceSpecial: 3           
+        priceSpecialEndsAt:             
+        isFree: false    
+        

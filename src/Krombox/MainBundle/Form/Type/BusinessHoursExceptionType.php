@@ -18,7 +18,7 @@ class BusinessHoursExceptionType extends AbstractType
         $builder                        
 //            ->add('dayStartsAt', null, array('required' => true))
 //            ->add('dayEndsAt', null, array('required' => false))
-            ->add('day', 'date', array('required' => true, 'data' => new \DateTime()))            
+            ->add('day', 'date', array('required' => true))            
             ->add('startsAt', 'clock_picker', array('required' => false))   
             ->add('endsAt', 'clock_picker', array('required' => false))            
         ;

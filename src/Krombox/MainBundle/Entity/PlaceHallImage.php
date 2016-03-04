@@ -2,14 +2,17 @@
 
 namespace Krombox\MainBundle\Entity;
 
+use Krombox\MainBundle\Entity\Traits\ImageUploadableEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 
 /**
  * PlaceHallImage
  */
-class PlaceHallImage
-{
+class PlaceHallImage implements ImageUploadableInterface
+{    
+    use ImageUploadableEntity;
+    
     /**
      * @var integer
      */
@@ -23,7 +26,7 @@ class PlaceHallImage
     /**
      * @var string
      */
-    private $file_name;
+    //private $file_name;
 
     /**
      * @var \DateTime
@@ -52,22 +55,22 @@ class PlaceHallImage
      * @param string $fileName
      * @return PlaceHallImage
      */
-    public function setFileName($fileName)
-    {
-        $this->file_name = $fileName;
-
-        return $this;
-    }
-
-    /**
-     * Get file_name
-     *
-     * @return string 
-     */
-    public function getFileName()
-    {
-        return $this->file_name;
-    }
+//    public function setFileName($fileName)
+//    {
+//        $this->file_name = $fileName;
+//
+//        return $this;
+//    }
+//
+//    /**
+//     * Get file_name
+//     *
+//     * @return string 
+//     */
+//    public function getFileName()
+//    {
+//        return $this->file_name;
+//    }
 
     /**
      * Set updatedAt
@@ -129,5 +132,5 @@ class PlaceHallImage
     public function getImage()
     {
         return $this->image;
-    }
+    }                  
 }

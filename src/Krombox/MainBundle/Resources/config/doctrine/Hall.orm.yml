@@ -1,6 +1,6 @@
 Krombox\MainBundle\Entity\Hall:
     type: entity    
-    table: hall
+    table: p_hall
     #repositoryClass: Krombox\MainBundle\Repository\PlaceRepository
     id:
         id:
@@ -29,7 +29,7 @@ Krombox\MainBundle\Entity\Hall:
                 name: place_id
                 referencedColumnName: id
                 onDelete: cascade
-                onUpdate: cascade        
+                #onUpdate: cascade        
 #    oneToMany:
 #        places:
 #            targetEntity: Krombox\MainBundle\Entity\PlaceHall

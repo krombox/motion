@@ -14,6 +14,44 @@ use Krombox\MainBundle\DBAL\Types\MembershipStatusType;
  */
 class PlaceRepository extends EntityRepository
 {
+    const ALIAS = 'place';
+    
+    public function get($criteria = null)
+    {
+        $this->getQuery($criteria);
+    }
+    
+    public function getQuery($criteria = null)
+    {
+        $qb = $this->createQueryBuilder($this->getAlias());
+        if ($criteria) {
+            $this->processCriteria($qb, $criteria);
+        }
+        
+        return $qb;
+    }
+
+    public function processCriteria(QueryBuilder $qb, $criteria = null)
+    {
+        $alias = $this->getAlias();
+        
+        
+    }
+    
+    public function getAlias()
+    {
+        if (!isset($this->alias)) {
+            $this->alias = static::ALIAS;
+        }
+
+        return $this->alias;
+    }
+
+    public function setAlias($alias)
+    {
+        $this->alias = $alias;
+    }
+    
     /*GET Single Place object*/
     public function getPlace($slug)
     {

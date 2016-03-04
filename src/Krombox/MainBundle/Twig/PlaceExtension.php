@@ -38,10 +38,20 @@ class PlaceExtension extends \Twig_Extension
         return array(            
             'businessHoursSheet' => new \Twig_Function_Method($this, 'businessHoursSheet'),
             'isWorkingNow' => new \Twig_Function_Method($this, 'isWorkingNow'),
+            'closeIn' => new \Twig_Function_Method($this, 'closeIn'),
+            'openIn' => new \Twig_Function_Method($this, 'openIn'),
             'placeCount' => new \Twig_Function_Method($this, 'placeCount'),
             'filters' => new \Twig_Function_Method($this, 'filters')
         );
     }    
+    
+    public function closeIn($place){        
+        return $this->busineesHoursHelper->closeIn($place);
+    }
+    
+    public function openIn($place){        
+        return $this->busineesHoursHelper->openIn($place);
+    }
     
     public function businessHoursSheet($place, $withException = true){        
         return $this->busineesHoursHelper->getBusinessHoursSheet($place, $withException);

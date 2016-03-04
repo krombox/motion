@@ -1,0 +1,82 @@
+Krombox\MainBundle\Entity\PlaceFilterValueTranslation:
+    place_filter_value_translation_en_0:
+        translatable: @place_filter_value1
+        name: wifi                        
+        locale: en
+    place_filter_value_translation_ru_1:
+        translatable: @place_filter_value1
+        name: wifi                        
+        locale: ru
+        
+    place_filter_value_translation_en_2:
+        translatable: @place_filter_value2
+        name: parking                        
+        locale: en
+    place_filter_value_translation_ru_3:
+        translatable: @place_filter_value2
+        name: парковка                        
+        locale: ru
+        
+    place_filter_value_translation_en_4:
+        translatable: @place_filter_value3
+        name: live music                        
+        locale: en
+    place_filter_value_translation_ru_5:
+        translatable: @place_filter_value3
+        name: живая музыка                        
+        locale: ru
+        
+    place_filter_value_translation_en_6:
+        translatable: @place_filter_value4
+        name: open air                        
+        locale: en
+    place_filter_value_translation_ru_7:
+        translatable: @place_filter_value4
+        name: летняя площадка
+        locale: ru
+        
+    place_filter_value_translation_en_8:
+        translatable: @place_filter_value6
+        name: ukrainian                        
+        locale: en
+    place_filter_value_translation_ru_9:
+        translatable: @place_filter_value6
+        name: украинская
+        locale: ru
+        
+    place_filter_value_translation_en_10:
+        translatable: @place_filter_value5
+        name: asian                        
+        locale: en
+    place_filter_value_translation_ru_11:
+        translatable: @place_filter_value5
+        name: азиатская
+        locale: ru
+        
+    place_filter_value_translation_en_12:
+        translatable: @place_filter_value7
+        name: dance floor                        
+        locale: en
+    place_filter_value_translation_ru_13:
+        translatable: @place_filter_value7
+        name: танцпол
+        locale: ru
+        
+    place_filter_value_translation_en_14:
+        translatable: @place_filter_value8
+        name: european                        
+        locale: en
+    place_filter_value_translation_ru_15:
+        translatable: @place_filter_value8
+        name: европейская
+        locale: ru
+        
+    place_filter_value_translation_en_16:
+        translatable: @place_filter_value9
+        name: delivery                        
+        locale: en
+    place_filter_value_translation_ru_17:
+        translatable: @place_filter_value9
+        name: доставка
+        locale: ru    
+

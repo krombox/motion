@@ -28,9 +28,10 @@ class LogoController extends RestController
     {
         $em = $this->getDoctrine()->getManager();
         $placeImage = new PlaceImage();
-        $placeImage->setPlace($place);
-        if($place->getLogo())
+        $placeImage->setPlace($place);//TODO logo_id save in place table
+        if($place->getLogo()){
             $placeImage = $place->getLogo();
+        }
                         
         $form = $this->createForm(LogoType::TYPE_NAME, $placeImage, ['method' => 'POST']);
         //var_dump($form->isValid(), $form->getErrorsAsString());die();

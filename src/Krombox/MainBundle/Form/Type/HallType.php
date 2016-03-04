@@ -4,10 +4,13 @@ namespace Krombox\MainBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Krombox\MainBundle\Entity\Hall;
 
 class HallType extends AbstractType
 {
+    const DATA_CLASS = Hall::class;
+    
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
@@ -22,13 +25,12 @@ class HallType extends AbstractType
     }
     
     /**
-     * @param OptionsResolverInterface $resolver
+     * @param OptionsResolver $resolver
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Krombox\MainBundle\Entity\Hall',
-            //'attr' => ['class' => 'collection-item-holder']
+            'data_class' => static::DATA_CLASS
         ));
     }
 

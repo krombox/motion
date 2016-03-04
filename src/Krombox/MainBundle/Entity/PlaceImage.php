@@ -2,14 +2,17 @@
 
 namespace Krombox\MainBundle\Entity;
 
+use Krombox\MainBundle\Entity\Traits\ImageUploadableEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 
 /**
  * PlaceImage
  */
-class PlaceImage
+class PlaceImage implements ImageUploadableInterface
 {
+    
+    use ImageUploadableEntity;
     /**
      * @var integer
      */
@@ -18,12 +21,7 @@ class PlaceImage
     /**
      * @var File $back_image
      */
-    protected $image;
-
-    /**
-     * @var string
-     */
-    private $file_name;
+    protected $image;   
 
     /**
      * @var \DateTime
@@ -39,30 +37,7 @@ class PlaceImage
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set file_name
-     *
-     * @param string $fileName
-     * @return PlaceImage
-     */
-    public function setFileName($fileName)
-    {
-        $this->file_name = $fileName;
-
-        return $this;
-    }
-
-    /**
-     * Get file_name
-     *
-     * @return string 
-     */
-    public function getFileName()
-    {
-        return $this->file_name;
-    }
+    }    
 
     /**
      * Set updatedAt
@@ -101,5 +76,33 @@ class PlaceImage
     public function getImage()
     {
         return $this->image;
+    }
+    /**
+     * @var \Krombox\MainBundle\Entity\Place
+     */
+    private $place;
+
+
+    /**
+     * Set place
+     *
+     * @param \Krombox\MainBundle\Entity\Place $place
+     * @return PlaceImage
+     */
+    public function setPlace(\Krombox\MainBundle\Entity\Place $place = null)
+    {
+        $this->place = $place;
+
+        return $this;
+    }
+
+    /**
+     * Get place
+     *
+     * @return \Krombox\MainBundle\Entity\Place 
+     */
+    public function getPlace()
+    {
+        return $this->place;
     }
 }

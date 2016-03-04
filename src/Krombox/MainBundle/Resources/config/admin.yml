@@ -10,16 +10,16 @@ services:
         calls:
             - [ setTranslationDomain, [KromboxMainBundle]]
             
-#    sonata.admin.category:
-#        class: Krombox\MainBundle\Admin\CategoryAdmin
-#        tags:
-#            - { name: sonata.admin, manager_type: orm, group: "Main", label: "Category" }
-#        arguments:
-#            - ~
-#            - Krombox\MainBundle\Entity\Category
-#            - SonataAdminBundle:CRUD
-#        calls:
-#            - [ setTranslationDomain, [KromboxMainBundle]]
+    sonata.admin.category:
+        class: Krombox\MainBundle\Admin\CategoryAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Main", label: "Category" }
+        arguments:
+            - ~
+            - Krombox\MainBundle\Entity\Category
+            - SonataAdminBundle:CRUD
+        calls:
+            - [ setTranslationDomain, [KromboxMainBundle]]
             
     sonata.admin.kitchen:
         class: Krombox\MainBundle\Admin\KitchenAdmin
@@ -63,4 +63,26 @@ services:
             - Krombox\UserBundle\Entity\User
             - SonataAdminBundle:CRUD
         calls:
-            - [ setTranslationDomain, [KromboxUserBundle]]        
+            - [ setTranslationDomain, [KromboxUserBundle]]
+            
+    sonata.admin.place_filter_kind:
+        class: Krombox\MainBundle\Admin\PlaceFilterKindAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Main", label: "Filter Kind" }
+        arguments:
+            - ~
+            - Krombox\MainBundle\Entity\PlaceFilterKind
+            - SonataAdminBundle:CRUD
+        calls:
+            - [ setTranslationDomain, [KromboxMainBundle]]
+            
+    sonata.admin.place_filter_value:
+        class: Krombox\MainBundle\Admin\PlaceFilterValueAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Main", label: "Filter Value" }
+        arguments:
+            - ~
+            - Krombox\MainBundle\Entity\PlaceFilterValue
+            - SonataAdminBundle:CRUD
+        calls:
+            - [ setTranslationDomain, [KromboxMainBundle]]        

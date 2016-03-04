@@ -37,8 +37,8 @@ final class FilterManager
         $filterValuesAssocList = [];
         
         foreach ($results as $pfv)
-        {
-            $filterValuesAssocList[$pfv->getSlug()] = $pfv->getPlaceFilterKind()->getSlug();
+        {                        
+            $filterValuesAssocList[$pfv->getSlug()] = $pfv->getPlaceFilterKind()->getName();
         }
         
         return $filterValuesAssocList;        
@@ -53,6 +53,7 @@ final class FilterManager
         {
             $choices[$pfv->getSlug()] = $pfv->getName();
         }
+        
         return $choices;        
     }
     

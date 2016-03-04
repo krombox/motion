@@ -1,0 +1,17 @@
+Krombox\MainBundle\Entity\CityTranslation:
+    t_category_0:
+        translatable: @city0
+        name: Poltava                        
+        locale: en
+    t_category1:
+        translatable: @city0
+        name: Полтава                        
+        locale: ru
+    t_category2:
+        translatable: @city1
+        name: Kharkiv                       
+        locale: en
+    t_category3:
+        translatable: @city1
+        name: Харьков                        
+        locale: ru   

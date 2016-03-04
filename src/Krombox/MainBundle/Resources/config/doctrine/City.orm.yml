@@ -1,0 +1,15 @@
+Krombox\MainBundle\Entity\City:
+    type: entity    
+    table: city
+    #repositoryClass: Krombox\MainBundle\Repository\CityRepository
+    id:
+        id:
+            type: integer
+            generator: { strategy: IDENTITY }
+            
+    fields:
+        slug:
+            type: string
+            nullable: false
+    lifecycleCallbacks: {}
+        #

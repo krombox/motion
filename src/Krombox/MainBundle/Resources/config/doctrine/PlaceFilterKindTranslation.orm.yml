@@ -1,0 +1,10 @@
+Krombox\MainBundle\Entity\PlaceFilterKindTranslation:
+    type: entity    
+    table: t_place_filter_kind
+    #repositoryClass: DDI\MainBundle\Repository\NewsRepository    
+            
+    fields:        
+        name:
+            type: string
+            nullable: false        
+    lifecycleCallbacks: {  }

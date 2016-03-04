@@ -2,17 +2,23 @@ Krombox\MainBundle\Entity\Place:
     type: entity    
     table: place
     repositoryClass: Krombox\MainBundle\Repository\PlaceRepository
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: slug
     id:
         id:
             type: integer
             generator: { strategy: IDENTITY }    
     fields:    
-        name:
+#        name:
+#            type: string
+#            nullable: false
+#        description:
+#            type: text
+#            nullable: false
+        slug:
             type: string
             nullable: false
-        description:
-            type: text
-            nullable: false                  
+            #unique: true    
         status:
             type: StatusType
             nullable: false        
@@ -21,10 +27,7 @@ Krombox\MainBundle\Entity\Place:
         website:
             type: string
             nullable: true
-        vkGroup:
-            type: string
-            nullable: true
-        fbGroup:
+        email:
             type: string
             nullable: true    
         rating:
@@ -32,7 +35,10 @@ Krombox\MainBundle\Entity\Place:
             nullable: true
         ratingCount:
             type: integer
-            nullable: true
+            nullable: false
+        viewsCount:
+            type: integer
+            nullable: false
         is24h:
             type: boolean
             nullable: false    
@@ -51,28 +57,7 @@ Krombox\MainBundle\Entity\Place:
 #        features:
 #            targetEntity: Feature
 #            mappedBy: product
-    oneToOne:
-#        services:
-#            targetEntity: Krombox\MainBundle\Entity\Services
-#            cascade: ["persist", "merge"]
-#            orphanRemoval: true
-#            joinColumn:
-#                name: service_id
-#                referencedColumnName: id
-#        relaxations:
-#            targetEntity: Krombox\MainBundle\Entity\Relaxations
-#            cascade: ["persist", "merge"]
-#            orphanRemoval: true
-#            joinColumn:
-#                name: relaxation_id
-#                referencedColumnName: id
-#        paymentServices:
-#            targetEntity: Krombox\MainBundle\Entity\PaymentServices
-#            cascade: ["persist", "merge"]
-#            orphanRemoval: true
-#            joinColumn:
-#                name: payment_services_id
-#                referencedColumnName: id        
+    oneToOne:       
         logo:
             targetEntity: Krombox\MainBundle\Entity\PlaceImage
             cascade: ["persist", "merge"]
@@ -80,6 +65,8 @@ Krombox\MainBundle\Entity\Place:
             joinColumn:
                 name: logo_id
                 referencedColumnName: id        
+                onDelete: cascade
+                onUpdate: cascade
         address:
             targetEntity: Krombox\MainBundle\Entity\PlaceAddress
             cascade: ["persist", "merge"]
@@ -87,6 +74,9 @@ Krombox\MainBundle\Entity\Place:
             joinColumn:
                 name: address_id
                 referencedColumnName: id
+                onDelete: cascade
+                onUpdate: cascade
+                
 #        membership:
 #            targetEntity: Krombox\MainBundle\Entity\Membership
 #            joinColumn:
@@ -118,7 +108,11 @@ Krombox\MainBundle\Entity\Place:
             targetEntity: Krombox\MainBundle\Entity\Phone
             mappedBy: place
             cascade: ["persist", "merge"]
-            orphanRemoval: true        
+            orphanRemoval: true
+        socialLinks:
+            targetEntity: Krombox\MainBundle\Entity\SocialLink
+            mappedBy: place
+            cascade: ["persist", "merge"]
             orphanRemoval: true    
         events:
             targetEntity: Krombox\MainBundle\Entity\Event
@@ -135,6 +129,12 @@ Krombox\MainBundle\Entity\Place:
             mappedBy: place
             cascade: ["persist", "merge"]
             orphanRemoval: true
+        ordersMembership:
+            targetEntity: Krombox\PaymentBundle\Entity\OrderMembership
+            mappedBy: place
+            cascade: ["persist", "merge"]
+            orphanRemoval: true        
+            #orphanRemoval: true    
 #        placeFilterKindValue:
 #            targetEntity: Krombox\MainBundle\Entity\PlaceFilterKindValue
 #            mappedBy: place
@@ -160,6 +160,15 @@ Krombox\MainBundle\Entity\Place:
                 referencedColumnName: id
                 onDelete: cascade
                 onUpdate: cascade
+               
+        city:
+            targetEntity: Krombox\MainBundle\Entity\City
+            inversedBy: places                        
+            joinColumn:
+                name: city_id
+                referencedColumnName: id        
+                onDelete: cascade
+                onUpdate: cascade        
 #        category:
 #            targetEntity: Krombox\MainBundle\Entity\Category
 #            inversedBy: places
@@ -187,34 +196,7 @@ Krombox\MainBundle\Entity\Place:
                  referencedColumnName: id
             inverseJoinColumns:
                  place_filter_value_id:
-                 referencedColumnName: id
-        services:
-            targetEntity: Krombox\MainBundle\Entity\Service
-            inversedBy: places            
-            joinColumns:
-                 place_id:
-                 referencedColumnName: id
-            inverseJoinColumns:
-                 service_id:
-                 referencedColumnName: id         
-        kitchens:
-            targetEntity: Krombox\MainBundle\Entity\Kitchen
-            inversedBy: places            
-            joinColumns:
-                 place_id:
-                 referencedColumnName: id
-            inverseJoinColumns:
-                 kitchen_id:
-                 referencedColumnName: id
-        menu:
-            targetEntity: Krombox\MainBundle\Entity\Menu
-            inversedBy: places            
-            joinColumns:
-                 place_id:
-                 referencedColumnName: id
-            inverseJoinColumns:
-                 menu_id:
-                 referencedColumnName: id                 
+                 referencedColumnName: id                        
         placesLinked:
             targetEntity: Krombox\MainBundle\Entity\Place
             #inversedBy: places

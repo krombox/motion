@@ -31,8 +31,8 @@ abstract class AbstractOrder
     protected $user;
     
     /**
-     * @ORM\ManyToOne(targetEntity="Krombox\MainBundle\Entity\Place", inversedBy="payments")
-     * @ORM\JoinColumn(name="place_id", referencedColumnName="id", nullable=false)
+     * @ORM\ManyToOne(targetEntity="Krombox\MainBundle\Entity\Place", inversedBy="ordersMembership",  cascade={"all"})
+     * @ORM\JoinColumn(name="place_id", referencedColumnName="id", nullable=false, onDelete="cascade")
      */
     protected $place;
     

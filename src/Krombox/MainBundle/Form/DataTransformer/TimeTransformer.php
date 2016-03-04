@@ -48,9 +48,21 @@ class TimeTransformer implements DataTransformerInterface
     {   
         $date = null;
         
-        if($time)
-            $date = \DateTime::createFromFormat('H:i', $time);                
+        if($time){                       
+            if($time == '23:59'){ 
+                $time = $this->addSeconds ($time, '59');            
+            } else {
+                $time = $this->addSeconds ($time);
+            }
+            
+            $date = \DateTime::createFromFormat('H:i:s', $time);                                
+        }
         
         return $date;
-    }     
+    }
+    
+    protected function addSeconds($time, $seconds = '00')
+    {
+        return $time . ':' . $seconds;
+    }
 }

@@ -51,7 +51,7 @@ class ClockPickerType extends AbstractType
     {
         $resolver->setDefaults(array(
             //'data_class' => 'DateTime',
-            //'attr' => array('class' => 'hidden images_dropzone_input')
+            'attr' => array('class' => 'timepicker')
         ));
     }
     

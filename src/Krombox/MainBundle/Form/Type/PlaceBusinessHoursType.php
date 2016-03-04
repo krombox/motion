@@ -4,18 +4,22 @@ namespace Krombox\MainBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Krombox\MainBundle\Form\Type\BusinessHoursType;
+use Krombox\MainBundle\Entity\Place;
 use JMS\DiExtraBundle\Annotation as DI;
 
 /**
 * @DI\FormType
 */
 class PlaceBusinessHoursType extends AbstractType
-{    
+{   
+    const DATA_CLASS = Place::class;
+    
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder            
+        $builder
+                ->add('is24h')
                 ->add('businessHours', 'collection',array(
                     'type' => new BusinessHoursType(),
                     'allow_add' => true,
@@ -28,20 +32,17 @@ class PlaceBusinessHoursType extends AbstractType
                     'attr' => array(
                         'class' => 'collection',
                     ),
-                ))                                
-//                ->add('save', 'submit', array('label' => 'save', 'attr' => array(
-//                    'class' => 'btn btn-info'
-//                ) ))
+                ))
         ;
     }
     
     /**
-     * @param OptionsResolverInterface $resolver
+     * @param OptionsResolver $resolver
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Krombox\MainBundle\Entity\Place'
+            'data_class' => static::DATA_CLASS
         ));
     }
 

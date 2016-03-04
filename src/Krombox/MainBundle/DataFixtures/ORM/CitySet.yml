@@ -1,0 +1,6 @@
+Krombox\MainBundle\Entity\City:
+    city0:        
+        slug: poltava
+    city1:        
+        slug: kharkov
+

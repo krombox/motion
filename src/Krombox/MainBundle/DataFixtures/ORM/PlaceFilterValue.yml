@@ -1,0 +1,31 @@
+Krombox\MainBundle\Entity\PlaceFilterValue:
+    #Services
+    place_filter_value1:
+        slug: wifi
+        placeFilterKind: @place_filter_kind_services
+    place_filter_value2:        
+        slug: parking        
+        placeFilterKind: @place_filter_kind_services
+    place_filter_value3:        
+        slug: live_music        
+        placeFilterKind: @place_filter_kind_services
+    place_filter_value4:        
+        slug: open_air        
+        placeFilterKind: @place_filter_kind_services
+    place_filter_value7:        
+        slug: dance_floor        
+        placeFilterKind: @place_filter_kind_services
+    place_filter_value9:        
+        slug: delivery        
+        placeFilterKind: @place_filter_kind_services    
+    #Kitchens    
+    place_filter_value5:        
+        slug: asian        
+        placeFilterKind: @place_filter_kind_kitchens
+    place_filter_value6:        
+        slug: ukrainian        
+        placeFilterKind: @place_filter_kind_kitchens
+    place_filter_value8:        
+        slug: european        
+        placeFilterKind: @place_filter_kind_kitchens    
+

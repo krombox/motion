@@ -7,12 +7,12 @@ Krombox\MainBundle\Entity\Event:
             type: integer
             generator: { strategy: IDENTITY }    
     fields:    
-        name:
-            type: string
-            nullable: false
-        description:
-            type: text
-            nullable: false
+#        name:
+#            type: string
+#            nullable: false
+#        description:
+#            type: text
+#            nullable: false
         startDate:
             type: date
             nullable: false

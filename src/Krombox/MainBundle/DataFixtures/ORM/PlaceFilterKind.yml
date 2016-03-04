@@ -1,0 +1,21 @@
+Krombox\MainBundle\Entity\PlaceFilterKind:
+    place_filter_kind_services:
+        slug: services
+        categories: ['@category1','@category2','@category3']
+        #placeFilterValues: ['@place_filter_value1', '@place_filter_value2','@place_filter_value3','@place_filter_value4']
+#    place_filter_kind_business_hours:        
+#        slug: business-hours        
+#        categories: ['@category1','@category2','@category3']
+    place_filter_kind_kitchens:        
+        slug: kitchens        
+        categories: ['@category1','@category2','@category3']
+#    place_filter_kind1:
+#        slug: services
+#        categories: ['@category1','@category2', '@category3']
+#    place_filter_kind2:        
+#        slug: business-hours        
+#        categories: ['@category1','@category2', '@category3']
+#    place_filter_kind3:        
+#        slug: kitchens        
+#        categories: ['@category1','@category2', '@category3']
+

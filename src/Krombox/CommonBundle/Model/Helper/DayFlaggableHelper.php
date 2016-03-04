@@ -52,4 +52,9 @@ class DayFlaggableHelper
         }
         return $count;
     }
+    
+    public static function nextDay($currentDay)
+    {
+       return date('l', strtotime(' +1 day', strtotime($currentDay)));
+    }
 } 

@@ -37,13 +37,14 @@ class PlaceWrapperFactory extends AbstractWrapperFactory
      * @param User $user
      * @return DateWrapper
      */
-    public function wrap($user)
+    public function wrap($place)
     {
         $p = $this->getProvider();
-        $isCurrent = $this->user == $user;        
+        //$isCurrent = $this->user == $user;        
 
-        return new UserWrapper([
-            'id' => $user->getId(),
+        return new PlaceWrapper([
+            'id' => $place->getId(),
+            'name' => $place->getName()
             //'email' => $isCurrent ? $user->getEmail() : null,
 //            'apikey' => $isCurrent ? $user->getApiKey() : null,
 //            'role' => $isCurrent ? $user->getRole() : null,
@@ -70,10 +71,14 @@ class PlaceWrapperFactory extends AbstractWrapperFactory
 
     public function wrapLogo($place)
     {   
-        if($place->getLogo()->getFileName() == null)
+        var_dump($place->getId());die();
+        //var_dump($place->getLogo()->getPath() == null);die();
+        if($place->getLogo() == null){
             return 'http://dogvacay.com/img/default_home.jpg';
-        
-        return $this->imageResolver->getImagePath($place->getLogo()->getFileName(), 'place_image');
+        }
+                
+        return $place->getLogo()->getPath();
+//        return $this->imageResolver->getImagePath($place->getLogo()->getFileName(), 'place_image');
     }
 
     private function bindAddress(User $user){

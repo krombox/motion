@@ -33,6 +33,7 @@ Krombox\MainBundle\Entity\BusinessHours:
             joinColumn:
                 name: place_id
                 referencedColumnName: id
+                cascade: ["persist", "merge"]
                 onDelete: cascade
-                onUpdate: cascade
+#                onUpdate: cascade
     lifecycleCallbacks: {  }

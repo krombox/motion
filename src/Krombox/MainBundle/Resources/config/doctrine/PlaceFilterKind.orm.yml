@@ -7,9 +7,9 @@ Krombox\MainBundle\Entity\PlaceFilterKind:
             type: integer
             generator: { strategy: IDENTITY }    
     fields:    
-        name:
-            type: string
-            nullable: false
+#        name:
+#            type: string
+#            nullable: false
         slug:
             type: string
             nullable: false    

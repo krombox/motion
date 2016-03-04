@@ -7,18 +7,16 @@
 <div class="places-wrapper">
 <div class="col-lg-2">    
     <div class="filter-form-wrapper">
-    {% if filterForm is defined %}
-                
+    {% if filterForm is defined %}                
         {{ form_start(filterForm) }}
-        
+        {#{{ dump(filterForm.children) }}#}
         {% for filterType in filterForm.children %}{#{{ dump(filterType.vars.name) }}#}
             {% if filterType.vars.name in filterFacet | keys %}
                 
                 {% set filter_kind = '' %}
                 {% set filter_label = '' %}
                 {% for filter in filterType.children %}
-                    {% if filter.vars.filter_kind is not defined %}
-                        
+                    {% if filter.vars.filter_kind is not defined %}                        
                         {% if filterType.vars.name != filter_label %}
                             <legend>{{ filterType.vars.name }}</legend>
                             {% set filter_label = filterType.vars.name %}
@@ -32,11 +30,17 @@
                     {% set filterTypeName = filterType.vars.name %}                                        
                     {% set filterFacetType =  attribute(filterFacet, filterTypeName) %}
                     {% set filterCount = 0 %}
-                    {% for facet in filterFacetType.buckets %}
-                        {% if filter.vars.label  == facet.key %}
-                            {% set filterCount = facet.doc_count %}                        
-                        {% endif %}
+                    
+                    {% for facetKey, facetValue in filterFacetType.buckets %}                        
+                        {% if facetValue.key is defined and filter.vars.value  == facetValue.key %}
+                            {% set filterCount = facetValue.doc_count %}                        
+                        {% endif %}    
+                        {% if facetValue.key is not defined and filter.vars.value  == facetKey %}                            
+                            {% set filterCount = facetValue.doc_count %}                        
+                        {% endif %}                       
                     {% endfor %}
+                    
+                    {#{{ filter.vars.value }}{{ filterCount }}#}
                     <div class="checkbox">                                                
                         <label>
                             {{ form_widget(filter) }}
@@ -53,75 +57,53 @@
         {#<input type="submit" class="btn btn-info">#}
     {% endif %}
     </div>
-    <!-- testFilter.html.twig -->    
-    {#<div class="filter-form-wrapper">
-        {{ form_start(form) }}        
-        
-        {% set scope = [] %}
-        {% for service in form.services if service.vars.data %}
-            {% set scope = scope | merge([service.vars.value]) %}            
-        {% endfor %}
-        {% for relaxation in form.relaxations if relaxation.vars.data %}
-            {% set scope = scope | merge([relaxation.vars.value]) %}            
-        {% endfor %}        
-        
-        <legend>{% trans %}services{% endtrans %}</legend>
-        {% for service in form.services %}
-            <div>
-                <label>                
-                {{ form_widget(service) }}
-                {{ service.vars.label }}
-                <span>({{ placeCount(service.vars.value, scope) }})</span>
-                </label>
-            </div>
-        {% endfor %}
-        
-        <legend>{% trans %}relaxations{% endtrans %}</legend>
-        {% for relaxation in form.relaxations %}
-            <div>
-                <label>                
-                {{ form_widget(relaxation) }}
-                {{ relaxation.vars.label }}
-                <span>({{ placeCount(relaxation.vars.value, scope) }})</span>
-                </label>
-            </div>
-        {% endfor %}
-        {{ form_rest(form) }}
-        {{ form_end(form) }}#}
-        {#<input type="submit" name="submit-filter" value="filter" />#}
-    {#</form>#}
-    
+   
     </div>   
     {#{{ google_map(map) }}#}
-<div class="col-lg-10">{#{{ placeCount(filterForm) }}#}
+<div class="col-lg-10">
     {#{{ render(controller('KromboxMainBundle:Category:categoriesList', {'type': 'place'})) }} #}
     
     <div class="list">
     {% if places is defined %}
         {% for entity in places %}
+            
             <div class="place row">
                 <div class="col-lg-4">
-                    {% if entity.logo is not null %}
-                        <img src="{{ generateImageUrl(entity.logo.fileName, 'place_image') | imagine_filter('place_logo_thumb') }}" >
-                    {% endif %}
+                    {#{% if entity.logo is not null %}#}
+                        <img src="{{ macro.logo(entity.logo) }}" >
+                    {#{% endif %}#}
                 </div>
                 
                 <div class="col-lg-8">
                     <h2><a href="{{ path('place_details', { 'slug': entity.slug })}}">{{ entity.getName }}</a>{{ macro.membership(entity) }}{{ entity.membership.score }}</h2>{{ macro.edit_place_button(entity) }}
                     {#<p><strong>{% trans %}categories{% endtrans %}: </strong>{{ entity.getCategoriesName | join(',') }}{% if entity.is24h %}<span class="label label-danger">{% trans %}24h{% endtrans %}</span>{% endif %}</p>#}
                     <p><strong>{% trans %}address{% endtrans %}: </strong> {{ macro.nice_address(entity.address) }}</p>
-                    {% if entity.isWifi %}<p><strong>{% trans %}wifi{% endtrans %}: </strong> <span class="glyphicon glyphicon-transfer" aria-hidden="true"></span></p>{% endif %}
+                    {#{% if entity.isWifi %}<p><strong>{% trans %}wifi{% endtrans %}: </strong> <span class="glyphicon glyphicon-transfer" aria-hidden="true"></span></p>{% endif %}#}
                     <p>
                         <strong>{% trans %}business_hours{% endtrans %}: </strong>
+                        {#<span>{{ closestBusinessHours(entity) | date('Y/m/d H:i:s') }} left for close</span>                        #}
+                        {% if isWorkingNow(entity) %}
+                            {% if entity.is24h %}
+                                {% trans %}24h{% endtrans %}
+                            {% else %}
+                                <span class="hours-left" data-countdown="{{ closeIn(entity) | date('Y/m/d H:i:s') }}"></span>                            
+                            {% endif %}
+                            <span class="label label-warning">{% trans %}open{% endtrans %}</span>
+                        {% else %}{{ openIn(entity) | date('Y/m/d H:i:s') }}
+                            <span class="hours-left" data-countdown="{{ openIn(entity) | date('Y/m/d H:i:s') }}"></span>
+                            <span class="label label-danger">{% trans %}close{% endtrans %}</span>
+                        {% endif %}
                         {#{% for bHours in entity.businessHours %}
                             <span class="fromDay">{{ bHours.startsAt |readable('DayType') | trans({})}}</span> - <span class="toDay">{{ bHours.toDay |readable('DayType') | trans({}) }}</span>
                             <span class="fromTime">{{ bHours.fromTime | date('H:i') }}</span> - <span class="toTime">{{ bHours.toTime | date('H:i') }}</span>,                        
                         {% endfor %}    #}
-                        {% if isWorkingNow(entity) %}<span class="label label-warning">работает сейчас!</span>{% else %}<span class="label label-danger">закрыто</span>{% endif %}
+                        {#{% if isWorkingNow(entity) %}<span class="label label-warning">работает сейчас!</span>{% else %}<span class="label label-danger">закрыто</span>{% endif %}#}
+                        
                     </p>
+                    <p><strong>{% trans %}views count{% endtrans %}: </strong>{{entity.viewsCount }}</p>
 
                     {% for img in entity.getPlaceImages %}                    
-                        <img src="{{ generateImageUrl(img.fileName, 'place_image') | imagine_filter('place_image_thumb') }}" >
+                        {#<img src="{{ generateImageUrl(img.fileName, 'place_image') | imagine_filter('place_image_thumb') }}" >#}
                         {#<img src="{{ 'https://copy.com/thumbs_public/nIdkDSHtsduPhb3E/place_images/553feca345d3b.jpg' | imagine_filter('place_image_thumb') }}">#}
 
                         {#{% set pic = 'https://copy.com/thumbs_public/nIdkDSHtsduPhb3E/place_images/' ~ img.fileName ~ '?size=1024' %}                   #}
@@ -131,10 +113,13 @@
                     {% endfor %}
                     <p>{{ entity.getDescription }}</p>
                     </div>
-            </div>
+            </div>                    
         {% endfor %}
         {#<img src="{{ 'http://s.ill.in.ua/i/news/630x373/266/266971.jpg'  | customImagine('place_image_thumb')  }}" alt="" />#}
-    {% endif %}
+    {% endif %}    
+    <div class="pagerfanta">
+        {{ pagerfanta(places, 'twitter_bootstrap3') }}
+    </div>
     </div>
 </div>
 </div>

@@ -31,29 +31,12 @@ class PlaceFilterType extends AbstractType
         $this->filterManager = $filterManager;
     }
     public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        //$categories = [1];        
-//                ->add('is24h', 'filter_boolean')
-//                ->add('website','filter_text')
-//                ->add('phone','filter_text')
-//                ->add('name','filter_text')
-//                ->add('services', 'choice',
-//                    [
-//                        'required' => false,
-//                        'multiple' => true,
-//                        'expanded' => true,
-//                        'choices'  => ServicesEnum::getChoices(),
-//                        'attr'     => [
-//                            'data-placeholder' => 'Skills',
-//                            'data-type' => 'filter'
-//                        ]
-//                    ]
-//                )
+    {        
             $builder
                     ->add('businessHours', 'choice', array(
                         'choices' => array(
                             'workingNow' => 'workingNow',
-                            'workingAlways' => '24/7'
+                            '24/7' => '24/7'
                         ),
                         'expanded' => true,
                         'multiple' => true
@@ -62,18 +45,18 @@ class PlaceFilterType extends AbstractType
             
             $formModifier = function (Form $form, $categories) {
                 //var_dump($categories);die();
-            $options = array(
-                'class' => 'Krombox\MainBundle\Entity\PlaceFilterValue',
-                'property' => 'slug',
-                'multiple' => true,
-                'expanded' => true,
-                'label' => false,
-                'required' => false,
-                'position' => 'first',
-                'query_builder' => function(EntityRepository $repository) use ($categories) {                    
-                    return $repository->queryGet(['categories' => $categories]);
-                }
-            );
+//            $options = array(
+//                'class' => 'Krombox\MainBundle\Entity\PlaceFilterValue',
+//                'property' => 'slug',
+//                'multiple' => true,
+//                'expanded' => true,
+//                'label' => false,
+//                'required' => false,
+//                'position' => 'first',
+//                'query_builder' => function(EntityRepository $repository) use ($categories) {                    
+//                    return $repository->queryGet(['categories' => $categories]);
+//                }
+//            );
             
             $class = 'Krombox\MainBundle\Entity\PlaceFilterValue';
             $this->filterManager->setDataClass($class);
@@ -179,7 +162,8 @@ class PlaceFilterType extends AbstractType
         $resolver->setDefaults(array(
             'data_class' => static::DATA_CLASS,
             'method' => 'GET',
-            'csrf_protection' => false
+            'csrf_protection' => false,
+            'attr' => array('class' => static::TYPE_NAME)
         ));
     }
 }

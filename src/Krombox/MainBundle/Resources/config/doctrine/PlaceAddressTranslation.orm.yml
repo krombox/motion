@@ -1,0 +1,19 @@
+Krombox\MainBundle\Entity\PlaceAddressTranslation:
+    type: entity    
+    table: t_place_address
+    #repositoryClass: Krombox\MainBundle\Repository\PlaceRepository     
+    fields:        
+        country:
+            type: string    
+        state:
+            type: string
+        city:
+            type: string
+        street:
+            type: string    
+        streetNumber:
+            type: string
+            nullable: true
+#        formatted:
+#            type: string    
+    lifecycleCallbacks: {}       

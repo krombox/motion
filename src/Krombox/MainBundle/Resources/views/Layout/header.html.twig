@@ -12,6 +12,7 @@
         <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <link href="https://raw.githubusercontent.com/marcoceppi/bootstrap-glyphicons/master/css/bootstrap.icon-large.min.css" rel="stylesheet" type="text/css" />
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+        {#<link rel="stylesheet" href="https://twitter.github.io/typeahead.js/css/examples.css">        #}
     {% endblock %}
     
     {% stylesheets '@FOSCommentBundle/Resources/assets/css/comments.css' %}
@@ -19,8 +20,10 @@
     {% endstylesheets %}
     
     {% block javascripts_head %}
-        <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
-        <script src="{{ asset('bower/moment/moment.js') }}"></script>        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script>
+        <script src="{{ asset('js/common.js') }}"></script>
+        <script src="{{ asset('bower/moment/moment.js') }}"></script>
+        <script src="{{ asset('bower/typeahead.js/dist/typeahead.bundle.min.js') }}"></script>
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
         <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
         <script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>
@@ -44,7 +47,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="{{ path('places_list', {'slug': 'restaurants-cafe'}) }}">Home</a>
+      <a class="navbar-brand" href="{{ path('places_list', {'city_slug': 'poltava', 'category_slug': 'restaurants-cafe'}) }}">Home</a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
@@ -52,7 +55,7 @@
       <ul class="nav navbar-nav">
         {#<li class="active"><a href="{{ path('place_create') }}">{% trans %}create.new.place{% endtrans %}<span class="sr-only">(current)</span></a></li>
         <li><a href="{{ path('event_create') }}">{% trans %}create.new.event{% endtrans %}<span class="sr-only">(current)</span></a></li>#}
-        <li><a href="{{ path('places_list', {'slug': 'restaurants-cafe'}) }}">{% trans %}places{% endtrans %}<span class="sr-only">(current)</span></a></li>
+        <li><a href="{{ path('places_list', {'city_slug': 'poltava', 'category_slug': 'restaurants-cafe'}) }}">{% trans %}places{% endtrans %}<span class="sr-only">(current)</span></a></li>
         <li><a href="{{ path('events_list', {'slug': 'restaurants-cafe'}) }}">{% trans %}events{% endtrans %}<span class="sr-only">(current)</span></a></li>
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{% trans %}create{% endtrans %} <span class="caret"></span></a>
@@ -64,7 +67,7 @@
       </ul>
       <form class="navbar-form navbar-left" role="search">
         <div class="form-group">
-          <input type="text" class="form-control" placeholder="Search">
+          <input  type="text" class="form-control typeahead" placeholder="Search for places">
         </div>
         <button type="submit" class="btn btn-default">Submit</button>
       </form>
@@ -92,28 +95,49 @@
   </div><!-- /.container-fluid -->
 </nav>
     </header>
-    {#<div class="wrapper row">		        
-        <div class="contain-to-grid">
-                <nav class="top-bar" data-topbar role="navigation">
-                        <ul class="title-area">
-                                <li class="name">
-                                        <h1><a href="{{ path('krombox_main_homepage') }}">Главная</a></h1>
-                                </li>
-                                <li class="toggle-topbar menu-icon">
-                                   <a href="#"><span>Меню</span></a>
-                                </li>
-                        </ul>
-                        <section class="top-bar-section">
-                                <ul class="right">
-                                        <li class="divider"></li>
-                                        <li {% if(active_page == 'documents') %} class="active"{% endif %}><a href="{{ path('krombox_main_documents') }}">Документы</a></li>
-                                        <li class="divider"></li>
-                                        <li {% if(active_page == 'history') %} class="active"{% endif %}><a href="{{ path('krombox_main_history') }}">История</a></li>
-                                        <li class="divider"></li>
-                                        <li {% if(active_page == 'gallery') %} class="active"{% endif %}><a href="{{ path('krombox_main_gallery') }}">Фотогалерея</a></li>
-                                        <li class="divider"></li>
-                                        <li {% if(active_page == 'blog') %} class="active"{% endif %}><a href="{{ path('krombox_main_blog') }}">Блог</a></li>
-                                </ul>
-                        </section>
-                </nav>
-        </div>     #}                                               
+      <script>
+          var source = new Bloodhound({
+            datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+            queryTokenizer: Bloodhound.tokenizers.whitespace,
+            identify: function(obj) { return obj.id; },
+            //identify: function(obj) { return obj.id; },
+            {#prefetch: '../data/films/post_1960.json',#}
+            remote: {
+            url: Routing.generate('api_1.get_places_autocomplete'),
+            wildcard: '%QUERY',
+            replace: function(url, uriEncodedQuery) {                
+                return url + '?q=' + uriEncodedQuery;
+            },
+            {#ajax : {
+                beforeSend: function(jqXhr, settings){
+                    settings.data = $.param({q: queryInput.val()})
+                },
+                type: "POST"
+            }#}
+              {#transform: function(results) { 
+                  $.each(results, function(){
+                      return this.id;
+                  })
+              },#}
+            }
+          });
+          
+          $('.typeahead').typeahead({
+            minLength: 3,
+            highlight: true
+            },
+            {
+            name: 'my-dataset',
+            source: source,
+            templates: {
+                empty: [
+                  '<div class="empty-message">',
+                    'unable to find any Best Picture winners that match the current query',
+                  '</div>'
+                ].join('\n'),
+                suggestion: function(data){
+                    return '<p><strong>' + data.name + '</strong></p>';
+                }
+              }
+            });
+      </script>                                             

@@ -37,6 +37,10 @@ Dropzone.autoDiscover = false;
                             removeButton.data('id', data.id);                                                          
                             dropzone.pushId($('#' + this.element.id), data.id);                                                
                         });
+                        
+                        this.on("error", function(){
+                            
+                        });
 
                         this.on("removedfile", function(file) {                             
                             dropzone.pullId($('#' + this.element.id), $(file._removeLink).data('id'));

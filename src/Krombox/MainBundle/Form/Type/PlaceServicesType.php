@@ -4,12 +4,14 @@ namespace Krombox\MainBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Krombox\MainBundle\Form\Type\ServicesType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\Form;
 use Doctrine\ORM\EntityRepository;
+use Krombox\MainBundle\Entity\Place;
+use Krombox\MainBundle\Entity\PlaceFilterValue;
 use JMS\DiExtraBundle\Annotation as DI;
 
 /**
@@ -17,19 +19,13 @@ use JMS\DiExtraBundle\Annotation as DI;
 */
 class PlaceServicesType extends AbstractType
 {    
+    const DATA_CLASS = Place::class;
+    
     public function buildForm(FormBuilderInterface $builder, array $options)
-    {                    
-//                ->add('services', 'entity', array(
-//                    'class' => 'Krombox\MainBundle\Entity\Service',
-//                    'property' => 'name',
-//                    'multiple' => true,
-//                    'expanded' => true,
-//                    'label' => 'services',
-//                    'required' => false
-//                ))
+    {   
         $formModifier = function (Form $form, $categories = null) {
             $options = array(
-                'class' => 'Krombox\MainBundle\Entity\PlaceFilterValue',
+                'class' => PlaceFilterValue::class,
                 'property' => 'slug',
                 'multiple' => true,
                 'expanded' => true,
@@ -56,58 +52,16 @@ class PlaceServicesType extends AbstractType
 
                 $formModifier($event->getForm(), $categories);                
             }
-        );
-            
-//        $builder->get('categories')->addEventListener(
-//            FormEvents::POST_SUBMIT,
-//            function (FormEvent $event) use ($formModifier){                
-//                $categoriesData = $event->getForm()->getData();
-//                
-//                $categories = [];
-//                if(!$categoriesData->isEmpty()){
-//                    foreach ($categoriesData as $category){
-//                        $categories[] = $category->getId();
-//                    }
-//                }    
-//                // since we've added the listener to the child, we'll have to pass on
-//                // the parent to the callback functions!
-//                $formModifier($event->getForm()->getParent(), $categories);
-//            }
-//        );
-            
-        $builder    
-                ->add('website', null, array(
-                    'label' => 'website',
-                    'required' => false
-                ))
-                ->add('fb_group', null, array(
-                    'label' => 'fb_group',
-                    'required' => false
-                ))
-                ->add('vk_group', null, array(
-                    'label' => 'vk_group',
-                    'required' => false
-                ))                
-                ->add('phones', 'collection',array(
-                    'type' => new PhoneType(),
-                    'allow_add' => true,
-                    'allow_delete' => true,
-                    'label' => 'phones',
-                    'required' => false,
-                    'by_reference' => false,
-                    'attr' => array('class' => 'collection'),
-                    'options' => array('label' => false),                    
-                ))
-        ;
+        );              
     }
     
     /**
-     * @param OptionsResolverInterface $resolver
+     * @param OptionsResolver $resolver
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Krombox\MainBundle\Entity\Place'
+            'data_class' => static::DATA_CLASS
         ));
     }
 

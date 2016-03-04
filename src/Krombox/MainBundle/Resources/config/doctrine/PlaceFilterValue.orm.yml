@@ -7,9 +7,9 @@ Krombox\MainBundle\Entity\PlaceFilterValue:
             type: integer
             generator: { strategy: IDENTITY }    
     fields:    
-        name:
-            type: string
-            nullable: false
+#        name:
+#            type: string
+#            nullable: false
         slug:
             type: string
             nullable: false    
@@ -24,6 +24,7 @@ Krombox\MainBundle\Entity\PlaceFilterValue:
     manyToOne:
         placeFilterKind:
             targetEntity: Krombox\MainBundle\Entity\PlaceFilterKind
+            nullable: false
             inversedBy: placeFilterValues
             joinColumn:
                 name: filter_kind_id

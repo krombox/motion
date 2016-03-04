@@ -70,6 +70,7 @@ class CategoryTranslation
     }
     
     public function __toString(){                
+        //var_dump($this->getName());die();
         return $this->getName();
     }
 }

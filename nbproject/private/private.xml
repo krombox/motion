@@ -5,21 +5,23 @@
             <url>src/Krombox/MainBundle/Form/Type/EventType.php</url>
             <bookmark id="1">
                 <name/>
-                <line>32</line>
+                <line>33</line>
                 <key/>
             </bookmark>
         </file>
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/var/www/motion/src/Krombox/MainBundle/Resources/config/routing/place.yml</file>
-            <file>file:/var/www/motion/src/Krombox/MainBundle/Form/Type/PlaceType.php</file>
-            <file>file:/var/www/motion/src/Krombox/MainBundle/Controller/PlaceController.php</file>
-            <file>file:/var/www/motion/src/Krombox/MainBundle/Repository/PlaceFilterKindRepository.php</file>
-            <file>file:/var/www/motion/src/Krombox/MainBundle/Resources/config/routing.yml</file>
-            <file>file:/var/www/motion/app/config/config.yml</file>
-            <file>file:/var/www/motion/src/Krombox/MainBundle/Resources/config/doctrine/PlaceFilterKind.orm.yml</file>
-            <file>file:/var/www/motion/src/Krombox/MainBundle/Resources/views/Place/edit.html.twig</file>
+            <file>file:/var/www/motion/src/Krombox/MainBundle/Helper/BusinessHoursHelper.php</file>
+            <file>file:/var/www/motion/src/Krombox/MainBundle/Resources/views/Place/details.html.twig</file>
+            <file>file:/var/www/motion/src/Krombox/MainBundle/Entity/Place.php</file>
+            <file>file:/var/www/motion/src/Krombox/MainBundle/Controller/Api/LogoController.php</file>
+            <file>file:/var/www/motion/src/Krombox/MainBundle/Resources/views/Place/list.html.twig</file>
+            <file>file:/var/www/motion/src/Krombox/MainBundle/Twig/PlaceExtension.php</file>
+            <file>file:/var/www/motion/src/Krombox/MainBundle/Resources/views/Place/partial/placesList.html.twig</file>
+            <file>file:/var/www/motion/src/Krombox/MainBundle/Wrapper/PlaceWrapperFactory.php</file>
+            <file>file:/var/www/motion/src/Krombox/MainBundle/Resources/views/Form/fields.html.twig</file>
+            <file>file:/var/www/motion/src/Krombox/MainBundle/Resources/views/macro.html.twig</file>
         </group>
     </open-files>
 </project-private>

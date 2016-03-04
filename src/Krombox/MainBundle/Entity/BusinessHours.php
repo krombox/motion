@@ -8,12 +8,11 @@ use Krombox\MainBundle\Entity\Traits\SchedulableEntity;
 use Krombox\MainBundle\Entity\Traits\Entity;
 use Krombox\MainBundle\Entity\Place;
 use Krombox\CommonBundle\Model\Helper\DayFlaggableHelper;
+use Krombox\MainBundle\Validator\Constraints as MainAssert;
 
 /**
- * @ORM\Entity
- * @ORM\Table(name="business_hours")
+ * @MainAssert\BusinessHoursConstraint
  */
-
 class BusinessHours
 {
     use Entity,
@@ -21,7 +20,7 @@ class BusinessHours
         SchedulableEntity;
     
     public function __construct() {        
-        //DayFlaggableHelper::fillFields($this, true);        
+        DayFlaggableHelper::fillFields($this, false);        
         //$this->setStartsAt(new \DateTime());
     }
 
@@ -53,12 +52,23 @@ class BusinessHours
         return $this->place;
     }
     
-    public function getTimeStartsAt()
+//    public function getTimeStartsAt()
+//    {
+//        return $this->startsAt->format('H:i:s');
+//    }
+//    
+//    public function getTimeEndsAt()
+//    {
+//        return $this->endsAt->format('H:i:s');
+//    }
+    public function getStartsAtFormatted()
     {
+        $now = new \DateTime();
+        //return $now->format('H:i:s');
         return $this->startsAt->format('H:i:s');
     }
     
-    public function getTimeEndsAt()
+    public function getEndsAtFormatted()
     {
         return $this->endsAt->format('H:i:s');
     }

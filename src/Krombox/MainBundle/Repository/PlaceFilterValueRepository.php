@@ -20,7 +20,7 @@ class PlaceFilterValueRepository extends EntityRepository
         $qb = $this->createQueryBuilder('pfv')
             ->leftJoin('pfv.placeFilterKind', 'pfk')
         ;
-        
+        //var_dump($criteria);die();
         if(isset($criteria['place']))
         {
             $qb

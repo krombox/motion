@@ -1,0 +1,15 @@
+Krombox\MainBundle\Entity\MembershipSubscription:
+    membrship_subscription{1..25}:
+        status: active
+        membership: @membership<numberBetween(1,3)>
+        place: @place<current()>
+     
+#    membrship_subscription_1:
+#        status: active
+#        membership: @membership_standart
+#        place: @place_valber 
+#      
+#    membrship_subscription_2:
+#        status: active
+#        membership: @membership_silver
+#        place: @place_panorama     

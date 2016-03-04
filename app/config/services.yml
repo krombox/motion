@@ -16,4 +16,7 @@ services:
             token-secret:     mVq40mvC0JEB7fEqREetk18DONQvhm0R8bQpJ4RZNgzxXMh5
             
     cache.redis:
-        class: Predis\Client        
+        class: Predis\Client
+        
+    fos_user.doctrine_registry:
+        alias: doctrine    

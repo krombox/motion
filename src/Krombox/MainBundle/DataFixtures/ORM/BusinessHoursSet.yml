@@ -1,0 +1,13 @@
+Krombox\MainBundle\Entity\BusinessHours:
+    business_hours{1..25}:
+        dayMonday: <randomElement([true,false])>
+        dayTuesday: <randomElement([true,false])>
+        dayWednesday: <randomElement([true,false])>
+        dayThursday: <randomElement([true,false])>
+        dayFriday: <randomElement([true,false])>
+        daySaturday: <randomElement([true,false])>
+        daySunday: <randomElement([true,false])>
+        startsAt: <dateTimeAD()> 
+        endsAt: <dateTimeAD()>
+        place: @place<current()>
+

@@ -13,6 +13,7 @@
     {% block javascripts_head %}        
         <script src="{{ asset('bower/fullcalendar/dist/fullcalendar.min.js') }}"></script>        
         <script src="{{ asset('bower/jquery-bar-rating/dist/jquery.barrating.min.js') }}"></script>        
+        <script src="{{ asset('bower/jquery.countdown/dist/jquery.countdown.min.js') }}"></script>        
         <script src="{{ asset('bower/echojs/dist/echo.min.js') }}"></script>        
         <script src="{{ asset('js/spin.min.js') }}"></script>
         <script src="{{ asset('js/ratingWidget.js') }}"></script>
@@ -23,36 +24,11 @@
 <div class="place">
     <h2>{{ place.getName }}</h2>
     {% if place.logo is not null %}
-        <img src="{{ generateImageUrl(place.logo.fileName, 'place_image') | imagine_filter('place_logo_thumb') }}" >
+        <img src="{{ place.logo.path | imagine_filter('place_logo_thumb') }}" >
     {% endif %}
     <p><strong>{% trans %}categories{% endtrans %}: </strong>{{ place.getCategoriesName | join(',') }}{% if place.is24h %}<span class="label label-danger">{% trans %}24h{% endtrans %}</span>{% endif %}</p>
     <p><strong>{% trans %}address{% endtrans %}: </strong> {{ macro.nice_address(place.address) }}</p>
-    {#{% set services = place.services %}
-    <p>
-        {% if services.isWifi %}<span><strong>{% trans %}wifi{% endtrans %}: </strong> <span class="glyphicon glyphicon-transfer" aria-hidden="true"></span></span>{% endif %}
-        {% if services.isHookah %}<span><strong>{% trans %}hookah{% endtrans %}: </strong> <span class="glyphicon glyphicon-grain" aria-hidden="true"></span></span>{% endif %}
-        {% if services.isLiveMusic %}<span><strong>{% trans %}live.music{% endtrans %}: </strong> <span class="glyphicon glyphicon-music" aria-hidden="true"></span></span>{% endif %}
-        {% if services.isOpenAir %}<span><strong>{% trans %}open.air{% endtrans %}: </strong> <span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span></span>{% endif %}
-        {% if services.isParking %}<span><strong>{% trans %}parking{% endtrans %}: </strong> <span class="glyphicon glyphicon-road" aria-hidden="true"></span></span>{% endif %}
-        
-        {% if services.isSmokingLounge %}<span><strong>{% trans %}smoking.lounge{% endtrans %}: </strong> <span class="glyphicon glyphicon-fire" aria-hidden="true"></span></span>{% endif %}
-        {% if services.isBilliards %}<span><strong>{% trans %}billiards{% endtrans %}: </strong> <span class="glyphicon glyphicon-cd" aria-hidden="true"></span></span>{% endif %}
-        {% if services.isFaceControl %}<span><strong>{% trans %}face.control{% endtrans %}: </strong> <span class="glyphicon glyphicon-sunglasses" aria-hidden="true"></span></span>{% endif %}
-        {% if services.isBanquet %}<span><strong>{% trans %}banquet{% endtrans %}: </strong> <span class="glyphicon glyphicon-gift" aria-hidden="true"></span></span>{% endif %}
-        {% if services.isDanceFloor %}<span><strong>{% trans %}dance.floor{% endtrans %}: </strong> <span class="glyphicon glyphicon-star" aria-hidden="true"></span></span>{% endif %}
-        {% if services.isStriptease %}<span><strong>{% trans %}striptease{% endtrans %}: </strong> <span class="glyphicon glyphicon-queen" aria-hidden="true"></span></span>{% endif %}
-        {% if services.isMeetingHole %}<span><strong>{% trans %}meeting.hole{% endtrans %}: </strong> <span class="glyphicon glyphicon-briefcase" aria-hidden="true"></span></span>{% endif %}
-        {% if services.isDelivery %}<span><strong>{% trans %}delivery{% endtrans %}: </strong> <span class="glyphicon glyphicon-plane" aria-hidden="true"></span></span>{% endif %}
-        {% if services.isSportBroadcast %}<span><strong>{% trans %}football.broadcast{% endtrans %}: </strong> <span class="glyphicon glyphicon-blackboard" aria-hidden="true"></span></span>{% endif %}
-        {% if services.isChildrenMenu %}<span><strong>{% trans %}children.menu{% endtrans %}: </strong> <span class="glyphicon glyphicon-cutlery" aria-hidden="true"></span></span>{% endif %}
-        {% if services.isTerminalPayment %}<span><strong>{% trans %}terminal.payment{% endtrans %}: </strong> <i class="fa fa-credit-card fa-3x"></i></span>{% endif %}
-        {% if services.isDiscountSystem %}<span><strong>{% trans %}discount.system{% endtrans %}: </strong> <i class="fa fa-gift fa-3x"></i></span>{% endif %}
-        {% if services.isGameConsole %}<span><strong>{% trans %}game.console{% endtrans %}: </strong> <i class="fa fa-gamepad fa-3x"></i></span>{% endif %}
-        {% if services.isBoardGame %}<span><strong>{% trans %}board.game{% endtrans %}: </strong> <i class="fa fa-trophy fa-3x"></i></span>{% endif %}        
-    </p>#}
-    {#<p>
-        <strong>{% trans %}business_hours{% endtrans %}: </strong>        
-    </p>#}
+    
     {% if place.phones is not empty%}
     <p>
       <strong>{% trans %}phones{% endtrans %}: </strong>
@@ -61,44 +37,22 @@
         {% endfor %}
     </p>
     {% endif %}
+    
+    {% if place.socialLinks is not empty%}
+    <p>
+      <strong>{% trans %}social links{% endtrans %}: </strong>
+      {% for social in place.socialLinks %}
+            <span><i>{{ social.type |readable('SocialLinkType') | trans({})}}:</i></span> {{ social.url }}            
+        {% endfor %}
+    </p>
+    {% endif %}
+    
     {% if place.website is not empty %}
         <p>
             <strong>{% trans %}website{% endtrans %}:</strong><a href="{{ place.website }}">{{ place.website }}</a>
         </p>
     {% endif %}
-    
-    {% if place.vkGroup is not empty %}
-        <p>
-            <strong>{% trans %}vk.group{% endtrans %}:</strong><a href="{{ place.vkGroup }}">{{ place.vkGroup }}</a>
-        </p>
-    {% endif %}
-    
-    {% if place.fbGroup is not empty %}
-        <p>
-            <strong>{% trans %}fb.group{% endtrans %}:</strong><a href="{{ place.fbGroup }}">{{ place.fbGroup }}</a>
-        </p>
-    {% endif %}
-    
-    {#{% if place.kitchens is not empty%}
-    <p>
-      <strong>{% trans %}kitchens{% endtrans %}: </strong>
-      {% for kitchen in place.kitchens %}
-            <span><i>{{ kitchen.name | trans({})}}</i></span>,
-        {% endfor %}
-    </p>
-    {% endif %}#}
-    <p>
-        {% if place.birthdayDiscount > 0 %}<strong>{% trans %}birtday.discount{% endtrans %}: </strong> {{ place.birthdayDiscount }}%{% endif %}        
-    </p>
-    <p>
-        {% if place.serviceComission > 0 %}<strong>{% trans %}service.comission{% endtrans %}: </strong> {{ place.serviceComission }}%{% endif %}        
-    </p>
-    {#<p>
-        <strong>{% trans %}number.of.seats{% endtrans %}: </strong> {{ place.numberOfSeats }}
-    </p>#}
-    {#{% for img in place.getPlaceImages %}                            
-        <img src="{{ generateImageUrl(img.fileName, 'place_image') | imagine_filter('place_image_thumb') }}" alt="" />
-    {% endfor %}#}
+        
     <p>{{ place.getDescription }}</p>
     
     {% if place.placeFilterValues is not empty %}
@@ -119,7 +73,7 @@
                     <p><strong>{% trans %} hall.name {% endtrans %}:</strong><i> {{ hall.name }}</i></p>
                     <p><strong>{% trans %} hall.number.of.seats {% endtrans %}:</strong> {{ hall.numberOfSeats }}</p>
                 {% for img in hall.placeHallImages %}                        
-                    <img src="{{ asset('images/spinn_2.gif') }}"  data-echo="{{ generateImageUrl(img.fileName, 'place_hall_image') | imagine_filter('place_image_thumb') }}" alt="" />                
+                    <img src="{{ asset('images/spinn_2.gif') }}"  data-echo="{{ img.path | imagine_filter('place_image_thumb') }}" alt="" />                
                 {% endfor %}
                 </div>
             {% endfor %}
@@ -183,7 +137,23 @@
         </div>
     </div>
     
-    <div class="bisinessHours">                
+    <div class="bisinessHours">
+        {#time
+        {{ closestBusinessHours(place) | date('Y/m/d H:i:s') }}        
+        
+        <div id="hours-left" data-countdown="{{ closestBusinessHours(place) | date('Y/m/d H:i:s') }}">
+            <script type="text/javascript">
+                $(document).ready(function(){
+                    console.log('ready');
+                    $('[data-countdown]').each(function() {
+                        var $this = $(this), finalDate = $(this).data('countdown');
+                        $this.countdown(finalDate, function(event) {
+                          $this.html(event.strftime('%D days %H:%M:%S'));
+                        });
+                    });
+                });               
+            </script>#}
+        </div>
         {{ macro.busuness_hours_widget(place) }}        
     </div>
     

@@ -15,6 +15,7 @@ parameters:
     mailer_password:   ~
 
     locale:            en
+    locales:           ['en','ru'] 
 
     # A secret key that's used to generate certain security-related tokens
     secret:            ThisTokenIsNotSoSecretChangeIt
@@ -26,3 +27,6 @@ parameters:
 
     silverMembershipPrice : 3
     goldMembershipPrice : 5
+
+    microsoft_translator.client_id: 88b2226a-d8fe-4ec0-a22b-f43446575ba4
+    microsoft_translator.client_secret: UC92IU1JhnFYpFQE43+M9TLuPX1Z3pZZX7xuH/EHNyU=

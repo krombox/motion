@@ -106,4 +106,39 @@ class DefaultController extends Controller
             'form' => $form->createView()            
         ));
     }
+    
+    /**
+     * @FW\Route("/flickr", name="flickr")
+     * @FW\Template      
+     */
+    public function flickrAction()
+    {
+        $client = $this->get('rezzza.flickr.client');
+        $client->getMetadata()->setOauthAccess('72157664175622642-7fef830dbafcfb1a', '4b1d0243f360bca2');
+        
+//        $metadata = new \Rezzza\Flickr\Metadata('29f44a3c5eb65e3be1e7ec4dfe6e4a5e', 'f554a6fb7c6b76ce');
+//        $metadata->setOauthAccess('72157664175622642-7fef830dbafcfb1a', '4b1d0243f360bca2');
+//        
+//        $factory  = new \Rezzza\Flickr\ApiFactory($metadata, new \Rezzza\Flickr\Http\GuzzleAdapter());       
+        
+        
+//        $xml = $factory->call('flickr.photos.getInfo', array(
+//            'photo_id' => 1337,
+//        ));
+        
+//        $xml = $factory->call('flickr.photos.getInfo', array(
+//            'photo_id' => '24850822755'            
+//        ));
+//        
+//        //$xml = simplexml_load_string($xml->asXML());
+//        $json = json_encode($xml);
+//        $array = json_decode($json,TRUE);
+//        
+//        var_dump($array);die();
+        //echo 'ddsddsds';die();
+        $result = $client->upload('scr.png', null, null, null, 1);
+        var_dump($result);
+        //$xml = $factory->upload('apple-touch-icon.png', 'my title');
+                
+    }
 }

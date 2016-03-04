@@ -1,0 +1,66 @@
+Krombox\MainBundle\Entity\CategoryTranslation:
+#    category_translation_en_0:
+#        translatable: @category_restaurants
+#        name: restaurants-cafe                
+#        description: cafe and restaurants
+#        locale: en
+#    category_translation_ru_1:
+#        translatable: @category_restaurants
+#        name: рестораны                
+#        description: рестораны
+#        locale: ru
+#        
+#    category_translation_ru_2:
+#        translatable: @category_clubs
+#        name: clubs                
+#        description: night clubs
+#        locale: en    
+#        
+#    category_translation_ru_3:
+#        translatable: @category_clubs
+#        name: клубы                
+#        description: ночные клубы
+#        locale: ru
+#        
+#    category_translation_ru_4:
+#        translatable: @category_pubs
+#        name: pubs                
+#        description: beer pubs
+#        locale: en    
+#        
+#    category_translation_ru_5:
+#        translatable: @category_pubs
+#        name: пабы                
+#        description: пивные пабы
+#        locale: ru
+    t_category_1:
+        translatable: @category1
+        name: restaurants-cafe                
+        description: cafe and restaurants
+        locale: en
+    t_category2:
+        translatable: @category1
+        name: рестораны                
+        description: рестораны
+        locale: ru
+    t_category3:
+        translatable: @category2
+        name: clubs               
+        description: night clubs
+        locale: en
+    t_category4:
+        translatable: @category2
+        name: клубы                
+        description: ночные клубы
+        locale: ru
+    t_category5:
+        translatable: @category3
+        name: pubs               
+        description: beer pubs
+        locale: en
+    t_category6:
+        translatable: @category3
+        name: пабы                
+        description: пивные пабы
+        locale: ru    
+

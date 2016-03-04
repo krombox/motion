@@ -53,7 +53,7 @@ class PlaceDispatcher
     }
 
     public function postFlush(PostFlushEventArgs $args)
-    {                
+    {                    
         if ($this->disabled || empty($this->events)) {
             return;
         }
@@ -76,11 +76,11 @@ class PlaceDispatcher
         if ($this->disabled) {
             return;
         }
-        
+        //$entity = $args->;die();
         $em  = $args->getEntityManager();
         $uow = $em->getUnitOfWork();
         foreach ($uow->getScheduledEntityUpdates() as $entity) {
-            
+            //var_dump(get_class($entity));//die();
             if ($entity instanceof Place) {
                 $this->addPlace($entity, false, $uow->getEntityChangeSet($entity));
             } elseif ($entity instanceof Rating) {
@@ -88,7 +88,7 @@ class PlaceDispatcher
             } elseif ($entity instanceof OrderMembership) {
                 $this->addOrderMembership($entity, false, $uow->getEntityChangeSet($entity));
             }
-        }
+        }//die();
         foreach ($uow->getScheduledEntityInsertions() as $entity) {
             if ($entity instanceof Place) {
                 $this->addPlace($entity, true, $uow->getEntityChangeSet($entity));
@@ -99,7 +99,7 @@ class PlaceDispatcher
         
         foreach ($uow->getScheduledEntityDeletions() as $entity) {
             if ($entity instanceof Place) {
-                $this->addPlace($entity, true, $uow->getEntityChangeSet($entity));
+                //$this->addPlace($entity, true, $uow->getEntityChangeSet($entity));
             } elseif ($entity instanceof Rating) {
                 $this->removeRating($entity, true, $uow->getEntityChangeSet($entity));
             }

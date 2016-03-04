@@ -1,10 +1,10 @@
 Krombox\MainBundle\Entity\Category:
     category0:        
-        name: cafe                
-        description: cafe decr
-        slug: cafe
+        name: restaurants-cafe                
+        description: cafe and restaurants
+        slug: restaurants-cafe
     category1:        
-        name: other                
+        name:                 
         description: other decr
         slug: other    
 

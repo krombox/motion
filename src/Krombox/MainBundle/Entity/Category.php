@@ -3,12 +3,25 @@
 namespace Krombox\MainBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
+use Knp\DoctrineBehaviors\Model as ORMBehaviors;
 
 /**
  * Category
  */
 class Category
 {
+    use ORMBehaviors\Translatable\Translatable;
+    
+    public function __call($method, $args)
+    {
+        if (!method_exists(self::getTranslationEntityClass(), $method)) {
+            $method = 'get' . ucfirst($method);
+        }
+
+        return $this->proxyCurrentLocaleTranslation($method, $args);
+    }
+    
     /**
      * @var integer
      */
@@ -17,7 +30,7 @@ class Category
     /**
      * @var string
      */
-    private $name;
+    //private $name;
 
     /**
      * @var string
@@ -27,7 +40,7 @@ class Category
     /**
      * @var string
      */
-    private $description;
+    //private $description;
 
     /**
      * @var CategoryType
@@ -90,22 +103,22 @@ class Category
      * @param string $name
      * @return Category
      */
-    public function setName($name)
-    {
-        $this->name = $name;
-
-        return $this;
-    }
+//    public function setName($name)
+//    {
+//        $this->name = $name;
+//
+//        return $this;
+//    }
 
     /**
      * Get name
      *
      * @return string 
      */
-    public function getName()
-    {
-        return $this->name;
-    }
+//    public function getName()
+//    {
+//        return $this->name;
+//    }
 
     /**
      * Set slug
@@ -136,22 +149,22 @@ class Category
      * @param string $description
      * @return Category
      */
-    public function setDescription($description)
-    {
-        $this->description = $description;
-
-        return $this;
-    }
+//    public function setDescription($description)
+//    {
+//        $this->description = $description;
+//
+//        return $this;
+//    }
 
     /**
      * Get description
      *
      * @return string 
      */
-    public function getDescription()
-    {
-        return $this->description;
-    }
+//    public function getDescription()
+//    {
+//        return $this->description;
+//    }
 
     /**
      * Set type
@@ -308,7 +321,7 @@ class Category
         return $this->events;
     }
     
-    public function __toString() {
-        return $this->getName();
-    }
+//    public function __toString() {
+//        return $this->getName();
+//    }
 }

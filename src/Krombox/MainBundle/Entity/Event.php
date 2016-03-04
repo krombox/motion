@@ -16,6 +16,16 @@ class Event
 {
     use ORMBehaviors\Timestampable\Timestampable;
     use ORMBehaviors\Sluggable\Sluggable;
+    use ORMBehaviors\Translatable\Translatable;
+    
+    public function __call($method, $args)
+    {
+        if (!method_exists(self::getTranslationEntityClass(), $method)) {
+            $method = 'get' . ucfirst($method);
+        }
+
+        return $this->proxyCurrentLocaleTranslation($method, $args);
+    }
     
     public function getSluggableFields()
     {
@@ -25,16 +35,6 @@ class Event
      * @var integer
      */
     private $id;
-
-    /**
-     * @var string
-     */
-    private $name;
-
-    /**
-     * @var string
-     */
-    private $description;
 
     /**
      * @var StatusType
@@ -65,53 +65,7 @@ class Event
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set name
-     *
-     * @param string $name
-     * @return Event
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * Get name
-     *
-     * @return string 
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * Set description
-     *
-     * @param string $description
-     * @return Event
-     */
-    public function setDescription($description)
-    {
-        $this->description = $description;
-
-        return $this;
-    }
-
-    /**
-     * Get description
-     *
-     * @return string 
-     */
-    public function getDescription()
-    {
-        return $this->description;
-    }
+    }   
 
     /**
      * Set status

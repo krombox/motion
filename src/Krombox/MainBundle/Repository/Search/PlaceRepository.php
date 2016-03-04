@@ -10,6 +10,28 @@ use Krombox\MainBundle\DBAL\Types\LikeType;
 
 class PlaceRepository extends Repository
 {
+    public function autocomplete($term, $limit = 10)
+    {        
+//        if($term != null){                    
+//            $prefixQuery = new \Elastica\Query\Prefix();
+//            $prefixQuery->setPrefix('tag.name', $term);
+//        }
+//        else{
+//            $prefixQuery = new \Elastica\Query\MatchAll();
+//        }
+        $fuzzyQuery = new \Elastica\Query\FuzzyLikeThis();
+        $fuzzyQuery->addFields(['nameTranslatableRU', 'nameTranslatableEN']);
+        $fuzzyQuery->setLikeText($term);
+        
+        //$baseQuery = $prefixQuery;                
+        
+        $filtered = new \Elastica\Query\Filtered($fuzzyQuery);
+
+        $query = \Elastica\Query::create($filtered);        
+        
+        return $this->find($query, $limit);
+    }
+    
     public function search($category, PlaceSearch $placeSearch)
     {
         // we create a query to return all the articles
@@ -19,19 +41,7 @@ class PlaceRepository extends Repository
         /*Fetch only VALIDATED place*/        
         $queryStatus = new \Elastica\Query\Match();
         $queryStatus->setFieldQuery('place.status', StatusType::VALIDATED);
-        $boolQuery->addMust($queryStatus);               
-        
-        //$qSort = new \Elastica\Query();
-        //$qSort->setSort(['likes.rate' => ['nested_filter' => ['term' => ['likes.rate' => LikeType::UP]], 'order' => 'desc']]);        
-        
-//        $fnScoreQuery = new \Elastica\Query\FunctionScore();
-//        $script = new \Elastica\Script('place.birthdayDiscount * 3');
-//        $fnScoreQuery->addFunction('script_score', ['script' => "3 *4"]);                
-
-        //$script->setScript('rate * 3');
-        
-        
-        //$boolQuery->addMust($fnScoreQuery);
+        $boolQuery->addMust($queryStatus);                      
         
         if($category !== null){
             $queryCategory = new \Elastica\Query\Match();
@@ -164,60 +174,161 @@ class PlaceRepository extends Repository
         
     }
     
-    public function facet($category, $filter)
+    public function facet($filter, $sort)
     {                      
-    $boolQuery = new \Elastica\Query\Bool();
-    
-    $queryStatus = new \Elastica\Query\Match();
-    $queryStatus->setFieldQuery('place.status', StatusType::VALIDATED);
-    $boolQuery->addMust($queryStatus);
-    
-    $queryCategory = new \Elastica\Query\Match();
-    $queryCategory->setFieldQuery('place.categories.slug', $category->getSlug());
-    $boolQuery->addMust($queryCategory);
+        $boolQuery = new \Elastica\Query\Bool();
+
+        $queryStatus = new \Elastica\Query\Match();
+        $queryStatus->setFieldQuery('place.status', StatusType::VALIDATED);
+        $boolQuery->addMust($queryStatus);
+
+        $queryCategory = new \Elastica\Query\Match();
+        //$queryCategory->setFieldQuery('place.categories.slug', $category->getSlug());
+        $queryCategory->setFieldQuery('place.categories.slug', $filter->getCategory()->getSlug());
+        $boolQuery->addMust($queryCategory);
         
-    $now = new \DateTime();    
-    $boolQuery->addMust(new \Elastica\Query\Range('businessHours.timeStartsAt',
-                array('lte' => $now->format('H:i:s')))
-    );
-    $boolQuery->addMust(new \Elastica\Query\Range('businessHours.timeEndsAt',
-                array('gte' => $now->format('H:i:s')))
-    );
-    ##AGGREGATION - FACETED##
-//    $aggregServices = new \Elastica\Aggregation\Terms('services');
-//    $aggregServices->setField('services.slug');    
-//    $aggregServices->setSize(0);
-//    
-//    $aggregMenu = new \Elastica\Aggregation\Terms('menu');
-//    $aggregMenu->setField('menu.slug');    
-//    $aggregMenu->setSize(0);
-    $aggregFilters = new \Elastica\Aggregation\Terms('filters');
-    $aggregFilters->setField('placeFilterValues.slug');    
-    $aggregFilters->setSize(0);        
-    
-    
-    $this->addCollections($boolQuery, $filter);
-    
-    $boolFilter = new \Elastica\Filter\Bool();      
+        $queryCity = new \Elastica\Query\Match();        
+        $queryCity->setFieldQuery('place.city.slug', $filter->getCity()->getSlug());
+        $boolQuery->addMust($queryCity);
+
+        ##AGGREGATION - FACETED##
+        $now = new \DateTime();                           
+        $this->addCollections($boolQuery, $filter);
+
+        $boolFilter = new \Elastica\Filter\Bool();
+
+        //Filters
+        $businessHoursDayFilter = new \Elastica\Filter\Term(['businessHours.day' . date('l') => true]);
+        $businessHoursStartsAtFilter = new \Elastica\Filter\Range('businessHours.startsAtFormatted', array('lte' => $now->format('H:i:s')));
+        $businessHoursEndsAtFilter = new \Elastica\Filter\Range('businessHours.endsAtFormatted', array('gte' => $now->format('H:i:s')));
         
-    $filtered = new \Elastica\Query\Filtered($boolQuery, $boolFilter);
-    $query = \Elastica\Query::create($filtered);
+        $businessHoursIs24HFilter = new \Elastica\Filter\Term(['is24h' => true]);
         
-    $query->addAggregation($aggregFilters);
-    //$query->addAggregation($aggregMenu);
-    
-    //$query = $elasticaQuery;    
-    //$query->addSort(array('membershipSubscriptions.m_status' => 'desc'));
-    $query->addSort(array('membershipSubscriptions.membership.score' => array(
-        'nested_filter' => array('term' => array('membershipSubscriptions.m_status' => MembershipStatusType::ACTIVE)),
-        'order' => 'desc'
-    )));    
-      
-    //var_dump(json_encode($query->getQuery(), JSON_PRETTY_PRINT));die();
-    //$ob = $query->toArray()['query']['filtered']['query']['bool'];
-    //var_dump($query->getParams()['query']['filtered']['query']['bool'], $ob, $query->getQuery()['filtered']['query']['bool']);die();
-    //var_dump($query->getQuery());die();
-    return $elasticaResultSet = $this->findPaginated($query);    
+        $businessHoursExceptionDateFilter = new \Elastica\Filter\Term(['businessHoursException.dayFormatted' => date('Y-m-d')]);
+        $businessHoursExceptionStartsAtFilter = new \Elastica\Filter\Range('businessHoursException.startsAtFormatted', array('lte' => $now->format('H:i:s')));
+        $businessHoursExceptionEndsAtFilter = new \Elastica\Filter\Range('businessHoursException.endsAtFormatted', array('gte' => $now->format('H:i:s')));
+        
+        $businessHoursExceptionStartsAtMissingFilter = new \Elastica\Filter\Missing('businessHoursException.startsAtFormatted');                
+        $businessHoursExceptionEndsAtMissingFilter = new \Elastica\Filter\Missing('businessHoursException.endsAtFormatted');        
+        
+        $businessHoursExceptionDateTimeFilter = new \Elastica\Filter\Bool();
+        $businessHoursExceptionDateTimeFilter
+                ->addMust($businessHoursExceptionDateFilter)
+                ->addMust($businessHoursExceptionStartsAtFilter)
+                ->addMust($businessHoursExceptionEndsAtFilter)            
+        ;
+        
+        $businessHoursExceptionAllDayClosedFilter = new \Elastica\Filter\Bool();
+        $businessHoursExceptionAllDayClosedFilter
+                ->addMust($businessHoursExceptionDateFilter)
+                ->addMust($businessHoursExceptionStartsAtMissingFilter)
+                ->addMust($businessHoursExceptionEndsAtMissingFilter)            
+        ;
+        
+        
+        $businessHoursDayTimeFilter = new \Elastica\Filter\Bool();
+        $businessHoursDayTimeFilter
+                ->addMust($businessHoursDayFilter)
+                ->addMust($businessHoursStartsAtFilter)
+                ->addMust($businessHoursEndsAtFilter)            
+        ;
+        #BusinessHours Filter
+        $businessHoursFilter = new \Elastica\Filter\Bool();
+        $businessHoursFilter->addShould($businessHoursDayTimeFilter);
+        #BusinessHoursException Filter
+        $businessHoursExceptionFilter = new \Elastica\Filter\Bool();
+        $businessHoursExceptionFilter->addShould($businessHoursExceptionDateTimeFilter);
+        
+        $businessHoursNestedFilter = new \Elastica\Filter\Nested();
+        $businessHoursNestedFilter
+                ->setFilter($businessHoursFilter)
+                ->setPath('place.businessHours')
+        ;
+        
+        $businessHoursExceptionNestedFilter = new \Elastica\Filter\Nested();
+        $businessHoursExceptionNestedFilter
+                ->setFilter($businessHoursExceptionFilter)
+                ->setPath('place.businessHoursException')
+        ;
+        
+        $businessHoursExceptionMissingNestedFilter = new \Elastica\Filter\Nested();
+        $businessHoursExceptionMissingNestedFilter
+                ->setFilter($businessHoursExceptionAllDayClosedFilter)
+                ->setPath('place.businessHoursException')
+        ;                                                      
+        
+        $workingNowFilter = new \Elastica\Filter\Bool();
+        $workingNowFilter
+                ->addShould($businessHoursNestedFilter)
+                ->addShould($businessHoursExceptionNestedFilter)
+                ->addShould($businessHoursIs24HFilter)
+                ->addMustNot($businessHoursExceptionMissingNestedFilter)                
+        ;                
+        
+        if($filter->getBusinessHours()){
+            foreach($filter->getBusinessHours() as $value){
+                if($value == 'workingNow'){             
+                    $boolFilter->addMust($workingNowFilter);
+                }
+                if($value == '24/7'){
+                    $boolFilter->addMust($businessHoursIs24HFilter);
+                }
+            }
+        }
+
+        //Aggregation
+        $aggregFilters = new \Elastica\Aggregation\Terms('filters');    
+        $aggregFilters->setField('placeFilterValues.slug');    
+        $aggregFilters->setSize(0);
+
+        $aggregBusinessHoursDay = new \Elastica\Aggregation\Filter('businessHoursDay');    
+        $aggregBusinessHoursDay->setFilter($businessHoursDayFilter);
+
+        $aggregBusinessHoursStartsAt = new \Elastica\Aggregation\Filter('businessHoursStartsAt');    
+        $aggregBusinessHoursStartsAt->setFilter($businessHoursStartsAtFilter);
+
+        $aggregBusinessHoursEndsAtFilter = new \Elastica\Aggregation\Filter('businessHoursEndsAt');
+        $aggregBusinessHoursEndsAtFilter->setFilter($businessHoursEndsAtFilter);
+
+        $aggregBusinessHoursStartsAt->addAggregation($aggregBusinessHoursEndsAtFilter);
+        $aggregBusinessHoursDay->addAggregation($aggregBusinessHoursStartsAt);
+
+        $aggregBusinessHours = new \Elastica\Aggregation\Filters('businessHours');    
+        $aggregBusinessHours->addFilter($workingNowFilter, 'workingNow');
+        $aggregBusinessHours->addFilter($businessHoursIs24HFilter, '24/7');              
+
+        $filtered = new \Elastica\Query\Filtered($boolQuery, $boolFilter);
+        $query = \Elastica\Query::create($filtered);
+
+        $query->addAggregation($aggregFilters);
+        $query->addAggregation($aggregBusinessHours);    
+        
+        $sortMembership = array('membershipSubscriptions.membership.score' => array(
+            'nested_filter' => array('term' => array('membershipSubscriptions.m_status' => MembershipStatusType::ACTIVE)),
+            'order' => 'desc'
+        ));
+        
+        $sortRating = array('rating' => array('order' => 'desc'));
+        $viewsCount = array('viewsCount' => array('order' => 'desc'));
+        
+        $sortTypes = array(
+            'membership' => array($sortMembership, $sortRating),
+            'rating' => array($sortRating),
+            'views' => array($viewsCount)
+        );
+        
+//        if(!isset($sortTypes[$sort])){            
+//            $sort = 'membership';
+//        }        
+        foreach ($sortTypes[$sort] as $s){
+            $query->addSort($s);
+        }
+        
+        //$query->setFrom(4);
+        //$query->addSort(array('rating' => array('order' => 'desc')));
+
+        //var_dump(json_encode($query->getQuery(), JSON_PRETTY_PRINT));die();            
+        return $this->findPaginated($query);    
     }
     
     protected function addCollections($query, $filter){                

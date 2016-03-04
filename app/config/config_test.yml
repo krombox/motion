@@ -16,11 +16,5 @@ web_profiler:
 
 swiftmailer:
     disable_delivery: true
+   
     
-h4cc_alice_fixtures:
-    locale: en_US                               # default
-    seed: 1                                     # default
-    do_flush: true                              # default
-
-    schema_tool: null                           # default
-    doctrine: orm                               # default    

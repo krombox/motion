@@ -9,30 +9,52 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Krombox\MainBundle\Form\Type\PlaceImageType;
 use Krombox\MainBundle\Form\Type\BusinessHoursType;
 use Krombox\MainBundle\Form\Type\PhoneType;
+use Krombox\MainBundle\Form\Type\SocialLinkType;
 use Krombox\MainBundle\Form\Type\PlaceAddressType;
 use Krombox\MainBundle\Form\Type\HallType;
-use Krombox\MainBundle\Form\Type\ServicesType;
-use Krombox\MainBundle\Form\Type\MenuType;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Doctrine\ORM\EntityRepository;
-use JMS\DiExtraBundle\Annotation as DI;
-use Krombox\MainBundle\Entity\Enum\ServicesEnum;
+//use Krombox\MainBundle\Entity\Enum\ServicesEnum;
 use Krombox\MainBundle\DBAL\Types\CategoryType as CategoryTypeEnum;
-
+use Krombox\MainBundle\Entity\Place;
 use Krombox\MainBundle\Form\Type\PlaceFilterKindValueType;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
+use JMS\DiExtraBundle\Annotation as DI;
 
 /**
 *   @DI\FormType
 */
 class PlaceType extends AbstractType
 {    
+    const DATA_CLASS = Place::class;
+    
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', null, array('label' => 'name'))
-            ->add('description', null, array('label' => 'description'))        
-            ->add('categories')
+            //->add('name', null, array('label' => 'name'))                
+            //->add('description', null, array('label' => 'description'))        
+            ->add('translations', 'krombox_auto_translations')    
+            ->add('slug', null, array(
+                'required' => true
+            ))    
+            ->add('categories', 'a2lix_translatedEntity', array(
+                'class' => 'Krombox\MainBundle\Entity\Category',
+                'translation_property' => 'name',
+                'multiple' => true
+            ))
+                
+            //->add('categories')
+//                ->add('categories', 'entity', array(
+//                    'class' => 'Krombox\MainBundle\Entity\Category',
+//                    'multiple' => true,
+//                    'expanded' => true,
+//                    'label' => 'categories',
+//                    'required' => true,
+//                    'query_builder' => function(\Doctrine\ORM\EntityRepository $er) {
+//                        return $er->queryCategoriesByType(CategoryTypeEnum::PLACE);
+//                    },
+//                ))
             //->add('image', 'file', ['required' => false])                                 
 //                ->add('image', 'file', [
 //                'label'    => false,
@@ -49,7 +71,26 @@ class PlaceType extends AbstractType
 //            ->add('y', 'hidden', ['mapped' => false])
 //            ->add('w', 'hidden', ['mapped' => false])
 //            ->add('h', 'hidden', ['mapped' => false])
-                //->add('logo','logo')
+                //->add('logo','logo')                
+                ->add('website', null, array(
+                    'label' => 'website',
+                    'required' => false
+                ))
+                ->add('email', null, array(
+                    'label' => 'email',
+                    'required' => false
+                ))          
+                ->add('socialLinks', 'collection',array(
+                    'type' => new SocialLinkType(),
+                    'allow_add' => true,
+                    'allow_delete' => true,
+                    'label' => 'social links',
+                    'required' => false,
+                    'by_reference' => false,
+                    'options' => array('label' => false),
+                    'translation_domain' => 'messages',
+                    'attr' => array('class' => 'collection')
+                ))
                 ->add('phones', 'collection',array(
                     'type' => new PhoneType(),
                     'allow_add' => true,
@@ -59,68 +100,10 @@ class PlaceType extends AbstractType
                     'by_reference' => false,
                     'options' => array('label' => false),
                     'translation_domain' => 'messages',
-                    'attr' => array('class' => 'collection')
+                    //'attr' => array('class' => 'collection')
                 ))
-                ->add('halls', 'collection',array(
-                    'type' => new HallType(),
-                    'allow_add' => true,
-                    'allow_delete' => true,
-                    'label' => 'halls',
-                    'required' => false,
-                    'by_reference' => false,
-                    'options' => array('label' => false),
-                    'translation_domain' => 'messages',
-                    'attr' => array('class' => 'collection')
-                ))
-//                ->add('services', 'entity', array(
-//                    'class' => 'Krombox\MainBundle\Entity\Service',
-//                    'property' => 'name',
-//                    'multiple' => true,
-//                    'expanded' => true,
-//                    'label' => 'services',
-//                    'required' => false
-//                ))
-//                //->add('services', new ServicesType())
-//                ->add('kitchens', 'entity', array(
-//                    'class' => 'Krombox\MainBundle\Entity\Kitchen',
-//                    'property' => 'name',
-//                    'multiple' => true,
-//                    'expanded' => true,
-//                    'label' => 'kitchens',
-//                    'translation_domain' => 'messages',
-//                    'required' => false
-//                ))
-//                ->add('menu', 'entity', array(
-//                    'class' => 'Krombox\MainBundle\Entity\Menu',
-//                    'property' => 'name',
-//                    'multiple' => true,
-//                    'expanded' => true,
-//                    'label' => 'menu',
-//                    'translation_domain' => 'messages',
-//                    'required' => false
-//                ))
-                ->add('website', null, array(
-                    'label' => 'website',
-                    'required' => false
-                ))
-                ->add('fbGroup', null, array(
-                    'label' => 'fb_group',
-                    'required' => false
-                ))
-                ->add('vkGroup', null, array(
-                    'label' => 'vk_group',
-                    'required' => false
-                ))
-//                ->add('categories', 'entity', array(
-//                    'class' => 'Krombox\MainBundle\Entity\Category',
-//                    'multiple' => true,
-//                    'expanded' => true,
-//                    'label' => 'categories',
-//                    'required' => true,
-//                    'query_builder' => function(\Doctrine\ORM\EntityRepository $er) {
-//                        return $er->queryCategoriesByType(CategoryTypeEnum::PLACE);
-//                    },
-//                ))
+                
+                ->add('is24h')
                 ->add('businessHours', 'collection',array(
                     'type' => new BusinessHoursType(),
                     'allow_add' => true,
@@ -143,14 +126,36 @@ class PlaceType extends AbstractType
                     'translation_domain' => 'messages',
                     'attr' => array('class' => 'collection')
                 ))
-                
-                ->add('placesLinked', 'entity', array(
+                ->add('placesLinked', 'a2lix_translatedEntity', array(
                     'class' => 'Krombox\MainBundle\Entity\Place',
-                    'property' => 'name',
+                    'translation_property' => 'name',
                     'multiple' => true,
-//                    'expanded' => true,
                     'label' => 'places.linked',
                     'required' => false
+                ))
+//                ->add('placesLinked', 'entity', array(
+//                    'class' => 'Krombox\MainBundle\Entity\Place',
+//                    'property' => 'name',
+//                    'multiple' => true,
+////                    'expanded' => true,
+//                    'label' => 'places.linked',
+//                    'required' => false
+//                ))
+                ->add('halls', 'collection',array(
+                    'type' => new HallType(),
+                    'allow_add' => true,
+                    'allow_delete' => true,
+                    'label' => 'halls',
+                    'required' => false,
+                    'by_reference' => false,
+                    'options' => array('label' => false),
+                    'translation_domain' => 'messages',
+                    'attr' => array('class' => 'collection')
+                ))
+                ->add('city', 'a2lix_translatedEntity', array(
+                    'class' => 'Krombox\MainBundle\Entity\City',
+                    'translation_property' => 'name',
+                    'multiple' => false
                 ))
                 ->add('address', new PlaceAddressType(), array(
 //                    'attr' => array('class' => 'gmap')
@@ -168,8 +173,8 @@ class PlaceType extends AbstractType
                 'expanded' => true,
                 'label' => false,
                 'required' => false,
-                'position' => array('after' => 'description'),
-                'query_builder' => function(EntityRepository $repository) use ($categories) {                    
+                'position' => array('after' => 'categories'),
+                'query_builder' => function(EntityRepository $repository) use ($categories) {
                     return $repository->queryGet(['categories' => $categories]);
                 }
             );
@@ -210,12 +215,12 @@ class PlaceType extends AbstractType
     }
     
     /**
-     * @param OptionsResolverInterface $resolver
+     * @param OptionsResolver $resolver
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Krombox\MainBundle\Entity\Place'
+            'data_class' => static::DATA_CLASS
         ));
     }
 
@@ -224,7 +229,7 @@ class PlaceType extends AbstractType
      */
     public function getName()
     {
-        return 'krombox_mainbundle_place';
+        return 'place';
     }
     
     public function getCategoriesByType($type){        

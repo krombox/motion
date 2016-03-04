@@ -1,0 +1,11 @@
+Krombox\MainBundle\Entity\PlaceAddress:
+    address{1..25}:        
+        lat: <pointLatitude()>
+        lng: <pointLongitude()>
+#        country: <country()>
+#        state: <region()>
+#        city: <city()>
+#        street: <streetName()>
+#        streetNumber: <numberBetween(1,50)>
+        #formatted: <address()>       
+

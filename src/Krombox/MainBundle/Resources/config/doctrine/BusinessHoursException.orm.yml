@@ -23,7 +23,6 @@ Krombox\MainBundle\Entity\BusinessHoursException:
             joinColumn:
                 name: place_id
                 referencedColumnName: id
-                onDelete: cascade
-                onUpdate: cascade
+                onDelete: cascade                
                 
     lifecycleCallbacks: {  }

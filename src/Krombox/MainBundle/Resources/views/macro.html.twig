@@ -11,10 +11,10 @@
 {% endmacro %}
 
 {% macro logo(entity) %}    
-    {%- if (entity is null) or (entity.fileName is null) -%}        
-        http://dogvacay.com/img/default_home.jpg       
+    {%- if (entity is null) or (entity.path is null) -%}        
+        {{ 'http://dogvacay.com/img/default_home.jpg' | imagine_filter('place_logo_thumb') }}       
     {%- else -%}
-        {{ generateImageUrl(entity.fileName, 'place_image') | imagine_filter('place_logo_thumb') }}
+        {{ entity.path | imagine_filter('place_logo_thumb') }}
     {%- endif -%}
 {% endmacro %}
 
@@ -22,7 +22,7 @@
     <img src="{{ asset('images/membership/' ~ entity.membership.name ~ '.png' ) }}">
 {% endmacro %}
 
-{% macro nice_address(address) %}
+{% macro nice_address(address) %}    
     {{ address.street }}, {{ address.streetNumber }}, {{address.city }}
 {% endmacro %}
 
@@ -107,7 +107,15 @@
                         {% if sheet.day == today %}
                             {% set class = 'info' %}                            
                         {% endif %}                        
-                            <td class="{{ class }}">{{ sheet.startsAt | date('H:i') }}</td>                        
+                        
+                        {% set startsAtPoints = '' %}
+                        {% for time in sheet.startsAt %}                                
+                            {% set startsAtPoints = startsAtPoints ~ time | date('H:i')  %}
+                            {% if not loop.last %}
+                                {% set startsAtPoints = startsAtPoints ~ '; '%}
+                            {% endif %}                                                                
+                        {% endfor %}                            
+                        <td class="{{ class }}">{{ startsAtPoints }}</td>                        
                     {% else %}
                         <td class="danger"></td>                
                     {% endif %}                      
@@ -122,7 +130,16 @@
                         {% if sheet.day == today %}
                             {% set class = 'info' %}                            
                         {% endif %}                        
-                            <td class="{{ class }}">{{ sheet.endsAt | date('H:i') }}</td>                        
+                            {% set endsAtPoints = '' %}
+                            {% for time in sheet.endsAt %}                                
+                                {#{% set endsAtPoints = endsAtPoints ~ time | date('H:i') %}#}
+                                {% set endsAtPoints = endsAtPoints ~ ((time | date('H:i') == '23:59') ? '24:00' : time | date('H:i'))  %}
+                                {% if not loop.last %}
+                                    {% set endsAtPoints = endsAtPoints ~ '; '%}
+                                {% endif %}                                                                
+                            {% endfor %}                            
+                            <td class="{{ class }}">{{ endsAtPoints }}</td>
+                            {#<td class="{{ class }}">{{ sheet.endsAt | date('H:i') }}</td>#}                        
                     {% else %}
                         <td class="danger"></td>                
                     {% endif %}                      

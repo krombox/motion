@@ -68,11 +68,11 @@ services:
         tags:
             - { name: form.type, alias: images_dropzone }
             
-    main_bundle.form.type.eav:
-        class: Krombox\MainBundle\Form\Type\EAVType        
-        arguments: ["@doctrine.orm.entity_manager"]
-        tags:
-            - { name: form.type, alias: eav }        
+#    main_bundle.form.type.eav:
+#        class: Krombox\MainBundle\Form\Type\EAVType        
+#        arguments: ["@doctrine.orm.entity_manager"]
+#        tags:
+#            - { name: form.type, alias: eav }        
             
     main_bundle.form.type.clock_picker:
         class: Krombox\MainBundle\Form\Type\ClockPickerType        
@@ -117,7 +117,40 @@ services:
         class:      Krombox\MainBundle\Security\Authorization\Voter\EventVoter
         public:     false
         tags:
-           - { name: security.voter }       
+           - { name: security.voter }
+           
+    krombox.alice.processor.category:
+        class: Krombox\MainBundle\DataFixtures\Processor\CategoryProcessor        
+        arguments: ['@service_container']
+        tags: [ { name: hautelook_alice.alice.processor } ]
+        
+    krombox.alice.processor.place:
+        class: Krombox\MainBundle\DataFixtures\Processor\PlaceProcessor        
+        arguments: ['@service_container']
+        tags: [ { name: hautelook_alice.alice.processor } ]
+        
+    krombox.alice.processor.place_filter_value:
+        class: Krombox\MainBundle\DataFixtures\Processor\PlaceFilterValueProcessor        
+        arguments: ['@service_container']
+        tags: [ { name: hautelook_alice.alice.processor } ]
+        
+    krombox.faker.provider.point:
+        class: Krombox\MainBundle\DataFixtures\Faker\Provider\PointProvider
+        tags: [ { name: hautelook_alice.faker.provider } ]
+        
+    #Listener
+    krombox.listener.remove_listener:
+          class: Krombox\MainBundle\EventListener\RemoveListener
+          arguments: [@krombox.upload_handler]          
+          tags:
+            - { name: doctrine.event_listener, event: preRemove, method: preRemove }
+            
+    krombox.listener.upload_listener:
+          class: Krombox\MainBundle\EventListener\UploadListener
+          arguments: [@krombox.upload_handler]          
+          tags:
+            - { name: doctrine.event_listener, event: prePersist, method: prePersist }
+            - { name: doctrine.event_listener, event: preUpdate, method: preUpdate }
         
             
 #    my.remote_cache_manager:

@@ -1,0 +1,15 @@
+Krombox\MainBundle\Entity\PlaceFilterValueTranslation:
+    type: entity    
+    table: t_filter_value
+    #repositoryClass: Krombox\MainBundle\Repository\PlaceFilterValueRepository
+    id:
+        id:
+            type: integer
+            generator: { strategy: IDENTITY }    
+    fields:    
+        name:
+            type: string
+            nullable: false        
+                        
+    lifecycleCallbacks: {}
+        #

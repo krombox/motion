@@ -2,6 +2,7 @@
 
 namespace Krombox\MainBundle\Entity;
 
+use Knp\DoctrineBehaviors\Model as ORMBehaviors;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -9,15 +10,20 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class PlaceFilterKind
 {
+    use ORMBehaviors\Translatable\Translatable;
+    
+    public function __call($method, $args)
+    {
+        if (!method_exists(self::getTranslationEntityClass(), $method)) {
+            $method = 'get' . ucfirst($method);
+        }
+
+        return $this->proxyCurrentLocaleTranslation($method, $args);
+    }
     /**
      * @var integer
      */
     private $id;
-
-    /**
-     * @var string
-     */
-    private $name;
 
     /**
      * @var string
@@ -30,11 +36,17 @@ class PlaceFilterKind
     private $placeFilterValues;
 
     /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $categories;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
         $this->placeFilterValues = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->categories = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -45,29 +57,6 @@ class PlaceFilterKind
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set name
-     *
-     * @param string $name
-     * @return PlaceFilterKind
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * Get name
-     *
-     * @return string 
-     */
-    public function getName()
-    {
-        return $this->name;
     }
 
     /**
@@ -125,11 +114,6 @@ class PlaceFilterKind
     {
         return $this->placeFilterValues;
     }
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     */
-    private $categories;
-
 
     /**
      * Add categories

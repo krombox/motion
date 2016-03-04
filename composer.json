@@ -24,7 +24,7 @@
         "a2lix/translation-form-bundle": "~2.0",
         "knplabs/doctrine-behaviors": "dev-master",
         "friendsofsymfony/user-bundle": "2.0.x-dev",
-        "sonata-project/admin-bundle": "2.3.*@dev",
+        "sonata-project/admin-bundle": "2.3.x-dev",
         "sonata-project/doctrine-orm-admin-bundle": "2.3.*@dev",
         "vich/uploader-bundle": "0.14.*",
         "oneup/flysystem-bundle": "dev-master",
@@ -35,7 +35,7 @@
         "jms/di-extra-bundle": "dev-master",
         "fresh/doctrine-enum-bundle": "dev-master",
         "egeloen/google-map-bundle": "~2.2",
-        "cocur/slugify": "dev-master",
+        "cocur/slugify": "1.4.x-dev",
         "lexik/form-filter-bundle": "~3.0",
         "friendsofsymfony/elastica-bundle": "3.1.*@dev",        
         "friendsofsymfony/jsrouting-bundle": "~1.5",        
@@ -50,11 +50,17 @@
         "florianv/business": "^1.2",
         "liqpay/liqpay" : "dev-master",
         "white-october/pagerfanta-bundle": "^1.0",
-        "egeloen/ordered-form-bundle": "2.0.0",
-        "h4cc/alice-fixtures-bundle": "^0.5.1"        
+        "egeloen/ordered-form-bundle": "2.0.0",        
+        "lunetics/locale-bundle": "dev-master",        
+        "krombox/form-auto-translation-bundle": "dev-master",
+        "willdurand/geocoder-bundle": "@stable",
+        "rezzza/flickr-bundle": "dev-master",
+        "guzzle/guzzle": "^3.9"
     },
     "require-dev": {
-        "sensio/generator-bundle": "~2.3"
+        "sensio/generator-bundle": "~2.3",
+        "hautelook/alice-bundle": "^1.1",
+        "doctrine/doctrine-fixtures-bundle": "^2.3"
     },
     "scripts": {
         "post-root-package-install": [

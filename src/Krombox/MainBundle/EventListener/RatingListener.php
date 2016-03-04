@@ -7,6 +7,7 @@ use Doctrine\ORM\Event\PostFlushEventArgs;
 use JMS\DiExtraBundle\Annotation as DI;
 use Krombox\MainBundle\Event\RatingEvent;
 use Krombox\MainBundle\Event\RatingEvents;
+use Krombox\MainBundle\Event\PlaceEvents;
 use Krombox\MainBundle\Entity\Place;
 use Krombox\MainBundle\Entity\Rating;
 use Krombox\CommonBundle\Model\Helper\RatingHelper;
@@ -55,5 +56,5 @@ class RatingListener
         
         $this->em->persist($place);
         $this->em->flush();
-    }
+    }        
 }

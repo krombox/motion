@@ -39,8 +39,9 @@ class PlaceAdmin extends Admin
         
         $formMapper
         ->with('Основные')    
-            ->add('name')
-            ->add('description')    
+            //->add('name')
+            //->add('description')    
+            ->add('translations', 'a2lix_translations')
             //->remove('translations', 'a2lix_translations', array('fields' => array('slug' => array('mapped' => 'false'))))    
             //->add('placeImages', 'images_dropzone')
 //            ->add('placeImages','collection',array(
@@ -110,25 +111,15 @@ class PlaceAdmin extends Admin
 //            ->add('website')
         ->end()        
         ->with('Особенности')
-           ->add('kitchens', 'sonata_type_model', array(
-               'class' => 'Krombox\MainBundle\Entity\Kitchen',
-               'property' => 'name',
-               'multiple' => true,
-               'expanded' => true,
-               'label' => 'kitchens',
-               'translation_domain' => 'messages',
-               'required' => false
-               //'choices' => array(1 => 'www', 2 => 'eee'),
-                    //'type' => new KitchenType(),
-//                    'allow_add' => true,
-//                    'allow_delete' => true,
-//                    'label' => 'kitchen',
-//                    'required' => false,
-//                    'by_reference' => false,
-                    //'expanded' => true,
-//                    'options' => array('label' => false),
-//                    'translation_domain' => 'messages'
-            ))            
+//           ->add('kitchens', 'sonata_type_model', array(
+//               'class' => 'Krombox\MainBundle\Entity\Kitchen',
+//               'property' => 'name',
+//               'multiple' => true,
+//               'expanded' => true,
+//               'label' => 'kitchens',
+//               'translation_domain' => 'messages',
+//               'required' => false
+//            ))            
 //           ->add('is24h', null, array(
 //                'label' => '24h',
 //                'required' => false
@@ -201,14 +192,13 @@ class PlaceAdmin extends Admin
 //                'label' => 'termonal.payment',
 //                'required' => false
 //            ))    
-            ->add('placesLinked', 'sonata_type_model', array(
-                'class' => 'Krombox\MainBundle\Entity\Place',
-                'property' => 'name',
-                'multiple' => true,
-                //'expanded' => true,
-                'label' => 'places.linked.with',
-                'required' => false
-            ))                    
+            ->add('placesLinked', 'a2lix_translatedEntity', array(
+                    'class' => 'Krombox\MainBundle\Entity\Place',
+                    'translation_property' => 'name',
+                    'multiple' => true,
+                    'label' => 'places.linked',
+                    'required' => false
+                ))                 
         ->end()
         ->with('Залы')
             ->add('halls', 'collection',array(
@@ -239,8 +229,8 @@ class PlaceAdmin extends Admin
     {
         $listMapper
             ->addIdentifier('id')    
-            ->addIdentifier('name')
-            ->add('description')    
+            ->addIdentifier('translations')
+            //->add('description')    
         ;
     }        
         

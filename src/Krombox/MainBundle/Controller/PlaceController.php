@@ -13,6 +13,8 @@ use Krombox\MainBundle\Form\Model\PlaceFilter;
 use Krombox\MainBundle\Form\Type\PlaceType;
 use Krombox\MainBundle\Form\Type\PlaceImageType;
 use Krombox\MainBundle\Form\Type\PlaceProfileType;
+use Krombox\MainBundle\Event\PlaceEvent;
+use Krombox\MainBundle\Event\PlaceEvents;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as FW;
@@ -31,12 +33,18 @@ use Krombox\MainBundle\DBAL\Types\StatusType;
 use Pagerfanta\Adapter\ArrayAdapter;
 use Krombox\Constants;
 
+use Buzz\Browser;
+use MatthiasNoback\MicrosoftOAuth\AccessTokenProvider;
+use MatthiasNoback\MicrosoftTranslator\MicrosoftTranslator;
+//use Goutte\Client;
+use Buzz\Client\Curl;
+
 /**
  * Place controller.
  *
  */
 class PlaceController extends Controller
-{
+{       
     /**
      * @FW\Route("/place/new", name="place_new")
      * @FW\Security("is_granted('ROLE_USER')")
@@ -44,7 +52,9 @@ class PlaceController extends Controller
      */
     public function newAction() {
         $place = new Place(); // Your form data class. Has to be an object, won't work properly with an array.
-
+        $em = $this->getDoctrine()->getManager();
+        $eventDispatcher = $this->container->get('event_dispatcher');
+        
         $flow = $this->get('main_bundle.form.flow.new_place'); // must match the flow's service id
         $flow->bind($place);
 
@@ -57,27 +67,25 @@ class PlaceController extends Controller
                 // form for the next step
                 $form = $flow->createForm();
             } else {
-//                $manager = $this->get('oneup_uploader.orphanage_manager')->get('gallery');
-//
-//        // get files
-//        $files = $manager->getFiles();
-//        var_dump($files);die();
-                // flow finished
-                $em = $this->getDoctrine()->getManager();
-                $freeMembership = $em->getRepository(Membership::class)->findOneBy(['isFree' => true]);
-                $membershipSubscription = new MembershipSubscription();
-                $membershipSubscription->setMembership($freeMembership);
-                $membershipSubscription->setPlace($place);
+                //TODO Replace to event listener
                 $place->setUser($this->getUser());
-                $place->addMembershipSubscription($membershipSubscription);
                 
+//                $freeMembership = $em->getRepository(Membership::class)->findOneBy(['isFree' => true]);
+//                $membershipSubscription = new MembershipSubscription();
+//                $membershipSubscription->setMembership($freeMembership);
+//                $membershipSubscription->setPlace($place);
+//                
+//                $place->addMembershipSubscription($membershipSubscription);
                 
+                $event = new PlaceEvent($place);
+                $eventDispatcher->dispatch(PlaceEvents::PRE_CREATE, $event);
+            
                 $em->persist($place);
                 $em->flush();
 
                 $flow->reset(); // remove step data from the session
 
-                return $this->redirect($this->generateUrl('places_list')); // redirect when done
+                return $this->redirect($this->generateUrl('places_list', array('slug' => 'restaurants-cafe'))); // redirect when done
             }
         }
         
@@ -91,7 +99,7 @@ class PlaceController extends Controller
     public function removeAction(Place $place)
     {
         $em = $this->getDoctrine()->getManager();
-        
+        //var_dump($place->getSlug());die();
         $em->remove($place);
         $em->flush();
     }
@@ -103,6 +111,8 @@ class PlaceController extends Controller
      */
     public function detailsAction(Place $place)
     {
+        $viewCounter = $this->container->get('krombox.views_counter');
+        $viewCounter->count($place);
         return compact('place');        
     }
     
@@ -267,31 +277,55 @@ class PlaceController extends Controller
 //    }
 
     /**
-     * @FW\Route("/places/{slug}", name="places_list")     
+     * @FW\Route("{city_slug}/places/{category_slug}", name="places_list")     
+     * @FW\ParamConverter("city", class="KromboxMainBundle:City", options={"mapping": {"city_slug": "slug"}})          
+     * @FW\ParamConverter("category", class="KromboxMainBundle:Category", options={"mapping": {"category_slug": "slug"}})
      * @FW\Template        
      */
-    public function listAction(Request $request, \Krombox\MainBundle\Entity\Category $category)
-    {              
+    public function listAction(Request $request, \Krombox\MainBundle\Entity\City $city, \Krombox\MainBundle\Entity\Category $category)
+    {                   
         $placeFilter = new PlaceFilter([$category]);
+        //$placeFilter = new PlaceFilter();
+        $placeFilter->setCategory($category);
+        $placeFilter->setCity($city);
+        
         $elasticaManager = $this->container->get('fos_elastica.manager');
-
+        $sort = 'membership';
+        $page = '1';
+        
         $filterForm = $this->get('form.factory')
             ->createNamed(
                 '',
                 new PlaceFilterType($this->get('krombox.filter_manager')),
                 $placeFilter,
                 array(
-                    'action' => $this->generateUrl('places_list', ['slug' => $category->getSlug()]),
+                    'action' => $this->generateUrl('places_list', ['city_slug' => $city->getSlug(), 'category_slug' => $category->getSlug()]),
                     'method' => 'GET'
                 )
             );
-        $filterForm->handleRequest($request);                   
-        $places = $elasticaManager->getRepository(Place::class)->facet($category, $placeFilter);            
+        $filterForm->handleRequest($request);
+        
+        
+        if($request->query->has('sort')){
+            $sortParam = $request->query->get('sort');
+            if(in_array($sortParam, ['membership', 'rating','views'])){
+                    $sort = $sortParam;                        
+            }
+        }
+        
+        if($request->query->has('page')){
+            $page = $request->query->get('page');            
+        }
+        
+        //var_dump($sort);die();
+        $places = $elasticaManager->getRepository(Place::class)->facet($placeFilter, $sort);
+        $places->setMaxPerPage(3);
+        $places->setCurrentPage($request->query->get('page', 1));
         $filterFacet = $places->getAdapter()->getAggregations();
-        $filterFacet['businessHours']['buckets'][] = ['key' => 'workingNow', 'doc_count' => 5]; 
-        //var_dump($placeFilter);die();
+        //$filterFacet['businessHours']['buckets'][] = ['key' => 'workingNow', 'doc_count' => 5]; 
+        //var_dump($filterFacet);die();
         $helper = $this->container->get('krombox.business_hours_helper');
-                        
+        
 //        if($placeFilter->getBusinessHours()){
 //            echo 'here';
 //            /*TODO make external helper*/
@@ -306,14 +340,16 @@ class PlaceController extends Controller
             return $this->render('KromboxMainBundle:Place/partial:placesList.html.twig', array(
                 'places' => $places,
                 'filterForm' => $filterForm->createView(),
-                'filterFacet'     => $filterFacet
+                'filterFacet'     => $filterFacet,
+                'sort' => $sort
             ));
         }        
         //var_dump($filterFacet);
         return $this->render('KromboxMainBundle:Place:list.html.twig',array(
             'places' => $places,
             'filterForm' => $filterForm->createView(),
-            'filterFacet'     => $filterFacet
+            'filterFacet'     => $filterFacet,
+            'sort' => $sort
         ));
     }
     
@@ -324,15 +360,19 @@ class PlaceController extends Controller
      */
     public function editAction(Place $place, Request $request){                
         $em = $this->getDoctrine()->getManager();
+        $eventDispatcher = $this->container->get('event_dispatcher');
             
         $form = $this->createForm(new PlaceType(), $place);
         $logoForm = $this->createForm(new PlaceImageType(), $place->getLogo());
         $form->handleRequest($request);
 
-        if ($form->isValid()) {                                        
+        if ($form->isValid()) {
+            $event = new PlaceEvent($place);
+            $eventDispatcher->dispatch(PlaceEvents::PRE_UPDATE, $event);            
+            
             $em->persist($place);            
             $em->flush();
-            
+            //return;
             //$this->updateES($place);
             return $this->redirectToRoute('user_places');
         }
@@ -539,11 +579,21 @@ class PlaceController extends Controller
         $placeImage = new PlaceHallImage();        
         $placeImage->setImage($file);
         //var_dump($placeImage->getImage());die();
-        $upload_handler = $this->container->get('vich_uploader.upload_handler');
-        $upload_handler->upload($placeImage, 'image');
-        //var_dump($placeImage);die();
+        
+        $upload_handler = $this->get('krombox.upload_handler');
+        if(!$upload_handler->upload($placeImage, 'image')){
+            return new JsonResponse (['error' => 'something wrong'], JsonResponse::HTTP_NOT_ACCEPTABLE);
+        }
+        //var_dump($placeImage->getPath());
+        
         $em->persist($placeImage);
         $em->flush();               
+                
+//        $upload_handler = $this->container->get('vich_uploader.upload_handler');
+//        $upload_handler->upload($placeImage, 'image');
+        //var_dump($placeImage);die();
+//        $em->persist($placeImage);
+//        $em->flush();               
                 
         return new JsonResponse (['status' => 200, 'id' => $placeImage->getId()]);        
     }

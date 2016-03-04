@@ -1,0 +1,12 @@
+Krombox\MainBundle\Entity\CityTranslation:
+    type: entity    
+    table: t_city   
+            
+    fields:        
+        name:
+            type: string
+            nullable: false
+#        description:
+#            type: text
+#            nullable: false
+    lifecycleCallbacks: {  }

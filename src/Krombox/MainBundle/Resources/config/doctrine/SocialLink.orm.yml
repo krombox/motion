@@ -1,0 +1,25 @@
+Krombox\MainBundle\Entity\SocialLink:
+    type: entity    
+    table: p_social_link
+    #repositoryClass: DDI\MainBundle\Repository\NewsRepository    
+    id:
+        id:
+            type: integer
+            generator: { strategy: IDENTITY }    
+    fields:
+        type:
+            type: SocialLinkType
+            nullable: false
+        url:
+            type: string
+            nullable: false
+        
+    manyToOne:
+        place:
+            targetEntity: Krombox\MainBundle\Entity\Place
+            inversedBy: socialLinks
+            joinColumn:
+                name: place_id
+                referencedColumnName: id
+                cascade: ["persist", "merge"]
+    lifecycleCallbacks: {  }

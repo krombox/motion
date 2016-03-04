@@ -55,16 +55,16 @@
 {% block images_dropzone_widget %}       
     <div class="dropzone-wrapper">                    
         {% set element_id = form.vars.id %}
-        {% set ids = [] %}
+        {% set ids = [] %}{{ dump(form) }}
         {% for item in form.vars.value  %}
             {% set ids = ids | merge([item.id]) %}
         {% endfor %}                        
-            
+            {{dump(ids)}}
         <div id="{{ element_id }}" class="dropzone dropzone-widget">
             {% for item in  form.vars.value %}                            
                 <div class="dz-preview dz-processing dz-image-preview dz-success dz-complete">  
                     <div class="dz-image">
-                        <img data-dz-thumbnail="" alt="" src="data:image/png;base64,{{ generateImageUrl(item.fileName, 'place_hall_image') | imagine_filter('place_image_preview_thumb') | base64encodefile }}"/>        </g>      </g>    </svg>  
+                        <img data-dz-thumbnail="" alt="" src="data:image/png;base64,{{ item.path | imagine_filter('place_image_preview_thumb') | base64encodefile }}"/>        </g>      </g>    </svg>  
                     </div>
                     <a data-dz-remove="" data-id="{{ item.id }}" href="javascript:undefined;" class="dz-remove">Remove file</a>
                 </div>
@@ -83,34 +83,13 @@
             <span class="glyphicon glyphicon-time"></span>
         </span>
     </div>
-        {#<div class="input-group clockpicker">
-    <input type="text" class="form-control" value="09:30">
-    <span class="input-group-addon">
-        <span class="glyphicon glyphicon-time"></span>
-    </span>
-</div>#}            
-        
-    {#{% block stylesheets %}
-        <link href="{{ asset('bower/clockpicker/dist/bootstrap-clockpicker.min.css') }}" rel="stylesheet" type="text/css" />
-    {% endblock %}
-
-    {% block javascripts %}
-
-        <script src="{{ asset('bower/clockpicker/dist/bootstrap-clockpicker.min.js') }}"></script>
-        <script>
-            $(document).ready(function(){
-                var elem = $('.clockpicker');
-                elem.clockpicker({
-                    autoclose: true,
-                    'default': 'now'
-                });
-            });
-        </script>
-    {% endblock %}#}
 {% endblock %}
 
-{% block business_hours_widget %}    
+{% block business_hours_widget %}
+        {{ form_errors(form) }}
+        {#{{ dump(form) }}#}
         <div class="{{ form.vars.attr.class }}">
+        {#<div>#}
             <div class="days-holder">
                 <div class="col-lg-2">
                     {{ form_widget(form.dayMonday, { 'required': form.dayMonday.vars.required }) }}
@@ -136,10 +115,16 @@
             </div>
             <div class="time-holder">    
                 <div class="col-lg-6">
+                    <div class="form-group {% if not form.startsAt.vars.valid %}has-error{% endif %}">
                     {{ form_widget(form.startsAt) }}
+                    {{ form_errors(form.startsAt) }}        
+                    </div>
                 </div>
                 <div class="col-lg-6">
+                    <div class="form-group {% if not form.endsAt.vars.valid %}has-error{% endif %}">
                     {{ form_widget(form.endsAt) }}
+                    {{ form_errors(form.endsAt) }}
+                    </div>
                 </div>        
             </div>
         </div>
@@ -161,24 +146,6 @@
     {% endif %}                  
 {% endblock %}
 
-{% block eav_widget %}
-    {{ dump(form.vars.value) }}
-    {% for filterType, filterOptions in form.vars.value %}
-        <label>{{ filterType }}</label>
-        {% for filterValue in filterOptions %}
-            <div class="checkbox">
-            <label class="">
-                <input type="checkbox" id="krombox_mainbundle_place_services_1" name="krombox_mainbundle_place[placeFilterKindValue][][placeFilterValue]" value="{{ filterValue }}" checked="checked">
-                {{ filterValue }}
-            </label>
-        </div>
-        {% endfor %}
-        
-    {% endfor %}
-    {#{{ form_widget(form) }}#}
-{% endblock %}
-
-
 {% block entity_filter_widget %}
     <div class="filterValues">
     {#{{ dump(form) }}#}
@@ -194,5 +161,47 @@
     {% endfor %}
     </div>
 {% endblock %}
+
+{% block a2lix_translations_widget %}
+    {{ form_errors(form) }}
+    <div class="a2lix_translations tabbable">
+        <ul class="a2lix_translationsLocales nav nav-tabs">
+        {% for translationsFields in form %}
+            {% set locale = translationsFields.vars.name %}
+
+            <li {% if app.request.locale == locale %}class="active"{% endif %}>
+                <a href="#" data-toggle="tab" data-target=".a2lix_translationsFields-{{ locale }}">
+                    {{ locale|capitalize }}
+                    {% if form.vars.default_locale == locale %}[Default]{% endif %}
+                    {% if translationsFields.vars.required %}*{% endif %}
+                </a>
+            </li>
+        {% endfor %}
+        </ul>
+
+        <div class="a2lix_translationsFields tab-content">
+        {% for translationsFields in form %}
+            {% set locale = translationsFields.vars.name %}
+
+            <div class="a2lix_translationsFields-{{ locale }} tab-pane {% if app.request.locale == locale %}active{% endif %}">
+                {% for translationsField in translationsFields.children %}
+                    {{ form_errors(translationsField) }}                    
+                                        
+                    {{ form_label(translationsField) }}
+                    <div class="input-group">
+                    {{ form_widget(translationsField) }}
+                    <div class="input-group-addon"><i class="fa fa-exchange"></i></div>
+                    </div>
+                {% endfor %}                                
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block a2lix_translationsForms_widget %}
+    {{ block('a2lix_translations_widget') }}
+{% endblock %}
+
 
     

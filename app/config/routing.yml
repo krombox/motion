@@ -38,7 +38,16 @@ krombox_main_tag:
     
 krombox_main_user:
     resource: "@KromboxMainBundle/Resources/config/routing/user.yml"
-    prefix:   /my    
+    prefix:   /my
+    
+krombox_form_auto_translation: 
+    resource: "@KromboxFormAutoTranslationBundle/Resources/config/routing.yml"    
+    
+##AJAX
+#krombox_main_ajax_place:
+#    resource: "@KromboxMainBundle/Controller/Ajax"
+#    prefix:   /ajax
+#    type: annotation
 
 fos_user:
     resource: "@FOSUserBundle/Resources/config/routing/all.xml"

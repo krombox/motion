@@ -5,9 +5,10 @@ namespace Krombox\MainBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Krombox\MainBundle\Entity\Traits\SchedulableEntity;
 use Krombox\MainBundle\Entity\Traits\Entity;
+use Krombox\MainBundle\Validator\Constraints as MainAssert;
 
 /**
- * BusinessHoursException
+ * @MainAssert\BusinessHoursExceptionConstraint
  */
 class BusinessHoursException
 {
@@ -72,5 +73,24 @@ class BusinessHoursException
     public function getPlace()
     {
         return $this->place;
+    }
+    
+    public function getDayFormatted()
+    {
+        return $this->day->format('Y-m-d');
+    }
+    
+    public function getStartsAtFormatted()
+    {
+        if($this->getStartsAt()){
+            return $this->startsAt->format('H:i:s');
+        }
+    }
+    
+    public function getEndsAtFormatted()
+    {
+        if($this->getEndsAt()){
+            return $this->endsAt->format('H:i:s');
+        }
     }
 }

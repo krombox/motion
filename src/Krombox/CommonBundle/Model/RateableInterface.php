@@ -4,11 +4,11 @@ namespace Krombox\CommonBundle\Model;
 
 interface RateableInterface
 {
-    function getRating();
+    public function getVisitableId();
+    
+    public function getVisitableType();
 
-    function setRating($rating);
+    function getViewsCount();
 
-    function getRatingCount();
-
-    function setRatingCount($count);
+    function setViewsCount($count);
 }

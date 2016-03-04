@@ -1,0 +1,14 @@
+Krombox\UserBundle\Entity\User:
+    user0:        
+        username: admin
+        plainPassword: admin
+        email: username_admin@email.com
+        enabled: true
+        roles: ['ROLE_ADMIN']
+    user1:        
+        username: user
+        plainPassword: user
+        email: username_user@email.com
+        enabled: true
+        roles: ['ROLE_USER']    
+

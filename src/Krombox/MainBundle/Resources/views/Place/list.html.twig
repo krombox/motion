@@ -5,6 +5,91 @@
     'KromboxMainBundle::jquery.collection.html.twig'
 %}#}
 
+{% block header %}
+    {{ parent() }}
+    
+    {% block stylesheets %}
+        {{ parent() }}
+        
+        <link rel="stylesheet" href="{{ asset('bower/bootstrap-select/dist/css/bootstrap-select.css') }}">        
+    {% endblock %}
+    
+    {% block javascripts_head %}
+        {{ parent() }}
+        
+        <script src="{{ asset('bower/jquery.countdown/dist/jquery.countdown.min.js') }}"></script>        
+        <script src="{{ asset('bower/bootstrap-select/dist/js/bootstrap-select.js') }}"></script>
+        <script>
+            $(document).ready(function(){
+                $('.selectpicker').on('change', reloadList);  
+                
+                $('#main-content').on('click', '.filter-form-wrapper input', reloadList);
+                
+                function reloadList(form){
+                    //var form = $(this).parents('form');
+                    var form = $('.place_filter');
+                    console.log('formis',form);
+                    var data = form.serialize();
+                    var sort = $('.selectpicker').val();
+                    var params = data + '&sort=' + sort;
+                    var url = window.location.origin + window.location.pathname + '?' + params; 
+                    console.log($(this).closest('form').serialize(), window.location);
+                    window.history.pushState("object or string", "Title", url);
+
+                    $.ajax({
+                        type: form.attr('method'),
+                        url: form.attr('action'),
+                        data: params ,
+                        complete     : function(data) {
+                            console.log( data );
+                            $('#main-content .places-wrapper').html(data.responseText);
+                            initCountdown();
+                        }
+                    });
+                };
+                                
+                
+                function initCountdown(){
+                    $('[data-countdown]').each(function() {
+                        var $this = $(this), finalDate = $(this).data('countdown');
+                        $this.countdown(finalDate, function(event) {
+                            var t = getTimeRemaining(event.finalDate);
+                            //console.log(t, t.fullHours);
+                            $this.html(t.fullHours + ':' + t.minutes + ':' + t.seconds);
+                          //$this.html(event.strftime('%D days %H:%M:%S'));
+                        });
+                    });
+                };
+                
+                initCountdown();                                                                
+            });
+            
+            $(window).load(function(){
+                $('.selectpicker').selectpicker('val', '{{ sort }}');
+                
+                {#$('.selectpicker').on('change', function(){
+                    console.log(location, $(this).val());
+                    var value = $(this).val();
+                    var searchResult = '?sort=' + value;
+                    
+                    if(location.search){
+                        var search = location.search;
+                        
+                        searchResult = search + '&sort=' + value;
+                        
+                        if(search.indexOf('sort=') >= 0){
+                            searchResult = search.replace(/sort=\S+/, 'sort=' + value);
+                        }
+                        
+                    }
+                    console.log(searchResult);
+                    location.search = searchResult;
+                });#}
+            });
+        </script>
+    {% endblock %}
+{% endblock %}
+
 {% block main_content %}
     <div class="row">
         <div class="col-lg-10 col-lg-offset-2">
@@ -12,32 +97,17 @@
         </div>
     </div>
     {#{% include 'KromboxMainBundle:Place/partial:placesList.html.twig' with {'places': places, 'placeSearchForm' : placeSearchForm } %}#}
+    <div class="row">
+        <div class="pull-right">{{sort}}
+            <select class="selectpicker">
+              <option>{% trans %}membership{% endtrans %}</option>
+              <option>{% trans %}rating{% endtrans %}</option>
+              <option>{% trans %}views{% endtrans %}</option>
+            </select>
+        </div>
+            
+    </div>
     {% include 'KromboxMainBundle:Place/partial:placesList.html.twig' with {'places': places, 'filterForm' : filterForm } %}
     
-    <script>
-        $(document).ready(function(){
-            $('#main-content').on('click', '.filter-form-wrapper input', function(){
-                console.log($(this).closest('form'), 'form', $(this));
-                var form = $(this).parents('form');
-                
-                var data = form.serialize();
-                var url = window.location.origin + window.location.pathname + '?' + data; 
-                console.log($(this).closest('form').serialize(), window.location);
-                window.history.pushState("object or string", "Title", url);
-                //window.location.replace(url);
-                //return;
-                
-                
-                $.ajax({
-                    type: form.attr('method'),
-                    url: form.attr('action'),
-                    data: form.serialize(),
-                    complete     : function(data) {
-                        console.log( data );
-                        $('#main-content .places-wrapper').html(data.responseText);
-                    }
-                })
-            });
-        });
-    </script>
+    
 {% endblock %}

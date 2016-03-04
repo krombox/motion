@@ -1,3 +1,7 @@
 Krombox\MainBundle\Entity\Event:
     constraints:
         - Callback: [validate]
+        
+Krombox\MainBundle\Entity\Place:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: slug        

@@ -12,23 +12,36 @@
         {{ parent() }}
         
         <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet" />
+        {#<link rel="stylesheet" href="{{ asset('bower/pickadate/lib/themes/default.css') }}">
+        <link rel="stylesheet" href="{{ asset('bower/pickadate/lib/themes/default.time.css') }}">#}
         <link rel="stylesheet" href="{{ asset('bower/dropzone/dist/dropzone.css') }}">
         <link rel="stylesheet" href="{{ asset('bower/cropper/dist/cropper.min.css') }}">
         <link rel="stylesheet" href="{{ asset('css/gmaps.css') }}" type="text/css" />
+        <link href="{{ asset('bower/clockpicker/dist/bootstrap-clockpicker.min.css') }}" rel="stylesheet" type="text/css" />
     {% endblock %}
     
     {% block javascripts_head %}
         {{ parent() }}
         
+        {#<script src="{{ asset('bower/pickadate/lib/picker.js') }}" type="text/javascript" charset="utf-8"></script>
+        <script src="{{ asset('bower/pickadate/lib/picker.time.js') }}" type="text/javascript" charset="utf-8"></script>#}        
+        <script src="{{ asset('js/bootstrap-datetimepicker/bootstrap-datetimepicker.js') }}" type="text/javascript" charset="utf-8"></script>
         <script src="{{ asset('bower/dropzone/dist/dropzone.js') }}" type="text/javascript" charset="utf-8"></script>
         <script src="{{ asset('js/jquery.collection.js') }}" type="text/javascript" charset="utf-8"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
-        <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true&libraries=places&language=ru&libraries=places&signed_in=false"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true&libraries=places&language=ru-RU&sensor=false&libraries=places&signed_in=false"></script>
         <script src="{{ asset('bower/underscore/underscore-min.js') }}" type="text/javascript" charset="utf-8"></script>
         <script src="{{ asset('bower/cropper/dist/cropper.min.js') }}" type="text/javascript" charset="utf-8"></script>
         <script src="{{ asset('js/gmapsWidget.js') }}" type="text/javascript" charset="utf-8"></script>
         <script src="{{ asset('js/place.js') }}" type="text/javascript" charset="utf-8"></script>
         <script src="{{ asset('js/dropzoneWidget.js') }}" type="text/javascript" charset="utf-8"></script>
+        <script src="{{ asset('bower/clockpicker/dist/bootstrap-clockpicker.js') }}"></script>
+        {% include 'KromboxFormAutoTranslationBundle::javascripts.html.twig' %}
+        <script>                                               
+            $(document).ready(function(){                                                
+                $('.autotranslatable').autotranslate();                                                
+            });
+        </script>
     {% endblock %}
 {% endblock %}
            
@@ -38,6 +51,7 @@
 <img src="{{ macro.logo(place.logo) }}" id="logo-img" class="center-block" style="width: 180px; height: 180px">
 <a href="#" class="btn btn-info btn-xs" style="font-variant: small-caps; text-align:center" data-toggle="modal" data-target="#logo_modal">edit picture</a>
 
+{{ form_errors(form) }}
 {{ form_start(form, {'attr': {'data-object-id': place.id } }) }}
     
     {#{{ dump(form.placeFilterValues) }}#}
@@ -55,18 +69,41 @@
 </script>
 
 <script type="text/javascript">
-    $(document).ready(function(){        
+    $(document).ready(function(){
+        $('#place_businessHours').find('.clockpicker').clockpicker({
+            afterHide: function(){
+                console.log('12321321');
+            },
+            autoclose: true
+            //'default': '10:00'
+        });
+        
+        {#$('#place_businessHours').find('.timepicker').datetimepicker({
+            pickDate: false
+        })#}
+        
+        {#$('#place_businessHours').find('.timepicker').each(function(){
+            $(this).datetimepicker({pickDate: false});
+        })#}
+
+
+                
         $('.collection').collection({
             after_add: function(collection, element){
                 $(element).find('.dropzone');
                 dropzone.add($(element).find('.dropzone'));
+                
+                $(element).find('.clockpicker').clockpicker({
+                    autoclose: true,
+                    'default': '10:00'
+                });
             }
         });
                            
         initEditLogoUpload('{{ logo_form.vars.id }}');                
         
         var url = Routing.generate('filter_values_by_categories', { 'place': null });
-        $('#krombox_mainbundle_place_categories').change(function()
+        $('#place_categories').change(function()
         {
             
             var data = {'categories': $(this).val()};

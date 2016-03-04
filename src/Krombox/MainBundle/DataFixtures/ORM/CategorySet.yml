@@ -1,0 +1,20 @@
+Krombox\MainBundle\Entity\Category:
+#    category_restaurants:
+#        slug: restaurants-cafe
+#        #addPlaceFilterKind: @place_filter_kind_services
+#    category_clubs:        
+#        slug: night-clubs
+#        #placeFilterKinds: ['@place_filter_kind_services','@place_filter_kind_business_hours']
+#    category_pubs:        
+#        slug: pubs
+#        #placeFilterKinds: ['@place_filter_kind_business_hours']
+    category1:
+        slug: restaurants-cafe
+        #placeFilterKinds: ['@place_filter_kind_services']
+    category2:        
+        slug: night-clubs
+        #placeFilterKinds: ['@place_filter_kind_services']
+    category3:        
+        slug: pubs
+        #placeFilterKinds: ['@place_filter_kind_kitchens']   
+

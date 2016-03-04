@@ -5,12 +5,13 @@ namespace Krombox\MainBundle\Helper;
 use JMS\DiExtraBundle\Annotation as DI;
 use Krombox\MainBundle\Entity\Place;
 use Krombox\MainBundle\DBAL\Types\DayType as DayType;
-use Business\SpecialDay;
-use Business\Day;
-use Business\Days;
-use Business\Business;
-use Business\Holidays;
-use Business\DateRange;
+//use Business\SpecialDay;
+//use Business\Day;
+//use Business\Days;
+//use Business\Business;
+//use Business\Holidays;
+//use Business\DateRange;
+use Krombox\CommonBundle\Model\Helper\DayFlaggableHelper;
 
 /**
  * @DI\Service("krombox.business_hours_helper")
@@ -55,26 +56,85 @@ class BusinessHoursHelper
                 $method = 'getDay' . $day->format('l');
                 
                 if($bh->$method()){
-                    $sheet[$key]['startsAt'] = $bh->getStartsAt();
-                    $sheet[$key]['endsAt'] = $bh->getEndsAt();
+                    $sheet[$key]['startsAt'][] = $bh->getStartsAt();
+                    $sheet[$key]['endsAt'][] = $bh->getEndsAt();
                 }
             }
-        }
+        }                        
         
         if($withException){
             foreach ($place->getBusinessHoursException() as $bhEx){
                 foreach ($sheet as $key => $day){                    
                     if($bhEx->getDay()->format('Y-m-d') == $day['day']->format('Y-m-d')){
-                        $sheet[$key]['startsAt'] = $bhEx->getStartsAt();
-                        $sheet[$key]['endsAt'] = $bhEx->getEndsAt();
+                        //Erase standart business hours ih exception exist
+                        $sheet[$key]['startsAt'] = [];
+                        $sheet[$key]['endsAt'] = [];
+                        $sheet[$key]['startsAt'][] = $bhEx->getStartsAt();
+                        $sheet[$key]['endsAt'][] = $bhEx->getEndsAt();
                         $sheet[$key]['isException'] = true;
                     }                    
                 }
             }        
         }
         
+        //sort
+//        foreach ($sheet as $k => $v){
+//            $sheet[$k]['startsAt'] = $this->sort($v['startsAt']);
+//            $sheet[$k]['endsAt'] = $this->sort($v['endsAt']);
+//        }
+        //var_dump($sheet);die();
         return $sheet;
     }
+    
+    protected function sort($arr, $direction = 'asc')
+    {
+         usort($arr, function($a, $b) use ($direction) {                        
+            if ($a == $b) {
+              return 0;
+            }
+            $direction == 'asc' ? $operator = '>' : $operator = '<';
+            
+            switch($operator){
+                case ">":
+                    return $a > $b ? 1 : -1;
+                case "<":
+                    return $a < $b ? 1 : -1;
+            }                        
+        }); 
+        
+        return $arr;
+    }
+
+//    public function getBusinessHoursSheet($place, $withException = true){
+//        $weekDays = $this->getCurrentWeekDates();                
+//        $sheet = [];
+//        
+//        foreach ($place->getBusinessHours() as $bh){
+//            foreach ($weekDays as $key => $day){
+//                $sheet[$key]['day'] = $day;
+//                $method = 'getDay' . $day->format('l');
+//                
+//                if($bh->$method()){
+//                    $sheet[$key]['startsAt'] = $bh->getStartsAt();
+//                    $sheet[$key]['endsAt'] = $bh->getEndsAt();
+//                }
+//            }
+//        }
+//        
+//        if($withException){
+//            foreach ($place->getBusinessHoursException() as $bhEx){
+//                foreach ($sheet as $key => $day){                    
+//                    if($bhEx->getDay()->format('Y-m-d') == $day['day']->format('Y-m-d')){
+//                        $sheet[$key]['startsAt'] = $bhEx->getStartsAt();
+//                        $sheet[$key]['endsAt'] = $bhEx->getEndsAt();
+//                        $sheet[$key]['isException'] = true;
+//                    }                    
+//                }
+//            }        
+//        }
+//        //var_dump($sheet);die();
+//        return $sheet;
+//    }
     
     public function getCurrentWeekDates()
     {                
@@ -84,9 +144,185 @@ class BusinessHoursHelper
         }
         
         return $days;
-    }     
+    }
     
     public function isWorkingNow($place)
+    {
+        $now = new \DateTime();
+        $currentDayName = date('l');
+        
+        $isOpenException = false;
+        foreach ($place->getBusinessHoursException() as $bhE)
+        {
+            if($bhE->getDay()->format('Y-m-d') == $now->format('Y-m-d') && !$bhE->getStartsAt() && !$bhE->getEndsAt()){
+                return false;
+            }
+            if($bhE->getDay()->format('Y-m-d') == $now->format('Y-m-d') && $bhE->getStartsAt() <= $now && $now <= $bhE->getEndsAt()){
+                $isOpenException = true;
+            }
+        }
+        
+        if($isOpenException) return true;
+        
+        #24/7
+        if($this->is24h($place)) return true;
+        
+        foreach ($place->getBusinessHours() as $bh){
+            $method = 'getDay' . $currentDayName;
+            #work this day and time            
+            //var_dump($bh->$method(), $bh->getStartsAt(), $bh->getEndsAt(), $now);
+            if($bh->$method() && $bh->getStartsAt() <= $now && $now <= $bh->getEndsAt()){
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    protected function getClosestOpenHours($place)
+    {
+        $now = new \DateTime();
+        $day = $now->format('l');        
+        $dayOpenMin = new \DateTime('+10 years');//Dummy
+        
+        foreach ($place->getBusinessHours() as $bh){
+            $endsAt = $bh->getEndsAt();
+            $startsAt = $bh->getStartsAt();            
+            
+            for($i = 1; $i <= 7; $i++)
+            {
+                $method = 'getDay' . ucfirst($day);
+                $dayOpen = new \Datetime($day);
+                $dayOpen->setTime($startsAt->format('H'), $startsAt->format('i'), $startsAt->format('s'));
+                
+                if($bh->$method() && $dayOpen > $now){
+                    //Looking for soonest open hours
+                    if($dayOpen < $dayOpenMin){
+                        $dayOpenMin = $dayOpen;
+                    }
+                }
+                
+                $day = DayFlaggableHelper::nextDay($day);
+            }
+        }
+        
+        return $dayOpenMin;
+    }
+
+    protected function getClosestShutdownHours($place)
+    {
+        $now = new \DateTime();
+        $day = $now->format('l');
+        $method = 'getDay' . ucfirst($day);        
+        
+        //BusinessHoursException
+        foreach ($place->getBusinessHoursException() as $bhE)
+        {
+            $endsAt = $bhE->getEndsAt();
+            $startsAt = $bhE->getStartsAt();
+            
+            if($bhE->getDay()->format('Y-m-d') == $now->format('Y-m-d')){
+                if($bhE->getStartsAt() <= $now && $now <= $bhE->getEndsAt()){
+                    //echo 'dd';die();
+//                    if($endsAt > $endsAtMax){//Looks this will not need after violation
+//                        $endsAtMax = $endsAt;
+//                    }
+//                    if($endsAtAfterMidnight = $this->getClosesestShutdownHoursAfterMidnight($place)){
+//                        return $endsAtAfterMidnight;
+//                    }
+                    return $endsAt;
+                    //$closestCloseHours =  $endsAt;
+                }
+            }
+        }
+        
+        //BusinessHours
+        foreach ($place->getBusinessHours() as $bh){
+            if($bh->$method()){
+                $endsAt = $bh->getEndsAt();
+                $startsAt = $bh->getStartsAt();
+                
+                if($bh->getStartsAt() <= $now && $now <= $bh->getEndsAt()){
+                    //echo 'dd';die();
+//                    if($endsAt > $endsAtMax){//Looks this will not need after violation
+//                        $endsAtMax = $endsAt;
+//                    }
+                    return $endsAt;
+                    
+                    
+                }
+            }
+        }                
+    }
+    
+    protected function getClosesestShutdownHoursAfterMidnight($place)
+    {
+        $now = new \DateTime();        
+        $tomorrow = clone $now;
+        $tomorrow->modify('+1 day');
+        $nextday = $tomorrow->format('l');
+        $startsAtMidnight = new \DateTime('00:00:00');        
+        $method = 'getDay' . ucfirst($nextday);        
+                
+        foreach ($place->getBusinessHours() as $bh){            
+            $endsAt = $bh->getEndsAt();            
+            $startsAt = $bh->getStartsAt();     
+            
+            if($bh->$method()){        
+                if($bh->getStartsAt() == $startsAtMidnight){                                                                                    
+//                        if($endsAt > $endsAtMax){
+//                            $endsAtMax = $endsAt;
+//                        }
+                    return $endsAt;                        
+                }
+            }
+        }
+        
+        return;
+        //$r = new \DateTime($endsAtMax->format('H:i:s'));
+        //var_dump($endsAtMax, 'beforereturn');
+        //return $r;        
+    }
+
+    public function closeIn($place)
+    {                    
+        if(!$this->isWorkingNow($place)){
+            return;
+        }          
+        
+        $closeHours = $this->getClosestShutdownHours($place);
+
+        if($closeHours && $closeHours->format('H:i:s') == '23:59:59')
+        {
+            if($endsAtAfterMidnight = $this->getClosesestShutdownHoursAfterMidnight($place))
+            {                
+                $shutdownHours = clone $endsAtAfterMidnight;
+                $shutdownHours->modify('+1 day');
+
+                return $shutdownHours;
+            }                
+        }
+
+        return $closeHours;        
+    }
+    
+    public function openIn($place)
+    {
+        return $this->getClosestOpenHours($place);
+        return new \DateTime('+1 hour');
+        //var_dump('dddddddddddddddddddddddd');die('????');
+        if($this->isWorkingNow($place)){
+            return;
+        }
+        
+        return $this->getClosestOpenHours($place);
+    }
+
+    public function is24h($place)
+    {
+        return $place->getIs24h();
+    }
+
+    public function isWorkingNowOld($place)
     {
         $days = [];
         $holidays = [];

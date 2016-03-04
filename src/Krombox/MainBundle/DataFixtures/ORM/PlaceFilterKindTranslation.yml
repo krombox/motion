@@ -1,0 +1,54 @@
+Krombox\MainBundle\Entity\PlaceFilterKindTranslation:
+    place_filter_kind_translation_en_0:
+        translatable: @place_filter_kind_services
+        name: services                        
+        locale: en
+    place_filter_kind_translation_ru_1:
+        translatable: @place_filter_kind_services
+        name: сервисы                        
+        locale: ru
+        
+#    place_filter_kind_translation_en_2:
+#        translatable: @place_filter_kind_business_hours
+#        name: business hours                        
+#        locale: en
+#    place_filter_kind_translation_ru_3:
+#        translatable: @place_filter_kind_business_hours
+#        name: время работы                        
+#        locale: ru
+        
+    place_filter_kind_translation_en_4:
+        translatable: @place_filter_kind_kitchens
+        name: kitchens                        
+        locale: en
+    place_filter_kind_translation_ru_5:
+        translatable: @place_filter_kind_kitchens
+        name: кухня                        
+        locale: ru
+#    place_filter_kind_translation_en_0:
+#        translatable: @place_filter_kind1
+#        name: services                        
+#        locale: en
+#    place_filter_kind_translation_ru_1:
+#        translatable: @place_filter_kind1
+#        name: сервисы                        
+#        locale: ru
+#        
+#    place_filter_kind_translation_en_2:
+#        translatable: @place_filter_kind2
+#        name: business hours                        
+#        locale: en
+#    place_filter_kind_translation_ru_3:
+#        translatable: @place_filter_kind2
+#        name: время работы                        
+#        locale: ru
+#        
+#    place_filter_kind_translation_en_4:
+#        translatable: @place_filter_kind3
+#        name: kitchens                        
+#        locale: en
+#    place_filter_kind_translation_ru_5:
+#        translatable: @place_filter_kind3
+#        name: кухня                        
+#        locale: ru
+

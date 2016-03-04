@@ -15,7 +15,9 @@ Krombox\MainBundle\Entity\PlaceHallImage:
 #            type:       string
 #            length:     255
 
-        file_name:      string
+        #file_name:      string
+        path: string
+        imageId: string
         updatedAt:
             type: datetime
 
@@ -34,4 +36,4 @@ Krombox\MainBundle\Entity\PlaceHallImage:
                 name:                 hall_id
                 referencedColumnName: id
                 onDelete:             cascade        
-                onPersist:            cascade
+                #onPersist:            cascade

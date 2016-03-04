@@ -20,8 +20,9 @@ class EventType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', null, array('label' => 'name'))
-            ->add('description', 'textarea', array('label' => 'description'))
+//            ->add('name', null, array('label' => 'name'))
+//            ->add('description', 'textarea', array('label' => 'description'))
+            ->add('translations', 'krombox_auto_translations')    
             ->add('startDate')    
             ->add('endDate',null, array('required' => false))
             ->add('startTime','clock_picker', array('required' => true))
@@ -55,8 +56,14 @@ class EventType extends AbstractType
 //                        function($er) {
 //                            return $er->queryCategoriesByType(CategoryTypeEnum::EVENT);
 //                         }
-//            ))    
-            ->add('place', null, array('required' => false, 'property' => 'name'))
+//            ))
+            ->add('place', 'a2lix_translatedEntity', array(
+                    'class' => 'Krombox\MainBundle\Entity\Place',
+                    'translation_property' => 'name',                    
+                    'label' => 'place',
+                    'required' => false
+                ))    
+            //->add('place', null, array('required' => false, 'property' => 'name'))
             ->add('address', new EventAddressType(), array())
                 ->add('save', 'submit')
         ;

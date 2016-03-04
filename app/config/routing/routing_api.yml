@@ -13,3 +13,11 @@ event_api:
     resource: Krombox\MainBundle\Controller\Api\EventController
     options:
         expose: true
+        
+place_ajax_api:
+    prefix: /v1
+    name_prefix:  api_1.
+    type:     rest
+    resource: Krombox\MainBundle\Controller\Ajax\PlaceController
+    options:
+        expose: true        

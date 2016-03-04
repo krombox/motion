@@ -33,6 +33,12 @@
         <script src="{{ asset('js/place.js') }}" type="text/javascript" charset="utf-8"></script>
         <script src="{{ asset('js/dropzoneWidget.js') }}" type="text/javascript" charset="utf-8"></script>
         <script src="{{ asset('bower/clockpicker/dist/bootstrap-clockpicker.min.js') }}"></script>
+        {% include 'KromboxFormAutoTranslationBundle::javascripts.html.twig' %}
+        <script>                                               
+            $(document).ready(function(){                                                
+                $('.autotranslatable').autotranslate();                                                
+            });
+        </script>
     {% endblock %}
 {% endblock %}
 
@@ -63,11 +69,11 @@
 
 {% include 'KromboxMainBundle:Default/modal:logo_new.html.twig' %} 
 
-{% if flow.getCurrentStepNumber() == 1 %}
+{% if flow.getCurrentStepNumber() == 4 %}
     <script type="text/javascript">
-    $(document).ready(function(){
-        initLogoUpload('{{ form.children.logo.vars.id }}', '{{ form.vars.id }}');
-    });
+        $(document).ready(function(){
+            initLogoUpload('{{ form.children.logo.vars.id }}', '{{ form.vars.id }}');
+        });
     </script>
     
 {% endif %}
@@ -91,8 +97,7 @@
                 });
             }
         });                
-    });            
-        
+    });                    
 </script>
 
 {% endblock %}

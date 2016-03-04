@@ -23,7 +23,8 @@ function initEditLogoUpload(formId){
 
 function initCrop(){    
     var preview = $('#logo-preview');
-    console.log('iniCropFn', id, $('#logo-preview'))
+    console.log('iniCropFn', id, preview);
+    console.log('end');
         preview.cropper({
                 aspectRatio: 1 / 1,
                 autoCropArea: 0.65,
@@ -35,7 +36,7 @@ function initCrop(){
 //                movable: true,
                 resizable: true,
                 crop: function(data){
-                    console.log(data);
+                    console.log('crop_data',data);
                     $('#' + id + '_x').val(data.x);
                     $('#' + id + '_y').val(data.y);
                     $('#' + id + '_h').val(data.height);
@@ -51,7 +52,8 @@ function initLogoUpload(formId, fileFieldId){
         var preview = $('#logo-preview');        
         var reader = new FileReader();
         reader.readAsDataURL(this.files[0]);
-        reader.onload = function (event) {            
+        reader.onload = function (event) {
+            console.log('onload');
             $('#logo_modal').modal('show');
             preview.get(0).src = event.target.result;
             $('#logo-upload').hide();

@@ -40,10 +40,10 @@ class ChoiceFilterType extends AbstractType
         $this->filterManager->setDataClass($options['class']);
         $this->filterValueKinds = $this->filterManager->getFilterValuesAssocList();
         //var_dump($this->filterValueKinds);die();
-        foreach ($view->children as $child){            
-            isset($this->filterValueKinds[$child->vars['value']]) ? $label = $this->filterValueKinds[$child->vars['value']] : $label = 'unkhown';
+        foreach ($view->children as $child){                        
+            isset($this->filterValueKinds[$child->vars['value']]) ? $label = $this->filterValueKinds[$child->vars['value']] : $label = 'unkhown';            
             $child->vars['filter_kind'] = $label;
-        }              
+        }
     }
     
     public function configureOptions(OptionsResolver $resolver)
