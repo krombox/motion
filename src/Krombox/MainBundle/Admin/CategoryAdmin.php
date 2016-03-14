@@ -22,7 +22,7 @@ class CategoryAdmin extends Admin
                 ->add('translations', 'a2lix_translations')
             ->add('slug')
             //->add('description')
-            //->add('type')
+            ->add('type')
             ->add('image', 'file', ['required' => false])
         ;
     }

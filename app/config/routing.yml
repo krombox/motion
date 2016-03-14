@@ -8,13 +8,13 @@
 #    resource: "@KromboxMainBundle/Resources/config/routing.yml"
 #    prefix:   /
 
-root:
-    path: /
-    defaults:
-        _controller: FrameworkBundle:Redirect:urlRedirect
-        path: /places
-        #route
-        permanent: true
+#root:
+#    path: /
+#    defaults:
+#        _controller: FrameworkBundle:Redirect:urlRedirect
+#        path: /places
+#        #route
+#        permanent: true
 
 #krombox_main_place:
 #    resource: "@KromboxMainBundle/Resources/config/routing/place.yml"
@@ -24,13 +24,14 @@ krombox_main_place:
     resource: "@KromboxMainBundle/Controller"
     type: annotation
     
+    
 krombox_payment_order_membership:
     resource: "@KromboxPaymentBundle/Controller"
     type: annotation    
     
-krombox_main_event:
-    resource: "@KromboxMainBundle/Resources/config/routing/event.yml"
-    prefix:   /
+#krombox_main_event:
+#    resource: "@KromboxMainBundle/Resources/config/routing/event.yml"
+#    prefix:   /
     
 krombox_main_tag:
     resource: "@KromboxMainBundle/Resources/config/routing/tag.yml"

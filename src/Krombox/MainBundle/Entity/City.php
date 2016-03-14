@@ -64,4 +64,12 @@ class City
     {
         return $this->slug;
     }
+    
+    public function getNameTranslatableRU(){
+        return $this->translate('ru')->getName();
+    }
+    
+    public function getNameTranslatableEN(){
+        return $this->translate('en')->getName();
+    }
 }

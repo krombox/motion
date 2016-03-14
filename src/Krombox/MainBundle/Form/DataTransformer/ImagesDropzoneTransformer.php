@@ -32,22 +32,24 @@ class ImagesDropzoneTransformer implements DataTransformerInterface
      */
     public function transform($collection)
     {   
+//        return $collection;
         if($collection == null) return;
         $result = array();
-        if($collection != null){
-            foreach ($collection as $item) {                
-                echo $item->getId();
-            }
-        }
-        //var_dump('transformer',$collection);
-//        if ($collection) {
+//        if($collection != null){
 //            foreach ($collection as $item) {                
-//                $result[] = $item->getId();
+//                echo $item->getId();
 //            }
 //        }
+        //var_dump('transformer',$collection);
+        if ($collection) {
+            foreach ($collection as $item) {                                
+                $result[] = $item->getId();                
+            }
+        }
         
-        return $collection;
-        //return implode($this->separator, $result);
+        //return $result;
+        //return $collection;
+        return implode($this->separator, $result);
     }
 
     /**

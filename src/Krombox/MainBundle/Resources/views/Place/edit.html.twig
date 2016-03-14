@@ -59,6 +59,7 @@
 {{ form_rest(form) }}
 {#<input class="btn btn-info" type="submit" value="Save">#}
 {{ form_end(form) }}
+{#{{ dump(logo_form.children.logo.vars.id) }}                   #}
 {% include 'KromboxMainBundle:Default/modal:logo_edit.html.twig' %}
 
 {#{% set place_id = null %}
@@ -99,8 +100,8 @@
                 });
             }
         });
-                           
-        initEditLogoUpload('{{ logo_form.vars.id }}');                
+        
+        initEditLogoUpload('{{ logo_form.vars.id }}','{{ logo_form.children.logo.vars.id }}');                
         
         var url = Routing.generate('filter_values_by_categories', { 'place': null });
         $('#place_categories').change(function()

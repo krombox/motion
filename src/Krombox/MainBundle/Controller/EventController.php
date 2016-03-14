@@ -40,44 +40,87 @@ class EventController extends Controller
         return $this->render('KromboxMainBundle:Event:details.html.twig', array('entity' => $event));
     }
     
-    public function listAction(Request $request, $category){
-        //$redis = $this->container->get('snc_redis.default');
-//        $placeSearch = new PlaceSearch();
+    /**
+     * @FW\Route("{city_slug}/events/{category_slug}", name="events_list")     
+     * @FW\ParamConverter("city", class="KromboxMainBundle:City", options={"mapping": {"city_slug": "slug"}})          
+     * @FW\ParamConverter("category", class="KromboxMainBundle:Category", options={"mapping": {"category_slug": "slug"}})
+     * @FW\Template        
+     */
+    public function listAction(Request $request, $category)
+    {        
+        $placeFilter = new PlaceFilter();        
+        //$placeFilter->setCategory($category);
+        $placeFilter->setCity($city);
+        
         $elasticaManager = $this->container->get('fos_elastica.manager');
-
-//        $placeSearchForm = $this->get('form.factory')
-//            ->createNamed(
-//                '',
-//                'place_search_type',
-//                $placeSearch,
-//                array(
-//                    'action' => $this->generateUrl('places_list', ['category' => $category]),
-//                    'method' => 'GET'
-//                )
-//            );
-//        $placeSearchForm->handleRequest($request);
-//        //if ($placeSearchForm->isValid()) {
-//            $placeSearch = $placeSearchForm->getData();                
-//            
-            $events = $elasticaManager->getRepository(Event::class)->search($category, $placeSearch = null);/*TODO search form*/
-            //$events = $this->getDoctrine()->getManager()->getRepository(Event::class)->findAll();
-//
-//            if($placeSearch->getIsWorkingNow()){
-//                /*TODO make external helper*/
-//                foreach($places as $key => $place){
-//                    if(!$place->isWorkingNow()){                    
-//                        unset($places[$key]);                    
-//                    }
+        //$sort = 'membership';
+        $page = '1';
+        
+        $filterForm = $this->get('form.factory')
+            ->createNamed(
+                '',
+                'place_filter',
+                $placeFilter,
+                array(
+                    'action' => $this->generateUrl('places_list', ['city_slug' => $city->getSlug(), 'category_slug' => $category->getSlug()]),
+                    'method' => 'GET'
+                )
+            );
+        $filterForm->handleRequest($request);
+        
+        
+        if($request->query->has('sort')){
+            $sortParam = $request->query->get('sort');
+            if(in_array($sortParam, ['membership', 'rating','views'])){
+                    $sort = $sortParam;                        
+            }
+        }
+        
+        if($request->query->has('page')){
+            $page = $request->query->get('page');            
+        }
+        
+        //var_dump($sort);die();
+        $places = $elasticaManager->getRepository(Place::class)->facet($placeFilter, $sort);
+        $places->setMaxPerPage(3);
+        $places->setCurrentPage($request->query->get('page', 1));
+        $filterFacet = $places->getAdapter()->getAggregations();
+        //var_dump($filterFacet);die();
+        //$filterFacet['businessHours']['buckets'][] = ['key' => 'workingNow', 'doc_count' => 5]; 
+        //var_dump($filterFacet);die();
+        $helper = $this->container->get('krombox.business_hours_helper');
+        
+//        if($placeFilter->getBusinessHours()){
+//            echo 'here';
+//            /*TODO make external helper*/
+//            foreach($places as $key => $place){
+//                if(!$helper->isWorkingNow($place)){                    
+//                    var_dump($places);die();
+//                    unset($places[$key]);                    
 //                }
 //            }
 //        }
-//        else
-//            $places = $elasticaManager->getRepository(Place::class)->search(new PlaceSearch());
-        
-        return $this->render('KromboxMainBundle:Event:list.html.twig',array(
-            'events' => $events,
-            //'placeSearchForm' => $placeSearchForm->createView(),
+        if($request->isXmlHttpRequest()){
+            return $this->render('KromboxMainBundle:Place/partial:placesList.html.twig', array(
+                'places' => $places,
+                'filterForm' => $filterForm->createView(),
+                'filterFacet'     => $filterFacet,
+                'sort' => $sort
+            ));
+        }        
+        //var_dump($filterFacet);
+        return $this->render('KromboxMainBundle:Place:list.html.twig',array(
+            'places' => $places,
+            'filterForm' => $filterForm->createView(),
+            'filterFacet'     => $filterFacet,
+            'sort' => $sort
         ));
+//        $elasticaManager = $this->container->get('fos_elastica.manager');      
+//        $events = $elasticaManager->getRepository(Event::class)->search($category, $placeSearch = null);/*TODO search form*/            
+//        
+//        return $this->render('KromboxMainBundle:Event:list.html.twig',array(
+//            'events' => $events,            
+//        ));
     }
     
     public function getEventsFeedAction($place_hash){

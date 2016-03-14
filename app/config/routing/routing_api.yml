@@ -14,6 +14,22 @@ event_api:
     options:
         expose: true
         
+city_api:
+    prefix: /v1
+    name_prefix:  api_1.
+    type:     rest
+    resource: Krombox\MainBundle\Controller\Api\CityController
+    options:
+        expose: true        
+    
+place_hall_api:
+    prefix: /v1
+    name_prefix:  api_1.
+    type:     rest
+    resource: Krombox\MainBundle\Controller\Api\PlaceHallController
+    options:
+        expose: true        
+        
 place_ajax_api:
     prefix: /v1
     name_prefix:  api_1.

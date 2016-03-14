@@ -25,11 +25,12 @@ class PlaceController extends RestController
      */
     public function getPlacesAutocompleteAction(Request $request)
     {
-        $query = $request->query->get('q');        
+        $query = $request->query->get('q');
+        $city = $request->query->get('city');
         //$em = $this->getDoctrine()->getManager();
         $elasticaManager = $this->container->get('fos_elastica.manager');
         
-        $places = $elasticaManager->getRepository(Place::class)->autocomplete($query);
+        $places = $elasticaManager->getRepository(Place::class)->autocomplete($query, $city);
         
         $factory = $this->get('krombox.place.wrapper_factory');
         $results = [];

@@ -44,7 +44,8 @@ class PlaceWrapperFactory extends AbstractWrapperFactory
 
         return new PlaceWrapper([
             'id' => $place->getId(),
-            'name' => $place->getName()
+            'name' => $place->getName(),
+            'city' => $p->wrap($place->getCity())
             //'email' => $isCurrent ? $user->getEmail() : null,
 //            'apikey' => $isCurrent ? $user->getApiKey() : null,
 //            'role' => $isCurrent ? $user->getRole() : null,
@@ -71,7 +72,7 @@ class PlaceWrapperFactory extends AbstractWrapperFactory
 
     public function wrapLogo($place)
     {   
-        var_dump($place->getId());die();
+        //var_dump($place->getId());die();
         //var_dump($place->getLogo()->getPath() == null);die();
         if($place->getLogo() == null){
             return 'http://dogvacay.com/img/default_home.jpg';

@@ -62,5 +62,25 @@ Krombox\MainBundle\Entity\CategoryTranslation:
         translatable: @category3
         name: пабы                
         description: пивные пабы
+        locale: ru
+    t_category7:
+        translatable: @category4
+        name: confectionery               
+        description: confectionery
+        locale: en
+    t_category8:
+        translatable: @category4
+        name: кондитерская                
+        description: кондитерская
+        locale: ru
+    t_category9:
+        translatable: @category5
+        name: concert               
+        description: concert
+        locale: en
+    t_category10:
+        translatable: @category5
+        name: концерт                
+        description: концерт
         locale: ru    
 

@@ -24,7 +24,7 @@
         <script src="{{ asset('js/common.js') }}"></script>
         <script src="{{ asset('bower/moment/moment.js') }}"></script>
         <script src="{{ asset('bower/typeahead.js/dist/typeahead.bundle.min.js') }}"></script>
-        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+            <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
         <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
         <script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>
     {% endblock %}
@@ -37,8 +37,8 @@
         {#<ul>
             <li><a href="#">create.new.place</a></li>
         </ul>#}
-        <nav class="navbar navbar-default">
-  <div class="container-fluid">
+        <nav class="navbar top">
+  <div class="container">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
@@ -47,7 +47,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="{{ path('places_list', {'city_slug': 'poltava', 'category_slug': 'restaurants-cafe'}) }}">Home</a>
+      <a class="navbar-brand" href="{{ path('home') }}">Home</a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
@@ -56,7 +56,7 @@
         {#<li class="active"><a href="{{ path('place_create') }}">{% trans %}create.new.place{% endtrans %}<span class="sr-only">(current)</span></a></li>
         <li><a href="{{ path('event_create') }}">{% trans %}create.new.event{% endtrans %}<span class="sr-only">(current)</span></a></li>#}
         <li><a href="{{ path('places_list', {'city_slug': 'poltava', 'category_slug': 'restaurants-cafe'}) }}">{% trans %}places{% endtrans %}<span class="sr-only">(current)</span></a></li>
-        <li><a href="{{ path('events_list', {'slug': 'restaurants-cafe'}) }}">{% trans %}events{% endtrans %}<span class="sr-only">(current)</span></a></li>
+        <li><a href="{{ path('events_list', {'city_slug': 'poltava', 'category_slug': 'concert'}) }}">{% trans %}events{% endtrans %}<span class="sr-only">(current)</span></a></li>
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{% trans %}create{% endtrans %} <span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
@@ -104,9 +104,13 @@
             {#prefetch: '../data/films/post_1960.json',#}
             remote: {
             url: Routing.generate('api_1.get_places_autocomplete'),
+            //url: Routing.generate('api_1.get_cities_autocomplete'),            
             wildcard: '%QUERY',
-            replace: function(url, uriEncodedQuery) {                
-                return url + '?q=' + uriEncodedQuery;
+            replace: function(url, uriEncodedQuery) {
+                console.log('replace', $('#location-form #city').val());
+                var city = $('#location-form #city').val();
+                $('#location-form #city').val();
+                return url + '?q=' + uriEncodedQuery + '&city=' + city;
             },
             {#ajax : {
                 beforeSend: function(jqXhr, settings){
@@ -122,12 +126,14 @@
             }
           });
           
-          $('.typeahead').typeahead({
+          $(document).ready(function(){
+            $('.typeahead').typeahead({
             minLength: 3,
             highlight: true
             },
             {
             name: 'my-dataset',
+            displayKey: 'name',
             source: source,
             templates: {
                 empty: [
@@ -136,8 +142,12 @@
                   '</div>'
                 ].join('\n'),
                 suggestion: function(data){
-                    return '<p><strong>' + data.name + '</strong></p>';
+                    return '<p><a href="' + Routing.generate('location_map', {'slug': data.city.slug })  + '">' + data.name + '</a></p>';
+                    //return '<p><strong>' + data.name + '</strong></p>';
                 }
               }
-            });
+            }){#.on('typeahead:selected', function (event, datum, name) {
+   $(this).typeahead("val", "");
+            });#}
+          })          
       </script>                                             

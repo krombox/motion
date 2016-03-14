@@ -1,0 +1,180 @@
+{% extends 'KromboxMainBundle:Layout:layout.html.twig' %}
+
+{% block landing %}
+    <div class="content-wrapper">
+        <section id="intro">
+            <div class="container">
+                <div id="intro-content">
+                    <div id="location-top">
+                        <div id="intro-text" class="text-center">
+                            <h2>Where are you from?</h2>
+                            <h4>Choose city and you are ready to go!</h4>
+                        </div>
+                        <div id="location-form-holder">
+                            <form action="/checkit" id="location-form" method="GET" action="#" _lpchecked="1" >
+                                {#<div id="locationfields" class="form-group">
+                                  <input type="text" class="typeahead" id="location_search" name="location" placeholder="Where are you located?" autocomplete="off">
+                                  <input type="text" class="" id="location_search" name="location" placeholder="Where are you located?" autocomplete="off">
+                                  <input type="submit" value="Search">                                  
+                                </div>#}
+                                <div class="form-group row">
+                                    <div class="col-lg-6 nopadding">
+                                        <input type="text" class="typeahead" id="location_search" name="location" placeholder="Where are you located?" autocomplete="off">
+                                    </div>
+                                    <div class="col-lg-3 nopadding" style="border-left: 1px solid #ccc;">
+                                        <input type="hidden" id="city" name="city" placeholder="Select city"  data-city="poltava" value="poltava" autocomplete="off">
+                                        {#<div class="citypicker-holder">#}
+                                            <a data-toggle="modal"  class="city-picker dropdown-toggle uneditable-input rua-b-none rua-p-c-default" href="#"> 
+                                                <span class="selected-city-name" id="beforeContentZone_vacSearch_CityPickerWork_lblCityName">Полтава</span> 
+                                            </a>
+                                        {#</div>#}
+                                    </div>
+                                    <div class="col-lg-3 nopadding">
+                                        <input type="submit" value="Search">                                  
+                                    </div>
+                                </div>
+                            </form>
+                                
+                            {#<form class="" role="search">
+        <div class="form-group">
+          <input  type="text" class="form-control typeahead" placeholder="Search for places">
+        </div>
+        <button type="submit" class="btn btn-default">Submit</button>
+      </form>#}
+                            {#{{ form_errors(cityForm) }}
+                            {{ form_start(cityForm, {'attr' : {'id': 'location-form'} }) }}                                                            
+                            {{ form_end(cityForm) }}#}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    
+    
+    <!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+    
+    
+    <style>
+        #location-form  .city-picker {
+            background: #fff url("http://img1.rabota.com.ua/static/2013/12/drop2.png") no-repeat scroll 100% 50%;
+    border-left: medium none;
+    border-right: medium none;
+    box-sizing: border-box;
+    //height: 50px;
+    overflow: hidden;
+    padding: 8px 30px 12px 7px;
+    text-overflow: ellipsis;
+    text-decoration: none;
+    
+     background-color: #fff;
+                border: 1px solid #fff;
+                width: 100%;
+                color: #414141;
+                font-size: 19px;
+                font-weight: 300;
+                display: inline-block;
+        }
+        
+        .nopadding {
+   padding: 0 !important;
+   margin: 0 !important;
+}
+
+        .twitter-typeahead{
+width:100%;
+display: inline-flex !important;
+}
+
+        #intro {
+            width: 100%;
+            background-image: url(/images/main.jpg);
+            background-repeat: repeat;
+            background-position: 0 0;
+            background-size: cover;
+            color: #fff;
+        }
+        
+        #intro h2 {
+            font-size: 60px;
+            font-weight: 700;
+            line-height: 85px;
+            text-transform: uppercase;
+            margin-top: 15px;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+        }
+        
+        #intro-content {
+            padding-top: 230px;
+            padding-bottom: 230px;
+        }
+        
+        #location-form {
+                background-color: transparent;
+                padding: 20px;
+                width: 75%;
+                margin: 0 auto;
+        }
+        
+        #location-form input[type=text] {
+                background-color: #fff;
+                border: 1px solid #fff;
+                width: 100%;
+                color: #414141;
+                font-size: 19px;
+                font-weight: 300;
+                padding: 10px 15px;
+                -webkit-appearance: none;
+        }
+        
+        #location-form input[type=submit] {
+                width: 100%;
+                background-color: #e91e63;
+                color: #fff;
+                font-size: 19px;
+                font-weight: 300;
+                //margin-left: -4px;
+                padding: 11px;
+                border: none;
+                -webkit-transition: all 350ms ease-in-out;
+                -moz-transition: all 350ms ease-in-out;
+                -o-transition: all 350ms ease-in-out;
+                -ms-transition: all 350ms ease-in-out;
+                transition: all 350ms ease-in-out;
+        }
+        
+        .navbar.top {
+            background-color: rgba(30, 30, 30, 0.45);
+            border-bottom: none;
+        }
+        
+        .navbar-nav > li > a {
+            color: #fff;
+        }
+        
+        .content-wrapper {
+            margin-top: -75px;
+        }
+    </style>
+{% endblock %}

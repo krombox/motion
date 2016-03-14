@@ -38,23 +38,24 @@ class PlaceType extends AbstractType
             ->add('slug', null, array(
                 'required' => true
             ))    
-            ->add('categories', 'a2lix_translatedEntity', array(
-                'class' => 'Krombox\MainBundle\Entity\Category',
-                'translation_property' => 'name',
-                'multiple' => true
-            ))
+//            ->add('categories', 'a2lix_translatedEntity', array(
+//                'class' => 'Krombox\MainBundle\Entity\Category',
+//                'translation_property' => 'name',
+//                'multiple' => true
+//            ))
                 
-            //->add('categories')
-//                ->add('categories', 'entity', array(
-//                    'class' => 'Krombox\MainBundle\Entity\Category',
-//                    'multiple' => true,
+            ->add('categories')
+                ->add('categories', 'a2lix_translatedEntity', array(
+                    'class' => 'Krombox\MainBundle\Entity\Category',
+                    'multiple' => true,
+                    'translation_property' => 'name',
 //                    'expanded' => true,
-//                    'label' => 'categories',
-//                    'required' => true,
-//                    'query_builder' => function(\Doctrine\ORM\EntityRepository $er) {
-//                        return $er->queryCategoriesByType(CategoryTypeEnum::PLACE);
-//                    },
-//                ))
+                    'label' => 'categories',
+                    'required' => true,
+                    'query_builder' => function(\Doctrine\ORM\EntityRepository $repository) {
+                        return $repository->queryCategoriesByType(CategoryTypeEnum::PLACE);
+                    },
+                ))
             //->add('image', 'file', ['required' => false])                                 
 //                ->add('image', 'file', [
 //                'label'    => false,

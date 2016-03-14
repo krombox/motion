@@ -20,7 +20,7 @@ class HallType extends AbstractType
         $builder                            
                 ->add('name', null, array('label' => 'hall.name'))
                 ->add('numberOfSeats', null, array('label' => 'number.of.seats'))
-                ->add('placeHallImages', 'images_dropzone')
+                ->add('placeHallImages', 'images_dropzone', ['class' => \Krombox\MainBundle\Entity\PlaceHallImage::class])
         ;
     }
     

@@ -10,7 +10,7 @@ use Krombox\MainBundle\DBAL\Types\LikeType;
 
 class PlaceRepository extends Repository
 {
-    public function autocomplete($term, $limit = 10)
+    public function autocomplete($term, $city = null, $limit = 10)
     {        
 //        if($term != null){                    
 //            $prefixQuery = new \Elastica\Query\Prefix();
@@ -19,13 +19,25 @@ class PlaceRepository extends Repository
 //        else{
 //            $prefixQuery = new \Elastica\Query\MatchAll();
 //        }
+        $boolQuery = new \Elastica\Query\Bool();
+        
+        //TODO CHECK VALIDATED
         $fuzzyQuery = new \Elastica\Query\FuzzyLikeThis();
         $fuzzyQuery->addFields(['nameTranslatableRU', 'nameTranslatableEN']);
         $fuzzyQuery->setLikeText($term);
         
+        if($city)
+        {            
+            $queryCity = new \Elastica\Query\Match();
+            $queryCity->setFieldQuery('city.slug', $city);
+            $boolQuery->addMust($queryCity);
+        }
+        
+        $boolQuery->addMust($fuzzyQuery);
+        
         //$baseQuery = $prefixQuery;                
         
-        $filtered = new \Elastica\Query\Filtered($fuzzyQuery);
+        $filtered = new \Elastica\Query\Filtered($boolQuery);
 
         $query = \Elastica\Query::create($filtered);        
         
@@ -174,7 +186,7 @@ class PlaceRepository extends Repository
         
     }
     
-    public function facet($filter, $sort)
+    public function facet($filter, $sort = 'membership')
     {                      
         $boolQuery = new \Elastica\Query\Bool();
 
@@ -182,10 +194,11 @@ class PlaceRepository extends Repository
         $queryStatus->setFieldQuery('place.status', StatusType::VALIDATED);
         $boolQuery->addMust($queryStatus);
 
-        $queryCategory = new \Elastica\Query\Match();
-        //$queryCategory->setFieldQuery('place.categories.slug', $category->getSlug());
-        $queryCategory->setFieldQuery('place.categories.slug', $filter->getCategory()->getSlug());
-        $boolQuery->addMust($queryCategory);
+        if($filter->getCategory()){
+            $queryCategory = new \Elastica\Query\Match();        
+            $queryCategory->setFieldQuery('place.categories.slug', $filter->getCategory()->getSlug());
+            $boolQuery->addMust($queryCategory);
+        }
         
         $queryCity = new \Elastica\Query\Match();        
         $queryCity->setFieldQuery('place.city.slug', $filter->getCity()->getSlug());
@@ -279,19 +292,22 @@ class PlaceRepository extends Repository
         //Aggregation
         $aggregFilters = new \Elastica\Aggregation\Terms('filters');    
         $aggregFilters->setField('placeFilterValues.slug');    
-        $aggregFilters->setSize(0);
+        //$aggregFilters->setSize(0);
+        
+        $aggregCategories = new \Elastica\Aggregation\Terms('categories');    
+        $aggregCategories->setField('categories.slug');
 
-        $aggregBusinessHoursDay = new \Elastica\Aggregation\Filter('businessHoursDay');    
-        $aggregBusinessHoursDay->setFilter($businessHoursDayFilter);
-
-        $aggregBusinessHoursStartsAt = new \Elastica\Aggregation\Filter('businessHoursStartsAt');    
-        $aggregBusinessHoursStartsAt->setFilter($businessHoursStartsAtFilter);
-
-        $aggregBusinessHoursEndsAtFilter = new \Elastica\Aggregation\Filter('businessHoursEndsAt');
-        $aggregBusinessHoursEndsAtFilter->setFilter($businessHoursEndsAtFilter);
-
-        $aggregBusinessHoursStartsAt->addAggregation($aggregBusinessHoursEndsAtFilter);
-        $aggregBusinessHoursDay->addAggregation($aggregBusinessHoursStartsAt);
+//        $aggregBusinessHoursDay = new \Elastica\Aggregation\Filter('businessHoursDay');    
+//        $aggregBusinessHoursDay->setFilter($businessHoursDayFilter);
+//
+//        $aggregBusinessHoursStartsAt = new \Elastica\Aggregation\Filter('businessHoursStartsAt');    
+//        $aggregBusinessHoursStartsAt->setFilter($businessHoursStartsAtFilter);
+//
+//        $aggregBusinessHoursEndsAtFilter = new \Elastica\Aggregation\Filter('businessHoursEndsAt');
+//        $aggregBusinessHoursEndsAtFilter->setFilter($businessHoursEndsAtFilter);
+//
+//        $aggregBusinessHoursStartsAt->addAggregation($aggregBusinessHoursEndsAtFilter);
+//        $aggregBusinessHoursDay->addAggregation($aggregBusinessHoursStartsAt);
 
         $aggregBusinessHours = new \Elastica\Aggregation\Filters('businessHours');    
         $aggregBusinessHours->addFilter($workingNowFilter, 'workingNow');
@@ -299,9 +315,15 @@ class PlaceRepository extends Repository
 
         $filtered = new \Elastica\Query\Filtered($boolQuery, $boolFilter);
         $query = \Elastica\Query::create($filtered);
-
-        $query->addAggregation($aggregFilters);
-        $query->addAggregation($aggregBusinessHours);    
+        
+        //set aggregations type
+        foreach ($filter->getAggregations() as $aggregation){
+            $aggtype = 'aggreg' . ucfirst($aggregation);
+            $query->addAggregation($$aggtype);            
+        }
+        
+        //$query->addAggregation($aggregFilters);
+        //$query->addAggregation($aggregBusinessHours);    
         
         $sortMembership = array('membershipSubscriptions.membership.score' => array(
             'nested_filter' => array('term' => array('membershipSubscriptions.m_status' => MembershipStatusType::ACTIVE)),
@@ -345,9 +367,9 @@ class PlaceRepository extends Repository
 //        }
 //        foreach($filter->getProperties() as $k => $v){
 //            $method = 'get' . ucfirst($k);    
-            //var_dump($filter);die();
-            if($filter->getFilters() != null && !empty($filter->getFilters())){
-                foreach ($filter->getFilters() as $item){                                            
+            //var_dump($filter);die();        
+            if($filter->getFilters() != null && !empty($filter->getFilters())){                
+                foreach ($filter->getFilters() as $item){                    
                     $term = new \Elastica\Query\Match();                
                     $term->setFieldQuery('placeFilterValues.slug', $item);        
                     $query->addMust($term);

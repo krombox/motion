@@ -12,6 +12,7 @@ use Krombox\MainBundle\Model\PlaceSearch;
 use Krombox\MainBundle\Form\Model\PlaceFilter;
 use Krombox\MainBundle\Form\Type\PlaceType;
 use Krombox\MainBundle\Form\Type\PlaceImageType;
+use Krombox\MainBundle\Form\Type\PlaceLogoType;
 use Krombox\MainBundle\Form\Type\PlaceProfileType;
 use Krombox\MainBundle\Event\PlaceEvent;
 use Krombox\MainBundle\Event\PlaceEvents;
@@ -32,6 +33,7 @@ use Krombox\MainBundle\DBAL\Types\MembershipStatusType;
 use Krombox\MainBundle\DBAL\Types\StatusType;
 use Pagerfanta\Adapter\ArrayAdapter;
 use Krombox\Constants;
+use Krombox\MainBundle\Form\Type\PlaceHallImageType;
 
 use Buzz\Browser;
 use MatthiasNoback\MicrosoftOAuth\AccessTokenProvider;
@@ -85,7 +87,7 @@ class PlaceController extends Controller
 
                 $flow->reset(); // remove step data from the session
 
-                return $this->redirect($this->generateUrl('places_list', array('slug' => 'restaurants-cafe'))); // redirect when done
+                return $this->redirect($this->generateUrl('user_places')); // redirect when done
             }
         }
         
@@ -284,7 +286,7 @@ class PlaceController extends Controller
      */
     public function listAction(Request $request, \Krombox\MainBundle\Entity\City $city, \Krombox\MainBundle\Entity\Category $category)
     {                   
-        $placeFilter = new PlaceFilter([$category]);
+        $placeFilter = new PlaceFilter();
         //$placeFilter = new PlaceFilter();
         $placeFilter->setCategory($category);
         $placeFilter->setCity($city);
@@ -296,7 +298,7 @@ class PlaceController extends Controller
         $filterForm = $this->get('form.factory')
             ->createNamed(
                 '',
-                new PlaceFilterType($this->get('krombox.filter_manager')),
+                'place_filter',
                 $placeFilter,
                 array(
                     'action' => $this->generateUrl('places_list', ['city_slug' => $city->getSlug(), 'category_slug' => $category->getSlug()]),
@@ -322,6 +324,7 @@ class PlaceController extends Controller
         $places->setMaxPerPage(3);
         $places->setCurrentPage($request->query->get('page', 1));
         $filterFacet = $places->getAdapter()->getAggregations();
+        //var_dump($filterFacet);die();
         //$filterFacet['businessHours']['buckets'][] = ['key' => 'workingNow', 'doc_count' => 5]; 
         //var_dump($filterFacet);die();
         $helper = $this->container->get('krombox.business_hours_helper');
@@ -363,7 +366,7 @@ class PlaceController extends Controller
         $eventDispatcher = $this->container->get('event_dispatcher');
             
         $form = $this->createForm(new PlaceType(), $place);
-        $logoForm = $this->createForm(new PlaceImageType(), $place->getLogo());
+        $logoForm = $this->createForm(new PlaceLogoType(), $place);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
@@ -573,27 +576,44 @@ class PlaceController extends Controller
      */
     public function placeImageSaveAction(Request $request){
         /*TODO ADD VALIDATION*/
-        $em = $this->getDoctrine()->getManager();
-        $file = $request->files->get('file');        
-        //var_dump($file);die();
-        $placeImage = new PlaceHallImage();        
-        $placeImage->setImage($file);
-        //var_dump($placeImage->getImage());die();
-        
-        $upload_handler = $this->get('krombox.upload_handler');
-        if(!$upload_handler->upload($placeImage, 'image')){
-            return new JsonResponse (['error' => 'something wrong'], JsonResponse::HTTP_NOT_ACCEPTABLE);
-        }
-        //var_dump($placeImage->getPath());
-        
-        $em->persist($placeImage);
-        $em->flush();               
-                
-//        $upload_handler = $this->container->get('vich_uploader.upload_handler');
-//        $upload_handler->upload($placeImage, 'image');
-        //var_dump($placeImage);die();
+//        $em = $this->getDoctrine()->getManager();
+//        $file = $request->files->get('file');        
+//        
+//        $placeImage = new PlaceHallImage();        
+//        $placeImage->setImage($file);        
+//        
+//        $upload_handler = $this->get('krombox.upload_handler');
+//        if(!$upload_handler->upload($placeImage, 'image')){
+//            return new JsonResponse (['error' => 'something wrong'], JsonResponse::HTTP_NOT_ACCEPTABLE);
+//        }        
+//        
 //        $em->persist($placeImage);
-//        $em->flush();               
+//        $em->flush();     
+        
+        $em = $this->getDoctrine()->getManager();
+        //$file = $request->files->get('file');        
+        
+        $placeImage = new PlaceHallImage();        
+        
+        $form = $this->get('form.factory')->createNamed(null, new PlaceHallImageType(), $placeImage);        
+        if($form->handleRequest($this->getRequest()) && $form->isValid()){
+            //var_dump($request->request->all(), $form->isValid(), $form->getErrors());die();
+            //var_dump($form->isValid());die();                                    
+            $em->persist($placeImage);
+            $em->flush();
+            return new JsonResponse (['status' => 200, 'id' => $placeImage->getId()]);
+        }else{
+            return $form;
+        }
+                
+        
+//        $upload_handler = $this->get('krombox.upload_handler');
+//        if(!$upload_handler->upload($placeImage, 'image')){
+//            return new JsonResponse (['error' => 'something wrong'], JsonResponse::HTTP_NOT_ACCEPTABLE);
+//        }        
+//        
+//        $em->persist($placeImage);
+//        $em->flush();
                 
         return new JsonResponse (['status' => 200, 'id' => $placeImage->getId()]);        
     }

@@ -26,6 +26,18 @@
     {{ address.street }}, {{ address.streetNumber }}, {{address.city }}
 {% endmacro %}
 
+{% macro facet_item_count(facet, type, key) %}
+    {% for k,v in facet %}
+        {% if k == type %}
+            {% for item in v.buckets if item.key == key %}
+                {{ item.doc_count }}
+            {% else %}
+                0
+            {% endfor %}
+        {% endif %}
+    {% endfor %}
+{% endmacro %}    
+
 {#{% macro likes_widget(place) %}
     <div class="likes-widget">
         <div class="progress-info col-lg-8">    
@@ -64,7 +76,7 @@
 {% endmacro %}#}
 
 {% macro rating_widget(place) %}
-    {% set userRating = null %}
+    {#{% set userRating = null %}
     {% if is_granted("IS_AUTHENTICATED_FULLY") %}
         {% set userRating = place.getUserRating(app.user) %}{{ userRating }}
     {% endif %}    
@@ -77,7 +89,8 @@
                 <option value="{{ i }}">{{ i }}</option>
             {% endif %}
         {% endfor %}
-    </select>    
+    </select>#}
+    <input id="range-slider" >
 {% endmacro %}
 
 
@@ -298,7 +311,7 @@
         $(document).ready(function() {
             $('#calendar').fullCalendar({
                     events: Routing.generate('api_1.get_place_events', {'place' : '{{ place.id }}'}),
-                    defaultView: 'agendaWeek',
+                    //defaultView: 'agendaWeek',
                     contentHeight: 550,
                     //aspectRatio: 5,
                     allDaySlot: false,

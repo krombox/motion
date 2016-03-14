@@ -27,8 +27,9 @@ Dropzone.autoDiscover = false;
             
             add: function(element){console.log(element);
                 element.dropzone({
-                    url: "/image/place/save",                    
-                    addRemoveLinks: true,             
+                    url: "/apis/v1/places/halls/images",                    
+                    addRemoveLinks: true,
+                    paramName: "image",
                     init: function() {                        
                         
                         this.on("success", function(file,data) {                                                          

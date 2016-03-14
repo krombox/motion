@@ -4,15 +4,23 @@
     {{ parent()}}
     
     {% block stylesheets %}            
+        <link href="{{ asset('bower/ionrangeslider/css/ion.rangeSlider.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ asset('bower/ionrangeslider/css/ion.rangeSlider.skinHTML5.css') }}" rel="stylesheet" type="text/css" />
         <link href="{{ asset('bower/fullcalendar/dist/fullcalendar.min.css') }}" rel="stylesheet" type="text/css" />
-        <link href="{{ asset('bower/jquery-bar-rating/dist/themes/bars-1to10.css') }}" rel="stylesheet" type="text/css" />
+        {#<link href="{{ asset('bower/jquery-bar-rating/dist/themes/bars-1to10.css') }}" rel="stylesheet" type="text/css" />#}
     {% endblock %}
     
     
 
-    {% block javascripts_head %}        
+    {% block javascripts_head %}
+        <script src="{{ asset('bower/jquery-circle-progress/dist/circle-progress.js') }}"></script>
+        
+        <script src="{{ asset('bower/radialIndicator/radialIndicator.min.js') }}"></script>
+        <script src="{{ asset('bower/progressbar.js/dist/progressbar.min.js') }}"></script>
+
         <script src="{{ asset('bower/fullcalendar/dist/fullcalendar.min.js') }}"></script>        
-        <script src="{{ asset('bower/jquery-bar-rating/dist/jquery.barrating.min.js') }}"></script>        
+        <script src="{{ asset('bower/ionrangeslider/js/ion.rangeSlider.min.js') }}"></script>        
+        {#<script src="{{ asset('bower/jquery-bar-rating/dist/jquery.barrating.min.js') }}"></script>        #}
         <script src="{{ asset('bower/jquery.countdown/dist/jquery.countdown.min.js') }}"></script>        
         <script src="{{ asset('bower/echojs/dist/echo.min.js') }}"></script>        
         <script src="{{ asset('js/spin.min.js') }}"></script>
@@ -88,7 +96,7 @@
         {% for placeLinked in place.placesLinked %}
             <div class="linked">
                 <a href="{{ path('place_details', {'slug': placeLinked.slug})  }}">{{ placeLinked.name }}
-                    <p><img src="{{ generateImageUrl(placeLinked.logoFileName, 'place_image') | imagine_filter('place_image_thumb') }}" ></p>
+                    <p><img src="{{ placeLinked.logo.path | imagine_filter('place_image_thumb') }}" ></p>
                 </a>
             </div>
         {% endfor %}
@@ -113,30 +121,59 @@
                     {% set userRating = place.getUserRating(app.user) %}
                 {% endif %}
 
-                <div class="col-lg-12">            
-                    {% if is_granted("IS_AUTHENTICATED_FULLY") %}
-                        {% if userRating is not null %}
-                            <div class="col-lg-12">                
-                                ваша оценка: {{ userRating }} %   <a class="unset-button" href="#">отменить</a>
-                            </div>
-                        {% else %}
-                            <div class="col-lg-12">
-                                {{ macro.rating_widget(place) }}
-                            </div>
-                        {% endif %}
-                    {% endif %}
+                <div class="row">            
+                    {#{% if is_granted("IS_AUTHENTICATED_FULLY") %}#}
+                        <div class="col-lg-12">
+                            <button id="user-rating-collapse-btn" class="btn btn-primary hide" type="button" data-toggle="collapse" data-target=".userRating-holder" aria-expanded="false" aria-controls="collapseExample">
+                                Button with data-target
+                              </button>
+                            {#{% if userRating is not null %}#}
+                                <div class="userRating-holder collapse {% if userRating is not null %}in{% endif %}">ваша оценка: <span class="rating">{{ userRating }}</span> %   <a class="unset-button" href="#">отменить</a></div>
+                            {#{% endif %}#}
+                                <div class="rating-holder">
+                                    {{ macro.rating_widget(place) }}
+                                </div>                               
+                            
+                        </div>
+                    {#{% endif %}#}
                 </div>
+                
                 <div class="col-lg-12">
-                    <div id="rating" class="progress">
+                    <div class="circle-holder" id="circle"><strong></strong></div>
+                    {#<div id="rating" class="progress">
                         <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: {{ place.rating }}%;">
                           {{ place.rating }}%
                         </div>
-                    </div>
+                    </div>#}
                 </div>
             </div>
         </div>
     </div>
-    
+    <style>
+                    #circle {
+                            {#width: 100px;
+                            margin: 6px 6px 20px;
+                            display: inline-block;
+                            position: relative;
+                            text-align: center;
+                            line-height: 1.2;#}
+                            text-align: center;
+                    }  
+                    #circle strong{
+                        position: absolute;
+    top: 100px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    line-height: 40px;
+    font-size: 30px;
+                    }
+                    
+                    #circle canvas {
+    max-width: 100%;
+    max-height: 250px;
+}
+        </style>
     <div class="bisinessHours">
         {#time
         {{ closestBusinessHours(place) | date('Y/m/d H:i:s') }}        
@@ -178,6 +215,24 @@
         
         <script>
             $(document).ready(function(){
+                
+                ratingWidget.init('{{ place.rating / 100 }}', '{{ userRating }}', '{{ app.user }}');
+                //ratingWidget.changeCircleRating();
+                
+                
+                {#var circle = $('#circle').circleProgress({
+                    startAngle: -90 * (Math.PI/180),
+                    value: 0.95,
+                    size: 1000,
+                    fill: {
+                        gradient: ["green", "orange"]
+                    }
+                }).on('circle-animation-progress', function(event, progress, stepValue) {
+                    console.log(stepValue)
+                    $(this).find('strong').text(String(stepValue.toFixed(2)).substr(2) + '%');
+                });#}
+                                
+                
                 echo.init({
                     offset: 100,
                     throttle: 250,

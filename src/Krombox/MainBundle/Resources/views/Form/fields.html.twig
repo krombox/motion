@@ -53,24 +53,24 @@
 {% endblock %}    
 
 {% block images_dropzone_widget %}       
-    <div class="dropzone-wrapper">                    
+    <div class="dropzone-wrapper">                 
         {% set element_id = form.vars.id %}
-        {% set ids = [] %}{{ dump(form) }}
-        {% for item in form.vars.value  %}
-            {% set ids = ids | merge([item.id]) %}
-        {% endfor %}                        
-            {{dump(ids)}}
+        {% set ids = [] %}
+        {#{{ dump(form.vars.value) }}        #}
+        {% set ids = form.vars.value | split(',') %}
+          
+            {#{{dump(ids)}}#}
         <div id="{{ element_id }}" class="dropzone dropzone-widget">
-            {% for item in  form.vars.value %}                            
+            {% for id in  ids if id %}                                                            
                 <div class="dz-preview dz-processing dz-image-preview dz-success dz-complete">  
                     <div class="dz-image">
-                        <img data-dz-thumbnail="" alt="" src="data:image/png;base64,{{ item.path | imagine_filter('place_image_preview_thumb') | base64encodefile }}"/>        </g>      </g>    </svg>  
+                        <img data-dz-thumbnail="" alt="" src="data:image/png;base64,{{ imageUrl(id, form.vars.class) | imagine_filter('place_image_preview_thumb') | base64encodefile }}"/>        </g>      </g>    </svg>  
                     </div>
-                    <a data-dz-remove="" data-id="{{ item.id }}" href="javascript:undefined;" class="dz-remove">Remove file</a>
+                    <a data-dz-remove="" data-id="{{ id }}" href="javascript:undefined;" class="dz-remove">Remove file</a>
                 </div>
             {% endfor %}
             
-            <input id="{{ element_id }}-input" type="text" class="{% if form.vars.attr.class is not defined %}dropzone_input{% else %}{{form.vars.attr.class}}{% endif %}" required="{{ form.vars.required }}" name="{{ form.vars.full_name }}" value="{{ ids | join(',') }}">
+            <input id="{{ element_id }}-input" type="text" class="{% if form.vars.attr.class is not defined %}dropzone_input{% else %}{{form.vars.attr.class}}{% endif %}" required="{{ form.vars.required }}" name="{{ form.vars.full_name }}" value="{{ form.vars.value }}">
         </div>  
     </div>
 
@@ -88,9 +88,9 @@
 {% block business_hours_widget %}
         {{ form_errors(form) }}
         {#{{ dump(form) }}#}
-        <div class="{{ form.vars.attr.class }}">
-        {#<div>#}
-            <div class="days-holder">
+        {#<div class="{{ form.vars.attr.class }}">#}
+        {#<div>#}        
+            <div class="days-holder row">
                 <div class="col-lg-2">
                     {{ form_widget(form.dayMonday, { 'required': form.dayMonday.vars.required }) }}
                 </div>
@@ -113,21 +113,23 @@
                     {{ form_widget(form.daySunday, { 'required': form.daySunday.vars.required }) }}
                 </div>                                   
             </div>
-            <div class="time-holder">    
+            <div class="time-holder row">    
                 <div class="col-lg-6">
+                    {#<a href="#">some link</a>#}
                     <div class="form-group {% if not form.startsAt.vars.valid %}has-error{% endif %}">
                     {{ form_widget(form.startsAt) }}
                     {{ form_errors(form.startsAt) }}        
                     </div>
                 </div>
                 <div class="col-lg-6">
+                    {#<a href="#">some link</a>#}
                     <div class="form-group {% if not form.endsAt.vars.valid %}has-error{% endif %}">
                     {{ form_widget(form.endsAt) }}
                     {{ form_errors(form.endsAt) }}
                     </div>
                 </div>        
-            </div>
-        </div>
+            </div>        
+        {#</div>#}
 {% endblock %}
 
 {% block address_widget %}

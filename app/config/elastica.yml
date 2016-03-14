@@ -19,10 +19,12 @@ fos_elastica:
                             properties:
                                 slug: ~
                         categories:
-                            type: "object"
+                            type: "object"                            
                             properties:
                                 #id: ~
-                                slug: ~
+                                slug:
+                                    type: string
+                                    index: "not_analyzed"
                         placeFilterValues:
                             type: "object"
                             properties:                                
@@ -233,4 +235,17 @@ fos_elastica:
                         model: Krombox\UserBundle\Entity\User
                         provider: ~
                         listener:                            
-                        finder: ~                        
+                        finder: ~ 
+                        
+                city:
+                    mappings:
+                        nameTranslatableRU: ~
+                        nameTranslatableEN: ~
+                        slug: ~                        
+                    persistence:                        
+                        driver: orm
+                        model: Krombox\MainBundle\Entity\City
+                        provider: ~
+                        listener:                            
+                        finder: ~
+                        repository: Krombox\MainBundle\Repository\Search\CityRepository

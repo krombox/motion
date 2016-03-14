@@ -10,11 +10,20 @@ Krombox\MainBundle\Entity\Category:
 #        #placeFilterKinds: ['@place_filter_kind_business_hours']
     category1:
         slug: restaurants-cafe
+        type: 1
         #placeFilterKinds: ['@place_filter_kind_services']
     category2:        
         slug: night-clubs
+        type: 1
         #placeFilterKinds: ['@place_filter_kind_services']
     category3:        
         slug: pubs
+        type: 1
+    category4:
+        slug: confectionery
+        type: 1
+    category5:
+        slug: children
+        type: 2    
         #placeFilterKinds: ['@place_filter_kind_kitchens']   
 

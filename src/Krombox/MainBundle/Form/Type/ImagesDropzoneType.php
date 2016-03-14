@@ -4,7 +4,7 @@ namespace Krombox\MainBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Doctrine\Common\Persistence\ObjectManager;
 
 use Krombox\MainBundle\Form\DataTransformer\ImagesDropzoneTransformer;
@@ -47,11 +47,25 @@ class ImagesDropzoneType extends AbstractType
 //            ;
 //    }
     
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function finishView(\Symfony\Component\Form\FormView $view, \Symfony\Component\Form\FormInterface $form, array $options) {
+        parent::finishView($view, $form, $options);
+        
+        $view->vars['class'] = $options['class'];
+    }
+
+
+//    public function setDefaultOptions(OptionsResolverInterface $resolver)
+//    {
+//        
+//    }
+    
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'attr' => array('class' => 'dropzone_input hidden')
         ));
+        
+        $resolver->setRequired('class');
     }
     
     public function getParent() {

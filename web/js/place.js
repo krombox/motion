@@ -1,5 +1,6 @@
-function initEditLogoUpload(formId){    
-    id = formId;
+function initEditLogoUpload(mainFormId, logoFormId){    
+    id = logoFormId;
+    formId = mainFormId;
     initFns();
     var input = $('#' + id + '_image');     
     input.change(function(){
@@ -89,9 +90,9 @@ function initFns(){
     })
     
     
-    
-    $('#' + id + '-submit').click(function(){
-	var formData = new FormData($('form[name=' + id + ']')[0]);
+    console.log('id-',id);
+    $('#logo-submit').click(function(){
+	var formData = new FormData($('form[name=' + formId + ']')[0]);
         var btn = $(this);
         btn.html('Uploading...');
         btn.parent().find('div.alert-danger').remove();
@@ -104,9 +105,9 @@ function initFns(){
                 contentType: false,
                 cache: false,
                 success: function(data){
-                    $('#' + id + '-img').attr('src',data);
+                    $('#logo-img').attr('src',data);
                     btn.html('Upload');
-                    $('#' + id + '_modal [data-dismiss=modal]').click();
+                    $('#logo_modal [data-dismiss=modal]').click();
                 },
             statusCode: {
                400: function(data, textStatus, jqXHR) {

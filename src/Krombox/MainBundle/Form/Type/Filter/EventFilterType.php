@@ -7,7 +7,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Krombox\MainBundle\Entity\Enum\ServicesEnum;
 use Krombox\MainBundle\Entity\Enum\RelaxationsEnum;
-use Krombox\MainBundle\Form\Model\PlaceFilter;
+use Krombox\MainBundle\Form\Model\EventFilter;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\Form;
@@ -17,10 +17,10 @@ use JMS\DiExtraBundle\Annotation as DI;
 /**
 *   @DI\FormType
 */
-class PlaceFilterType extends AbstractType
+class EventFilterType extends AbstractType
 {
-    const TYPE_NAME = 'place_filter';
-    const DATA_CLASS = PlaceFilter::CLASS;
+    const TYPE_NAME = 'event_filter';
+    const DATA_CLASS = EventFilter::CLASS;
     
     private $filterManager;
     
@@ -35,16 +35,16 @@ class PlaceFilterType extends AbstractType
     }
     public function buildForm(FormBuilderInterface $builder, array $options)
     {        
-            $builder
-                    ->add('businessHours', 'choice', array(
-                        'choices' => array(
-                            'workingNow' => 'workingNow',
-                            '24/7' => '24/7'
-                        ),
-                        'expanded' => true,
-                        'multiple' => true
-                    ))
-            ;
+//            $builder
+//                    ->add('businessHours', 'choice', array(
+//                        'choices' => array(
+//                            'workingNow' => 'workingNow',
+//                            '24/7' => '24/7'
+//                        ),
+//                        'expanded' => true,
+//                        'multiple' => true
+//                    ))
+//            ;
             
             $formModifier = function (Form $form, $categories) {
                 //var_dump($categories);die();

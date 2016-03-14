@@ -17,9 +17,9 @@ Krombox\MainBundle\Entity\Category:
 #        description:
 #            type: text
 #            nullable: false
-#        type:
-#            type: CategoryType
-#            nullable: false            
+        type:
+            type: CategoryType
+            nullable: false            
         file_name:      
             type: string
             nullable: true

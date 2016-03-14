@@ -7,7 +7,7 @@ namespace Krombox\MainBundle\Form\Model;
 //use Sittr\Common\Model\Traits\WithLimitAndOffset;
 //use Sittr\UserBundle\Entity\User;
 
-class PlaceFilter
+class EventFilter
 {
 //    use GeoEntity,
 //        WithLimitAndOffset;
@@ -19,11 +19,11 @@ class PlaceFilter
     //private $relaxations = [];
     //private $kitchens = [];
    //private $menu = [];
-    private $aggregations = ['filters', 'businessHours', 'categories'];
+    private $aggregations = ['filters'];
     private $filters;
-    private $businessHours;
+    //private $businessHours;
     //private $categories = [];
-    private $category;
+    //private $category;
     private $city;
 
 //    public function __construct(array $categories) {
@@ -32,10 +32,10 @@ class PlaceFilter
 //        $this->categories = $categories;
 //    }
 
-    public function getProperties()
-    {
-        return get_object_vars($this);        
-    }
+//    public function getProperties()
+//    {
+//        return get_object_vars($this);        
+//    }
 
 
 //    private $ageGroups = [];
@@ -57,18 +57,18 @@ class PlaceFilter
 //        }
 //    }
 
-    public function getBusinessHours()
-    {
-        return $this->businessHours;
-    }
-
-    /**
-     * @param array $businessHours
-     */
-    public function setBusinessHours($businessHours)
-    {
-        $this->businessHours = $businessHours;
-    }
+//    public function getBusinessHours()
+//    {
+//        return $this->businessHours;
+//    }
+//
+//    /**
+//     * @param array $businessHours
+//     */
+//    public function setBusinessHours($businessHours)
+//    {
+//        $this->businessHours = $businessHours;
+//    }
     
     /**
      * @return array
@@ -89,34 +89,34 @@ class PlaceFilter
     /**
      * @return array
      */
-    public function getCategories()
-    {
-        return $this->categories;
-    }
-
-    /**
-     * @param array $category
-     */
-    public function setCategories($categories)
-    {
-        $this->categories = $categories;
-    }
-    
-    /**
-     * @return array
-     */
-    public function getCategory()
-    {
-        return $this->category;
-    }
-
-    /**
-     * @param array $category
-     */
-    public function setCategory($category)
-    {
-        $this->category = $category;
-    }
+//    public function getCategories()
+//    {
+//        return $this->categories;
+//    }
+//
+//    /**
+//     * @param array $category
+//     */
+//    public function setCategories($categories)
+//    {
+//        $this->categories = $categories;
+//    }
+//    
+//    /**
+//     * @return array
+//     */
+//    public function getCategory()
+//    {
+//        return $this->category;
+//    }
+//
+//    /**
+//     * @param array $category
+//     */
+//    public function setCategory($category)
+//    {
+//        $this->category = $category;
+//    }
     
     /**
      * @return array

@@ -41,13 +41,13 @@ class ImageFileType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildView(FormView $view, FormInterface $form, array $options)
-    {
-        $view->vars['imgclass']   = $options['imgclass'];
-        $view->vars['fileField']   = $options['fileField'];
-        $view->vars['pathField']   = $options['pathField'];
-        $view->vars['fieldreplace'] = array($options['fileField'] => $options['pathField']);
-    }
+//    public function buildView(FormView $view, FormInterface $form, array $options)
+//    {
+//        $view->vars['imgclass']   = $options['imgclass'];
+//        $view->vars['fileField']   = $options['fileField'];
+//        $view->vars['pathField']   = $options['pathField'];
+//        $view->vars['fieldreplace'] = array($options['fileField'] => $options['pathField']);
+//    }
 
 }
 
